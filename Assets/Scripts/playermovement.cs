@@ -1,87 +1,51 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(Animator))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement3D : MonoBehaviour
 {
-    public float speed = 5f; // Скорость движения
-    public float attackRange = 1f; // Диапазон атаки
-    public LayerMask enemyLayers; // Слой врагов
-    public int attackDamage = 10; // Урон атаки
+    public float speed = 5f;
+    public Terrain terrain; // Присвой ссылку на твой Terrain
+    private Vector3 moveDirection;
 
-    private Rigidbody rb;
-    private Animator animator;
-    private Vector3 movement;
-
-    void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
-    }
-
+   
     void Update()
     {
-        // Получение ввода для движения
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.z = Input.GetAxisRaw("Vertical");
+        // Получаем ввод от пользователя
+        float moveX = Input.GetAxis("Horizontal");
+        float moveZ = Input.GetAxis("Vertical");
 
-        // Нормализация движения для диагоналей
-        if (movement.magnitude > 1)
-        {
-            movement = movement.normalized;
-        }
-        movement = new Vector3(movement.x, 0, movement.z);
-        transform.Translate(movement * speed * Time.deltaTime, Space.World);
+        // Рассчитываем направление движения
+        moveDirection = new Vector3(moveX, 0, moveZ).normalized;
 
-        // Обновление параметров Animator
-        float currentSpeed = movement.magnitude;
-        animator.SetFloat("Speed", currentSpeed);
+        // Перемещаем персонажа по XZ осям
+        transform.position += moveDirection * speed * Time.deltaTime;
 
-        // Поворот персонажа по горизонтали
-        Quaternion rotation = Quaternion.LookRotation(new Vector3(movement.x, 0, movement.z));
-        transform.rotation = rotation;
+        // Обновляем позицию по высоте, исходя из рельефа terrain
+        UpdatePlayerHeight();
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = (mousePos - transform.position).normalized;
 
-        // Обработка атаки при нажатии ЛКМ
-        if (Input.GetMouseButtonDown(0))
-        {
-            Attack();
-        }
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    void FixedUpdate()
+    void UpdatePlayerHeight()
     {
-        // Перемещение персонажа
-        rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+        // Получаем текущие координаты X и Z персонажа
+        Vector3 playerPosition = transform.position;
+
+        // Получаем высоту terrain в текущей позиции персонажа
+        float terrainHeight = terrain.SampleHeight(playerPosition);
+
+        // Обновляем Y координату персонажа в зависимости от высоты terrain
+        playerPosition.y = terrainHeight + 0.5f; // 0.5f - высота персонажа над землей
+
+        // Применяем новую позицию
+        transform.position = playerPosition;
     }
-
-    void Attack()
+    void LateUpdate()
     {
-        // Воспроизведение анимации атаки
-        animator.SetTrigger("AttackTrigger");
-
-        // Определение позиции атаки (например, впереди персонажа)
-        Vector3 attackPosition = rb.position + movement.normalized * attackRange;
-
-        // Поиск врагов в диапазоне атаки
-        Collider[] hitEnemies = Physics.OverlapSphere(attackPosition, attackRange, enemyLayers);
-
-        // Нанесение урона каждому врагу в диапазоне
-        foreach (Collider enemy in hitEnemies)
-        {
-            // Предполагается, что у врагов есть скрипт с методом TakeDamage
-            Enemy enemyScript = enemy.GetComponent<Enemy>();
-            if (enemyScript != null)
-            {
-                enemyScript.TakeDamage(attackDamage);
-            }
-        }
-    }
-
-    // Визуализация области атаки в редакторе
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Vector3 attackPosition = rb != null ? rb.position + movement.normalized * attackRange : Vector3.zero;
-        Gizmos.DrawWireSphere(attackPosition, attackRange);
+        // Персонаж всегда смотрит на камеру
+        transform.forward = Camera.main.transform.forward;
     }
 }
+

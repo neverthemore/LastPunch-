@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public int health = 50;
+    public float health = 50f;
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         health -= damage;
+
         if (health <= 0)
         {
             Die();
@@ -15,7 +16,7 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        // Анимация смерти, эффекты и т.д.
+        // Реализуй логику уничтожения врага
         Destroy(gameObject);
     }
 }
