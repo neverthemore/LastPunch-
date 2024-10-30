@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class PlayerArmRotation : MonoBehaviour
 {
-    public Transform leftShoulder; // Ссылка на левое плечо
-    public Transform rightShoulder; // Ссылка на правое плечо
-    public Transform leftArm; // Ссылка на левую руку
-    public Transform rightArm; // Ссылка на правую руку
-    public Camera mainCamera; // Ссылка на основную камеру
+    public Transform leftShoulder; // РЎСЃС‹Р»РєР° РЅР° Р»РµРІРѕРµ РїР»РµС‡Рѕ
+    public Transform rightShoulder; // РЎСЃС‹Р»РєР° РЅР° РїСЂР°РІРѕРµ РїР»РµС‡Рѕ
+    public Transform leftArm; // РЎСЃС‹Р»РєР° РЅР° Р»РµРІСѓСЋ СЂСѓРєСѓ
+    public Transform rightArm; // РЎСЃС‹Р»РєР° РЅР° РїСЂР°РІСѓСЋ СЂСѓРєСѓ
+    public Camera mainCamera; // РЎСЃС‹Р»РєР° РЅР° РѕСЃРЅРѕРІРЅСѓСЋ РєР°РјРµСЂСѓ
 
     void Update()
     {
@@ -15,27 +15,27 @@ public class PlayerArmRotation : MonoBehaviour
 
     void RotateArmsTowardsMouse()
     {
-        // Получаем позицию курсора на экране
+        // РџРѕР»СѓС‡Р°РµРј РїРѕР·РёС†РёСЋ РєСѓСЂСЃРѕСЂР° РЅР° СЌРєСЂР°РЅРµ
         Vector3 mouseScreenPosition = Input.mousePosition;
 
-        // Преобразуем экранные координаты в мировые
+        // РџСЂРµРѕР±СЂР°Р·СѓРµРј СЌРєСЂР°РЅРЅС‹Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹ РІ РјРёСЂРѕРІС‹Рµ
         Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(new Vector3(mouseScreenPosition.x, mouseScreenPosition.y, mainCamera.transform.position.z));
-        mouseWorldPosition.z = 0; // Убираем глубину, так как работаем в 2D
+        mouseWorldPosition.z = 0; // РЈР±РёСЂР°РµРј РіР»СѓР±РёРЅСѓ, С‚Р°Рє РєР°Рє СЂР°Р±РѕС‚Р°РµРј РІ 2D
 
-        // Рассчитываем направление от плеча до курсора
+        // Р Р°СЃСЃС‡РёС‚С‹РІР°РµРј РЅР°РїСЂР°РІР»РµРЅРёРµ РѕС‚ РїР»РµС‡Р° РґРѕ РєСѓСЂСЃРѕСЂР°
         Vector3 leftDirection = mouseWorldPosition - leftShoulder.position;
         Vector3 rightDirection = mouseWorldPosition - rightShoulder.position;
 
-        // Рассчитываем углы поворота
+        // Р Р°СЃСЃС‡РёС‚С‹РІР°РµРј СѓРіР»С‹ РїРѕРІРѕСЂРѕС‚Р°
         float leftAngle = Mathf.Atan2(leftDirection.y, leftDirection.x) * Mathf.Rad2Deg;
         float rightAngle = Mathf.Atan2(rightDirection.y, rightDirection.x) * Mathf.Rad2Deg;
 
-        // Поворачиваем плечи
+        // РџРѕРІРѕСЂР°С‡РёРІР°РµРј РїР»РµС‡Рё
         leftShoulder.rotation = Quaternion.Euler(0, 0, leftAngle);
         rightShoulder.rotation = Quaternion.Euler(0, 0, rightAngle);
 
-        // Поворачиваем руки
-        leftArm.rotation = leftShoulder.rotation; // Рука следует за плечом
-        rightArm.rotation = rightShoulder.rotation; // Рука следует за плечом
+        // РџРѕРІРѕСЂР°С‡РёРІР°РµРј СЂСѓРєРё
+        leftArm.rotation = leftShoulder.rotation; // Р СѓРєР° СЃР»РµРґСѓРµС‚ Р·Р° РїР»РµС‡РѕРј
+        rightArm.rotation = rightShoulder.rotation; // Р СѓРєР° СЃР»РµРґСѓРµС‚ Р·Р° РїР»РµС‡РѕРј
     }
 }
