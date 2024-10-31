@@ -2,21 +2,30 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float health = 50f;
+    public int health = 30;
+    public Transform player;
+    public float speed = 2.0f;
 
-    public void TakeDamage(float damage)
+    private void Update()
+    {
+        if (player != null)
+        {
+            Vector3 direction = (player.position - transform.position).normalized;
+            transform.position += direction * speed * Time.deltaTime;
+
+        }
+    }
+    public void TakeDamage(int damage)
     {
         health -= damage;
-
         if (health <= 0)
         {
             Die();
         }
     }
 
-    void Die()
+    private void Die()
     {
-        // Реализуй логику уничтожения врага
-        Destroy(gameObject);
+        Destroy(gameObject); // Уничтожаем врага
     }
 }
