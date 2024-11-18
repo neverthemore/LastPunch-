@@ -3,49 +3,64 @@ using UnityEngine;
 public class PlayerMovement3D : MonoBehaviour
 {
     public float speed = 5f;
-    public Terrain terrain; // Присвой ссылку на твой Terrain
+    public Terrain terrain; // Ссылка на Terrain.
+    public Transform spriteTransform; // Ссылка на объект со спрайтом.
+
     private Vector3 moveDirection;
 
-   
     void Update()
     {
-        // Получаем ввод от пользователя
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
+        // Получаем ввод от пользователя.
+        float inputX = Input.GetAxis("Horizontal");
+        float inputZ = Input.GetAxis("Vertical");
 
-        // Рассчитываем направление движения
-        moveDirection = new Vector3(moveX, 0, moveZ).normalized;
+        // Определяем направления вперёд и вправо относительно камеры.
+        Vector3 forward = Camera.main.transform.forward;
+        Vector3 right = Camera.main.transform.right;
 
-        // Перемещаем персонажа по XZ осям
+        // Проецируем векторы на плоскость XZ.
+        forward.y = 0;
+        right.y = 0;
+        forward.Normalize();
+        right.Normalize();
+
+        // Рассчитываем направление движения.
+        moveDirection = forward * inputZ + right * inputX;
+
+        // Перемещаем персонажа.
         transform.position += moveDirection * speed * Time.deltaTime;
 
-        // Обновляем позицию по высоте, исходя из рельефа terrain
+        // Обновляем высоту персонажа в зависимости от рельефа.
         UpdatePlayerHeight();
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = (mousePos - transform.position).normalized;
 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        // Если движение есть, обновляем направление персонажа.
+        if (moveDirection.sqrMagnitude > 0.01f)
+        {
+            transform.forward = moveDirection; // Поворачиваем объект персонажа.
+        }
+
+        // Фиксируем спрайт, чтобы он не поворачивался.
+        FixSpriteRotation();
     }
 
     void UpdatePlayerHeight()
     {
-        // Получаем текущие координаты X и Z персонажа
+        // Получаем текущую позицию.
         Vector3 playerPosition = transform.position;
 
-        // Получаем высоту terrain в текущей позиции персонажа
+        // Рассчитываем высоту персонажа на основе рельефа.
         float terrainHeight = terrain.SampleHeight(playerPosition);
 
-        // Обновляем Y координату персонажа в зависимости от высоты terrain
-        playerPosition.y = terrainHeight + 0.5f; // 0.5f - высота персонажа над землей
-
-        // Применяем новую позицию
+        // Устанавливаем позицию персонажа чуть выше рельефа.
+        playerPosition.y = terrainHeight + 0.5f;
         transform.position = playerPosition;
     }
-    void LateUpdate()
+
+    void FixSpriteRotation()
     {
-        // Персонаж всегда смотрит на камеру
-        transform.forward = Camera.main.transform.forward;
+        // Устанавливаем ориентацию спрайта так, чтобы он всегда смотрел на камеру.
+        Vector3 cameraForward = Camera.main.transform.forward;
+        cameraForward.y = 0; // Убираем наклон по оси Y.
+        spriteTransform.forward = -cameraForward.normalized;
     }
 }
-
