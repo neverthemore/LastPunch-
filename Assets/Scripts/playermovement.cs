@@ -28,7 +28,8 @@ public class PlayerMovement3D : MonoBehaviour
         moveDirection = forward * inputZ + right * inputX;
 
         // Перемещаем персонажа.
-        transform.position += moveDirection * speed * Time.deltaTime;
+        //transform.position += moveDirection * speed * Time.deltaTime;
+        GetComponent<CharacterController>().Move(moveDirection * speed * Time.deltaTime);
 
         // Обновляем высоту персонажа в зависимости от рельефа.
         UpdatePlayerHeight();

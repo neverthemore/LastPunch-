@@ -13,31 +13,37 @@ public class ArmIKFollowCursor : MonoBehaviour
     public Transform rightShoulder;    // Положение плеча правой руки
     public Camera mainCamera;          // Камера для конвертации позиции курсора
 
+
     private void Update()
     {
         // Получаем позицию курсора в мировых координатах
         Vector3 mousePosition = Input.mousePosition;
         mousePosition.z = mainCamera.nearClipPlane;
+        //mousePosition.z = -mainCamera.transform.position.z + transform.position.z;
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
 
         // Сглаживаем переход к новой позиции
-        leftHandTarget.position = Vector3.Lerp(leftHandTarget.position, worldPosition, Time.deltaTime * 10f);  // Используем плавное движение
-        rightHandTarget.position = Vector3.Lerp(rightHandTarget.position, worldPosition, Time.deltaTime * 10f);
+        //leftHandTarget.position = Vector3.Lerp(leftHandTarget.position, worldPosition, Time.deltaTime * 10f);  // Используем плавное движение
+        //rightHandTarget.position = Vector3.Lerp(rightHandTarget.position, worldPosition, Time.deltaTime * 10f);
 
         // Если ЛКМ или ПКМ не нажаты, просто вращаем руки по направлению к курсору
-        if (!Input.GetMouseButton(0) && !Input.GetMouseButton(1))
-        {
-            RotateArmTowardsCursor(leftShoulder, leftHand, worldPosition);
-            RotateArmTowardsCursor(rightShoulder, rightHand, worldPosition);
+        //if (!Input.GetMouseButton(0) && !Input.GetMouseButton(1))
+        //{
+        //    RotateArmTowardsCursor(leftShoulder, leftHand, worldPosition);
+        //    RotateArmTowardsCursor(rightShoulder, rightHand, worldPosition);
 
-            leftHandIK.enabled = false;
-            rightHandIK.enabled = false;
-        }
-        else
-        {
-            leftHandIK.enabled = Input.GetMouseButton(0);
-            rightHandIK.enabled = Input.GetMouseButton(1);
-        }
+        //    leftHandIK.enabled = false;
+        //    rightHandIK.enabled = false;
+        //}
+        //else
+        //{
+        //    leftHandIK.enabled = Input.GetMouseButton(0);
+        //    rightHandIK.enabled = Input.GetMouseButton(1);
+        //}
+
+       
+        leftHandTarget.position = (worldPosition - leftShoulder.position).normalized * 4f + leftShoulder.position;
+        rightHandTarget.position = (worldPosition - rightShoulder.position).normalized * 4f + rightShoulder.position;
     }
 
 
