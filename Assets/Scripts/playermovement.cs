@@ -28,20 +28,13 @@ public class PlayerMovement3D : MonoBehaviour
         moveDirection = forward * inputZ + right * inputX;
 
         // Перемещаем персонажа.
-        //transform.position += moveDirection * speed * Time.deltaTime;
         GetComponent<CharacterController>().Move(moveDirection * speed * Time.deltaTime);
 
         // Обновляем высоту персонажа в зависимости от рельефа.
         UpdatePlayerHeight();
 
-        // Если движение есть, обновляем направление персонажа.
-        if (moveDirection.sqrMagnitude > 0.01f)
-        {
-            transform.forward = moveDirection; // Поворачиваем объект персонажа.
-        }
-
-        // Фиксируем спрайт, чтобы он не поворачивался.
-        FixSpriteRotation();
+        // Обновляем поворот спрайта в зависимости от положения курсора.
+        UpdateSpriteDirection();
     }
 
     void UpdatePlayerHeight()
@@ -57,11 +50,38 @@ public class PlayerMovement3D : MonoBehaviour
         transform.position = playerPosition;
     }
 
-    void FixSpriteRotation()
+    void UpdateSpriteDirection()
     {
-        // Устанавливаем ориентацию спрайта так, чтобы он всегда смотрел на камеру.
-        Vector3 cameraForward = Camera.main.transform.forward;
-        cameraForward.y = 0; // Убираем наклон по оси Y.
-        spriteTransform.forward = -cameraForward.normalized;
+        // Получаем позицию курсора в мировых координатах.
+        Vector3 mousePosition = Input.mousePosition;
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+
+        // Проверяем пересечение с плоскостью (на уровне персонажа).
+        Plane plane = new Plane(Vector3.up, transform.position);
+        if (plane.Raycast(ray, out float distance))
+        {
+            Vector3 worldMousePosition = ray.GetPoint(distance);
+
+            // Проверяем, находится ли курсор слева или справа от персонажа.
+            if (worldMousePosition.x < transform.position.x)
+            {
+                // Курсор слева — поворачиваем спрайт влево.
+                spriteTransform.localEulerAngles = new Vector3(spriteTransform.localEulerAngles.x, 180, 0);
+            }
+            else
+            {
+                // Курсор справа — поворачиваем спрайт вправо.
+                spriteTransform.localEulerAngles = new Vector3(spriteTransform.localEulerAngles.x, 0, 0);
+            }
+        }
+    }
+
+    void LateUpdate()
+    {
+        // Фиксируем поворот спрайта по другим осям, кроме X.
+        Vector3 fixedRotation = spriteTransform.localEulerAngles;
+        fixedRotation.y = Mathf.Clamp(fixedRotation.y, 0, 180); // Ограничиваем поворот по Y.
+        fixedRotation.z = 0; // Сбрасываем поворот по Z.
+        spriteTransform.localEulerAngles = fixedRotation;
     }
 }

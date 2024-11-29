@@ -12,49 +12,42 @@ public class ArmIKFollowCursor : MonoBehaviour
     public Transform leftShoulder;     // Положение плеча левой руки
     public Transform rightShoulder;    // Положение плеча правой руки
     public Camera mainCamera;          // Камера для конвертации позиции курсора
+    public float armSpeed = 4f;        // Скорость движения руки
 
+    public Collider leftHandCollider; // Коллайдер левой руки
+    public Collider rightHandCollider; // Коллайдер правой руки
+    public int attackDamage = 10;       // Урон атаки
 
     private void Update()
     {
         // Получаем позицию курсора в мировых координатах
         Vector3 mousePosition = Input.mousePosition;
         mousePosition.z = mainCamera.nearClipPlane;
-        //mousePosition.z = -mainCamera.transform.position.z + transform.position.z;
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
 
-        // Сглаживаем переход к новой позиции
-        //leftHandTarget.position = Vector3.Lerp(leftHandTarget.position, worldPosition, Time.deltaTime * 10f);  // Используем плавное движение
-        //rightHandTarget.position = Vector3.Lerp(rightHandTarget.position, worldPosition, Time.deltaTime * 10f);
+        // Управляем скоростью движения руки в зависимости от атаки
+        float leftHandSpeed = Input.GetMouseButton(0) ? armSpeed : 0.2f;
+        float rightHandSpeed = Input.GetMouseButton(1) ? armSpeed : 0.2f;
 
-        // Если ЛКМ или ПКМ не нажаты, просто вращаем руки по направлению к курсору
-        //if (!Input.GetMouseButton(0) && !Input.GetMouseButton(1))
-        //{
-        //    RotateArmTowardsCursor(leftShoulder, leftHand, worldPosition);
-        //    RotateArmTowardsCursor(rightShoulder, rightHand, worldPosition);
+        // Обновляем позиции рук
+        leftHandTarget.position = (worldPosition - leftShoulder.position).normalized * leftHandSpeed + leftShoulder.position;
+        rightHandTarget.position = (worldPosition - rightShoulder.position).normalized * rightHandSpeed + rightShoulder.position;
 
-        //    leftHandIK.enabled = false;
-        //    rightHandIK.enabled = false;
-        //}
-        //else
-        //{
-        //    leftHandIK.enabled = Input.GetMouseButton(0);
-        //    rightHandIK.enabled = Input.GetMouseButton(1);
-        //}
-
-       
-        leftHandTarget.position = (worldPosition - leftShoulder.position).normalized * 4f + leftShoulder.position;
-        rightHandTarget.position = (worldPosition - rightShoulder.position).normalized * 4f + rightShoulder.position;
+        // Включаем или отключаем коллайдеры атаки
+        leftHandCollider.enabled = Input.GetMouseButton(0);
+        rightHandCollider.enabled = Input.GetMouseButton(1);
     }
 
-
-    // Метод для поворота руки по направлению к курсору
-    private void RotateArmTowardsCursor(Transform shoulder, Transform hand, Vector3 targetPosition)
+    private void OnTriggerEnter(Collider collision)
     {
-        Vector3 direction = targetPosition - shoulder.position;
-        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        // Сглаживание угла
-        float angle = Mathf.LerpAngle(hand.eulerAngles.z, targetAngle, Time.deltaTime * 10f);
-        hand.rotation = Quaternion.Euler(0, 0, angle);
+        // Обрабатываем столкновение с врагом
+        if (collision.CompareTag("Enemy"))
+        {
+            Enemy enemy = collision.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(attackDamage);
+            }
+        }
     }
 }

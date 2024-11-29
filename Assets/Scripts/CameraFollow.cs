@@ -1,47 +1,27 @@
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraFollow : MonoBehaviour
 {
-    public Transform player; // Ссылка на игрока.
-    [SerializeField]
-    public float distance = 10f; // Расстояние от камеры до игрока.
-
-    [SerializeField]
-    public float height = 5f; // Высота камеры над игроком.
-
-    [SerializeField]
-    public float rotationSpeed = 90f; // Угол поворота за нажатие клавиши.
-
-    private float currentAngle = 0f;
+    public Transform target; // Ссылка на объект персонажа
+    public float height = 5f; // Высота камеры над персонажем
+    public float distance = 10f; // Расстояние камеры от персонажа
+    public Vector2 offset; // Смещение камеры относительно персонажа
+    public float followSpeed = 5f; // Скорость, с которой камера следует за персонажем
 
     void LateUpdate()
     {
-        // Поворот камеры с помощью Q и E.
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            RotateCamera(-rotationSpeed);
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            RotateCamera(rotationSpeed);
-        }
+        if (target == null) return;
 
-        // Обновляем позицию камеры.
-        Vector3 offset = new Vector3(
-            Mathf.Sin(currentAngle * Mathf.Deg2Rad) * distance,
-            height,
-            Mathf.Cos(currentAngle * Mathf.Deg2Rad) * distance
-        );
+        // Позиция цели с учётом смещения
+        Vector3 targetPosition = target.position + new Vector3(offset.x, offset.y, 0);
 
-        transform.position = player.position + offset;
+        // Позиция камеры с учётом высоты и расстояния
+        Vector3 desiredPosition = targetPosition + Vector3.back * distance + Vector3.up * height;
 
-        // Камера всегда смотрит на игрока.
-        transform.LookAt(player.position);
-    }
+        // Плавное перемещение камеры
+        transform.position = Vector3.Lerp(transform.position, desiredPosition, followSpeed * Time.deltaTime);
 
-    private void RotateCamera(float angle)
-    {
-        currentAngle += angle;
-        currentAngle %= 360; // Удерживаем угол в пределах 0–360.
+        // Поворачиваем камеру так, чтобы она всегда смотрела на персонажа
+        transform.LookAt(targetPosition);
     }
 }
