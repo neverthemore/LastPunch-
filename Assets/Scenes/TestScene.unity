@@ -298,8 +298,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 1951918563}
   camBrain: {fileID: 963194227}
-  handLeft: {fileID: 151087337}
-  handRight: {fileID: 409643990}
+  handLeft: {fileID: 715766694}
+  handRight: {fileID: 964956046}
   hitLeftDistanceFactor: 1.5
   hitRightDistanceFactor: 1.8
   maxAngle: 70
@@ -2546,7 +2546,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1804840139
 Transform:
   m_ObjectHideFlags: 0
