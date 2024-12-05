@@ -24,10 +24,6 @@ public class HandFollowCursor : MonoBehaviour
     float handRightDistance;
     float currentHandRightDistance;
     float targetHandRightDistance;
-
-    [SerializeField]
-    public int attackDamage = 10;
-
     public float hitLeftDistanceFactor = 1.5f;
     public float hitRightDistanceFactor = 1.8f;
 
@@ -144,6 +140,5 @@ public class HandFollowCursor : MonoBehaviour
         else if (angle > -90)
             movement.TurnRight();
     }
-
 }
 

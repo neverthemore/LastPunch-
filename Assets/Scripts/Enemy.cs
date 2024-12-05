@@ -1,12 +1,15 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Enemy : MonoBehaviour
 {
     public float moveSpeed = 3f; // Скорость движения врага
-    public float detectionRange = 10f; // Радиус обнаружения игрока
+    public float detectionRange = 10f; // Радиус обнаружения цели
     public int health = 30; // Здоровье врага
+    public Camera mainCamera; // Камера, на которую враг должен смотреть
 
-    private Transform player; // Ссылка на игрока
+    private Transform target; // Цель (игрок или другой объект)
+    private Rigidbody rb; // Ссылка на Rigidbody врага
 
     void Start()
     {
@@ -14,21 +17,62 @@ public class Enemy : MonoBehaviour
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
         {
-            player = playerObject.transform;
+            target = playerObject.transform;
+        }
+
+        // Получаем Rigidbody
+        rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.freezeRotation = true; // Отключаем физическое вращение врага
+        }
+
+        // Если камера не указана, берем основную
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if (player != null)
+        // Проверяем, есть ли цель
+        if (target != null)
         {
-            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+            float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
-            // Если игрок в радиусе обнаружения, двигаться к нему
-            if (distanceToPlayer <= detectionRange)
+            // Если цель в радиусе обнаружения, двигаться к ней
+            if (distanceToTarget <= detectionRange)
             {
-                Vector3 direction = (player.position - transform.position).normalized;
-                transform.position += direction * moveSpeed * Time.deltaTime;
+                // Рассчитываем направление к цели
+                Vector3 direction = (target.position - transform.position).normalized;
+
+                // Движение
+                rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.z * moveSpeed);
+            }
+            else
+            {
+                rb.velocity = Vector3.zero; // Останавливаем движение, если цель вне зоны
+            }
+        }
+
+        // Вращаем врага лицевой стороной к камере
+        FaceCamera();
+    }
+
+    private void FaceCamera()
+    {
+        if (mainCamera != null)
+        {
+            Vector3 cameraDirection = mainCamera.transform.position - transform.position;
+
+            // Убираем вертикальную составляющую, чтобы враг не наклонялся
+            cameraDirection.y = 0;
+
+            // Поворачиваем врага в сторону камеры
+            if (cameraDirection != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(-cameraDirection);
             }
         }
     }
@@ -36,16 +80,18 @@ public class Enemy : MonoBehaviour
     // Метод для получения урона
     public void TakeDamage(int attackDamage)
     {
-        health -= attackDamage;
+        health -= attackDamage; // Уменьшаем здоровье врага
+        Debug.Log($"Enemy took {attackDamage} damage! Remaining health: {health}");
+
         if (health <= 0)
         {
-            Debug.Log($"Enemy took {attackDamage} damage! Remaining health: {health}");
-            Die();
+            Die(); // Уничтожаем врага, если здоровье <= 0
         }
     }
 
-    void Die()
+    private void Die()
     {
-        Destroy(gameObject); // Уничтожаем врага
+        Debug.Log("Enemy died!");
+        Destroy(gameObject); // Уничтожаем объект врага
     }
 }
