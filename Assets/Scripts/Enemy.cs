@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     public int health = 30; // Здоровье врага
     public Camera mainCamera; // Камера, на которую враг должен смотреть
 
+    //public string sortinglayer; // Слои спрайтов для врага 
+
     private Transform target; // Цель (игрок или другой объект)
     private Rigidbody rb; // Ссылка на Rigidbody врага
 
@@ -32,8 +34,23 @@ public class Enemy : MonoBehaviour
         {
             mainCamera = Camera.main;
         }
+
+        
     }
 
+    //private void Update()
+    //{
+    //    Setsortinglayer(sortinglayer);
+    //}
+
+    public void Setsortinglayer(string layer)
+    {
+        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sprite in sprites)
+        {
+            sprite.sortingLayerName = layer;
+        }
+    }
     void FixedUpdate()
     {
         // Проверяем, есть ли цель
