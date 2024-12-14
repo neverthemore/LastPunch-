@@ -245,7 +245,7 @@ MonoBehaviour:
   - point: {fileID: 962729520}
     spawnRadius: 4
   spawnDelay: 5
-  maxEnemies: 25
+  maxEnemies: 10
 --- !u!4 &36479863
 Transform:
   m_ObjectHideFlags: 0
@@ -2148,11 +2148,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8270016718327711345, guid: cf2aeaacd43d02342b18d41722cb3bf4, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8270016718327711345, guid: cf2aeaacd43d02342b18d41722cb3bf4, type: 3}
       propertyPath: m_Color.g
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8270016718327711345, guid: cf2aeaacd43d02342b18d41722cb3bf4, type: 3}
       propertyPath: m_Color.r
