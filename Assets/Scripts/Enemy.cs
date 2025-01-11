@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -11,6 +11,9 @@ public class Enemy : MonoBehaviour
 
     private Transform target;
     private Rigidbody rb;
+    private Animator animator; // Reference to Animator
+    private float stunDuration = 1.5f; // Duration for which the enemy is stunned
+    private bool isStunned = false;
 
     public int headDamage = 15;
     public int bodyDamage = 10;
@@ -30,6 +33,8 @@ public class Enemy : MonoBehaviour
             rb.freezeRotation = true;
         }
 
+        animator = GetComponent<Animator>(); // Initialize animator
+
         if (mainCamera == null)
         {
             mainCamera = Camera.main;
@@ -38,18 +43,26 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (target != null)
+        if (health <= 0)
         {
-            float distanceToTarget = Vector3.Distance(transform.position, target.position);
+            Die();
+        }
 
-            if (distanceToTarget <= detectionRange)
+        if (!isStunned) // Only move if not stunned
+        {
+            if (target != null)
             {
-                Vector3 direction = (target.position - transform.position).normalized;
-                rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.z * moveSpeed);
-            }
-            else
-            {
-                rb.velocity = Vector3.zero;
+                float distanceToTarget = Vector3.Distance(transform.position, target.position);
+
+                if (distanceToTarget <= detectionRange)
+                {
+                    Vector3 direction = (target.position - transform.position).normalized;
+                    rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.z * moveSpeed);
+                }
+                else
+                {
+                    rb.velocity = Vector3.zero;
+                }
             }
         }
 
@@ -70,25 +83,58 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int attackDamage)
+    public void TakeDamage(int attackDamage, HitType hitType)
     {
         health -= attackDamage;
-        Debug.Log($"Enemy took {attackDamage} damage! Remaining health: {health}");
+        Debug.Log($"Enemy took {attackDamage} damage from {hitType}! Remaining health: {health}");
 
+        if (hitType == HitType.Head)
+        {
+            animator.SetInteger("HitType", 1); // 1 for head hit
+        }
+        else if (hitType == HitType.Body)
+        {
+            animator.SetInteger("HitType", 2); // 2 for body hit
+        }
+        else if (hitType == HitType.Legs)
+        {
+            animator.SetInteger("HitType", 3); // 3 for leg hit
+        }
+
+        // Check if health is less than or equal to 0
         if (health <= 0)
         {
             Die();
+        }
+        else
+        {
+            StartCoroutine(StunEnemy());
         }
     }
 
     private void Die()
     {
         Debug.Log("Enemy died!");
+        // Optionally, play a death animation here
         Destroy(gameObject);
+    }
+
+    private IEnumerator StunEnemy()
+    {
+        isStunned = true;
+        yield return new WaitForSeconds(stunDuration);
+        isStunned = false;
     }
 
     internal void Setsortinglayer(string v)
     {
-        throw new NotImplementedException();
+        throw new System.NotImplementedException();
     }
+}
+
+public enum HitType
+{
+    Head,
+    Body,
+    Legs
 }
