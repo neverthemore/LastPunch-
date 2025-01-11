@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Enemy
   - Fist
+  - Head
+  - Body
+  - Legs
   layers:
   - Default
   - TransparentFX

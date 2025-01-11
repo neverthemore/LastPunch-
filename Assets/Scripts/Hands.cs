@@ -1,20 +1,58 @@
 using UnityEngine;
 
-public class HandCollider : MonoBehaviour
+public class Hands : MonoBehaviour
 {
-    [SerializeField]
-    public int attackDamage = 10;
+    public Collider leftHandCollider; // Коллайдер для левой руки
+    public Collider rightHandCollider; // Коллайдер для правой руки
 
-
-    public void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
+        // Проверка на столкновение с хитбоксами врага
+        if (other.CompareTag("Enemy"))
         {
-            // Получаем компонент Enemy на объекте врага
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null)
             {
-                // Наносим урон врагу
-                enemy.TakeDamage(attackDamage);
+                // Проверяем, какой коллайдер активен и наносим соответствующий урон
+                int damage = 0;
+
+                if (leftHandCollider.enabled) // Проверка для левой руки
+                {
+                    if (other.gameObject.name.Contains("Head")) // Хитбокс головы
+                    {
+                        damage = enemy.headDamage; // Используем свойство из Enemy
+                    }
+                    else if (other.gameObject.name.Contains("Body")) // Хитбокс тела
+                    {
+                        damage = enemy.bodyDamage; // Используем свойство из Enemy
+                    }
+                    else if (other.gameObject.name.Contains("Legs")) // Хитбокс ног
+                    {
+                        damage = enemy.legDamage; // Используем свойство из Enemy
+                    }
+                }
+
+                if (rightHandCollider.enabled) // Проверка для правой руки
+                {
+                    if (other.gameObject.name.Contains("Head")) // Хитбокс головы
+                    {
+                        damage = enemy.headDamage; // Используем свойство из Enemy
+                    }
+                    else if (other.gameObject.name.Contains("Body")) // Хитбокс тела
+                    {
+                        damage = enemy.bodyDamage; // Используем свойство из Enemy
+                    }
+                    else if (other.gameObject.name.Contains("Legs")) // Хитбокс ног
+                    {
+                        damage = enemy.legDamage; // Используем свойство из Enemy
+                    }
+                }
+
+                // Наносим урон, если есть
+                if (damage > 0)
+                {
+                    enemy.TakeDamage(damage);
+                }
             }
         }
     }
