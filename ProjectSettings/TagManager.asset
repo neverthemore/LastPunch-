@@ -9,6 +9,8 @@ TagManager:
   - Head
   - Body
   - Legs
+  - Rotation
+  - Free Rotation
   layers:
   - Default
   - TransparentFX

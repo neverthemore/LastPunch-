@@ -17,10 +17,17 @@ public class Movement : MonoBehaviour
 
     public Direction lastDir = Direction.Right;
 
+    private int _rotationCount = 0; // 0 - Back/ 1 - Left/ 2 - Front/ 3 - Right
+    private bool _rotateLeft, _rotateRight, _rotateAllways = false;
+    [SerializeField] private GameObject _buttonQ;
+    [SerializeField] private GameObject _buttonE;
+
 
     void Start()
     {
         cc = GetComponent<CharacterController>();
+        _buttonE.SetActive(false);
+        _buttonQ.SetActive(false);
     }
 
     // Update is called once per frame
@@ -30,13 +37,19 @@ public class Movement : MonoBehaviour
         yInput = Input.GetAxis("Vertical");
 
         cc.Move(transform.forward * yInput * Time.deltaTime * speed + transform.right * xInput * Time.deltaTime * speed);
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && (_rotateLeft|| _rotateAllways))
         {
             rotateY += 90;
+            _rotationCount++;
+            _rotateLeft = false;
+            _buttonE.SetActive(false);
         }
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && (_rotateRight || _rotateAllways))
         {
             rotateY -= 90;
+            _rotationCount--;
+            _rotateRight = false;
+            _buttonQ.SetActive(false);
         }
         currentRotateY = Mathf.Lerp(currentRotateY, rotateY, rotationSpeed * 0.001f);
         transform.rotation = Quaternion.Euler(0, currentRotateY, 0);
@@ -56,6 +69,33 @@ public class Movement : MonoBehaviour
         //    lastDir = Direction.Right;
         //}
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Rotation"))
+        {
+            if (_rotationCount % 2 == 0)
+            {
+                _rotateLeft = true;
+                _buttonE.SetActive(true);
+            }
+            else
+            { 
+                _rotateRight = true;
+                _buttonQ.SetActive(true);
+            }                        
+        }
+        if (other.CompareTag("Free Rotation"))
+            _rotateAllways = true;
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Rotation"))
+        {
+            _buttonE.SetActive(false);
+            _buttonQ.SetActive(false);
+        }
     }
 
     public void TurnLeft()
