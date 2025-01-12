@@ -37,19 +37,19 @@ public class Movement : MonoBehaviour
         yInput = Input.GetAxis("Vertical");
 
         cc.Move(transform.forward * yInput * Time.deltaTime * speed + transform.right * xInput * Time.deltaTime * speed);
-        if (Input.GetKeyDown(KeyCode.E) && (_rotateLeft|| _rotateAllways))
+        if (Input.GetKeyDown(KeyCode.Q) && (_rotateLeft|| _rotateAllways))
         {
             rotateY += 90;
             _rotationCount++;
             _rotateLeft = false;
-            _buttonE.SetActive(false);
+            _buttonQ.SetActive(false);
         }
-        if (Input.GetKeyDown(KeyCode.Q) && (_rotateRight || _rotateAllways))
+        if (Input.GetKeyDown(KeyCode.E) && (_rotateRight || _rotateAllways))
         {
             rotateY -= 90;
             _rotationCount--;
             _rotateRight = false;
-            _buttonQ.SetActive(false);
+            _buttonE.SetActive(false);
         }
         currentRotateY = Mathf.Lerp(currentRotateY, rotateY, rotationSpeed * 0.001f);
         transform.rotation = Quaternion.Euler(0, currentRotateY, 0);
@@ -77,12 +77,12 @@ public class Movement : MonoBehaviour
         {
             if (_rotationCount % 2 == 0)
             {
-                _rotateRight = true;
+                _rotateLeft = true;
                 _buttonQ.SetActive(true);
             }
             else
             { 
-                _rotateLeft = true;
+                _rotateRight = true;
                 _buttonE.SetActive(true);
             }                        
         }
