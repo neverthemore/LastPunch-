@@ -1664,7 +1664,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHandCollider: {fileID: 831111008}
   rightHandCollider: {fileID: 615161395}
-  freezeDuration: 1.5
+  freezeDuration: 5000
 --- !u!1 &631871873
 GameObject:
   m_ObjectHideFlags: 0
@@ -2907,7 +2907,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHandCollider: {fileID: 831111008}
   rightHandCollider: {fileID: 615161395}
-  freezeDuration: 1.5
+  freezeDuration: 50000
 --- !u!1 &856642451
 GameObject:
   m_ObjectHideFlags: 0

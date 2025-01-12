@@ -4,7 +4,7 @@ public class Hands : MonoBehaviour
 {
     public Collider leftHandCollider; // Collider for the left hand
     public Collider rightHandCollider; // Collider for the right hand
-    public float freezeDuration = 1.5f;
+    public float freezeDuration;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -25,18 +25,21 @@ public class Hands : MonoBehaviour
                         attackDamage = enemy.headDamage;
                         hitType = HitType.Head;
                         Debug.Log("Hit Head!");
+                        enemy.Stun(freezeDuration);
                     }
                     else if (other.gameObject.name.Contains("Body"))
                     {
                         attackDamage = enemy.bodyDamage;
                         hitType = HitType.Body;
                         Debug.Log("Hit Body!");
+                        enemy.Stun(freezeDuration);
                     }
                     else if (other.gameObject.name.Contains("Legs"))
                     {
                         attackDamage = enemy.legDamage;
                         hitType = HitType.Legs;
                         Debug.Log("Hit Legs!");
+                        enemy.Stun(freezeDuration);
                     }
                 }
 
@@ -48,18 +51,21 @@ public class Hands : MonoBehaviour
                         attackDamage = enemy.headDamage;
                         hitType = HitType.Head;
                         Debug.Log("Hit Head with Right Hand!");
+                        enemy.Stun(freezeDuration);
                     }
                     else if (other.gameObject.name.Contains("Body"))
                     {
                         attackDamage = enemy.bodyDamage;
                         hitType = HitType.Body;
                         Debug.Log("Hit Body with Right Hand!");
+                        enemy.Stun(freezeDuration);
                     }
                     else if (other.gameObject.name.Contains("Legs"))
                     {
                         attackDamage = enemy.legDamage;
                         hitType = HitType.Legs;
                         Debug.Log("Hit Legs with Right Hand!");
+                        enemy.Stun(freezeDuration);
                     }
                 }
 
@@ -67,8 +73,7 @@ public class Hands : MonoBehaviour
                 if (attackDamage > 0)
                 {
                     enemy.TakeDamage(attackDamage, hitType);
-                    Debug.Log($"Dealt {attackDamage} damage to {hitType}!");
-                    enemy.Stun(freezeDuration);
+                    Debug.Log($"Dealt {attackDamage} damage to {hitType}!");                  
                 }
                 else
                 {

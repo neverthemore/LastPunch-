@@ -47,27 +47,30 @@ public class Enemy : MonoBehaviour
             Die();
         }
 
-        if (!isStunned) // Only move if not stunned
+        if (!isStunned) // Движение только если не в состоянии "стан"
         {
-            if (target != null)
-            {
-                float distanceToTarget = Vector3.Distance(transform.position, target.position);
-
-                if (distanceToTarget <= detectionRange)
-                {
-                    Vector3 direction = (target.position - transform.position).normalized;
-                    rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.z * moveSpeed);
-                }
-                else
-                {
-                    rb.velocity = Vector3.zero;
-                }
-            }
+            MoveTowardsPlayer();
         }
 
         FaceCamera();
     }
+    private void MoveTowardsPlayer()
+    {
+        if (target != null) // Проверка на наличие цели
+        {
+            float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
+            if (distanceToTarget <= detectionRange)
+            {
+                Vector3 direction = (target.position - transform.position).normalized;
+                rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.z * moveSpeed);
+            }
+            else
+            {
+                rb.velocity = Vector3.zero; // Остановка движения
+            }
+        }
+    }
     private void FaceCamera()
     {
         if (mainCamera != null)
