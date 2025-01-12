@@ -77,13 +77,13 @@ public class Movement : MonoBehaviour
         {
             if (_rotationCount % 2 == 0)
             {
-                _rotateLeft = true;
-                _buttonE.SetActive(true);
+                _rotateRight = true;
+                _buttonQ.SetActive(true);
             }
             else
             { 
-                _rotateRight = true;
-                _buttonQ.SetActive(true);
+                _rotateLeft = true;
+                _buttonE.SetActive(true);
             }                        
         }
         if (other.CompareTag("Free Rotation"))
