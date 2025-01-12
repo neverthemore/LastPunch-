@@ -12,7 +12,6 @@ public class Enemy : MonoBehaviour
     private Transform target;
     private Rigidbody rb;
     private Animator animator; // Reference to Animator
-    private float stunDuration = 1.5f; // Duration for which the enemy is stunned
     private bool isStunned = false;
 
     public int headDamage = 15;
@@ -82,7 +81,18 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+    public void Stun(float duration)
+    {
+        StartCoroutine(StunCoroutine(duration));
+    }
 
+    private IEnumerator StunCoroutine(float duration)
+    {
+        isStunned = true; // Freeze the enemy
+        rb.velocity = Vector3.zero; // Stop movement
+        yield return new WaitForSeconds(duration); // Wait for the stun duration
+        isStunned = false; // Unfreeze the enemy
+    }
     public void TakeDamage(int attackDamage, HitType hitType)
     {
         health -= attackDamage;
@@ -106,10 +116,7 @@ public class Enemy : MonoBehaviour
         {
             Die();
         }
-        else
-        {
-            StartCoroutine(StunEnemy());
-        }
+        
     }
 
     private void Die()
@@ -119,12 +126,7 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private IEnumerator StunEnemy()
-    {
-        isStunned = true;
-        yield return new WaitForSeconds(stunDuration);
-        isStunned = false;
-    }
+   
 
     internal void Setsortinglayer(string v)
     {

@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &36479862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbed03164b1d6842878b963681f43b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 3620322450222474823, guid: cf2aeaacd43d02342b18d41722cb3bf4, type: 3}
+  enemyPrefab: {fileID: 1373210730}
   spawnPoints:
   - point: {fileID: 1798979034}
     spawnRadius: 4
@@ -168,8 +168,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 36479861}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.4554121, y: 1.2630792, z: 16.720491}
+  m_LocalRotation: {x: -0.25155628, y: -0.65077823, z: 0.24299775, w: -0.6739134}
+  m_LocalPosition: {x: -10.843778, y: -11.87, z: -8.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -218,9 +218,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   rotationSpeed: 200
-  skin: {fileID: 67523644}
+  skin: {fileID: 122126909}
   cam: {fileID: 1951918564}
-  lastDir: 0
+  lastDir: 1
 --- !u!143 &67523640
 CharacterController:
   m_ObjectHideFlags: 0
@@ -355,8 +355,8 @@ MonoBehaviour:
     m_Bits: 64
   handLeft: {fileID: 715766694}
   handRight: {fileID: 964956046}
-  handLeftDistanceValue: 0
-  handRightDistanceValue: 0
+  handLeftDistanceValue: 2
+  handRightDistanceValue: 2
   hitLeftDistanceFactor: 1.5
   hitRightDistanceFactor: 1.8
   angle: 0
@@ -1606,6 +1606,7 @@ GameObject:
   m_Component:
   - component: {fileID: 615161394}
   - component: {fileID: 615161395}
+  - component: {fileID: 615161396}
   m_Layer: 3
   m_Name: handRight
   m_TagString: Fist
@@ -1649,6 +1650,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.47
   m_Center: {x: 0.26, y: -0.03, z: -0.36}
+--- !u!114 &615161396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615161393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 694fc67701a8dd54aaf9cbdfa0c402b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftHandCollider: {fileID: 831111008}
+  rightHandCollider: {fileID: 615161395}
+  freezeDuration: 1.5
 --- !u!1 &631871873
 GameObject:
   m_ObjectHideFlags: 0
@@ -2833,6 +2849,7 @@ GameObject:
   m_Component:
   - component: {fileID: 831111007}
   - component: {fileID: 831111008}
+  - component: {fileID: 831111009}
   m_Layer: 3
   m_Name: handLeft
   m_TagString: Fist
@@ -2876,6 +2893,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.3
   m_Center: {x: -0.03, y: -0.21, z: 0}
+--- !u!114 &831111009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831111006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 694fc67701a8dd54aaf9cbdfa0c402b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftHandCollider: {fileID: 831111008}
+  rightHandCollider: {fileID: 615161395}
+  freezeDuration: 1.5
 --- !u!1 &856642451
 GameObject:
   m_ObjectHideFlags: 0
@@ -4358,6 +4390,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1365308140}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1373210730 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3620322450222474823, guid: cf2aeaacd43d02342b18d41722cb3bf4, type: 3}
+  m_PrefabInstance: {fileID: 1477283933278210138}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1508796186
 GameObject:
   m_ObjectHideFlags: 0
@@ -5907,6 +5944,10 @@ PrefabInstance:
     - target: {fileID: 5159038883075585142, guid: cf2aeaacd43d02342b18d41722cb3bf4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050115216900746993, guid: cf2aeaacd43d02342b18d41722cb3bf4, type: 3}
+      propertyPath: health
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 8050115216900746993, guid: cf2aeaacd43d02342b18d41722cb3bf4, type: 3}
       propertyPath: mainCamera

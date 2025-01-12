@@ -4,6 +4,7 @@ public class Hands : MonoBehaviour
 {
     public Collider leftHandCollider; // Collider for the left hand
     public Collider rightHandCollider; // Collider for the right hand
+    public float freezeDuration = 1.5f;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -13,7 +14,7 @@ public class Hands : MonoBehaviour
             Enemy enemy = other.GetComponentInParent<Enemy>(); // Get the Enemy component from the parent
             if (enemy != null)
             {
-                int damage = 0;
+                int attackDamage = 0;
                 HitType hitType = HitType.Body; // Default to body hit
 
                 // Check if the left hand collider is enabled
@@ -21,19 +22,19 @@ public class Hands : MonoBehaviour
                 {
                     if (other.gameObject.name.Contains("Head"))
                     {
-                        damage = enemy.headDamage;
+                        attackDamage = enemy.headDamage;
                         hitType = HitType.Head;
                         Debug.Log("Hit Head!");
                     }
                     else if (other.gameObject.name.Contains("Body"))
                     {
-                        damage = enemy.bodyDamage;
+                        attackDamage = enemy.bodyDamage;
                         hitType = HitType.Body;
                         Debug.Log("Hit Body!");
                     }
                     else if (other.gameObject.name.Contains("Legs"))
                     {
-                        damage = enemy.legDamage;
+                        attackDamage = enemy.legDamage;
                         hitType = HitType.Legs;
                         Debug.Log("Hit Legs!");
                     }
@@ -44,29 +45,30 @@ public class Hands : MonoBehaviour
                 {
                     if (other.gameObject.name.Contains("Head"))
                     {
-                        damage = enemy.headDamage;
+                        attackDamage = enemy.headDamage;
                         hitType = HitType.Head;
                         Debug.Log("Hit Head with Right Hand!");
                     }
                     else if (other.gameObject.name.Contains("Body"))
                     {
-                        damage = enemy.bodyDamage;
+                        attackDamage = enemy.bodyDamage;
                         hitType = HitType.Body;
                         Debug.Log("Hit Body with Right Hand!");
                     }
                     else if (other.gameObject.name.Contains("Legs"))
                     {
-                        damage = enemy.legDamage;
+                        attackDamage = enemy.legDamage;
                         hitType = HitType.Legs;
                         Debug.Log("Hit Legs with Right Hand!");
                     }
                 }
 
                 // If damage is greater than zero, apply it to the enemy
-                if (damage > 0)
+                if (attackDamage > 0)
                 {
-                    enemy.TakeDamage(damage, hitType);
-                    Debug.Log($"Dealt {damage} damage to {hitType}!");
+                    enemy.TakeDamage(attackDamage, hitType);
+                    Debug.Log($"Dealt {attackDamage} damage to {hitType}!");
+                    enemy.Stun(freezeDuration);
                 }
                 else
                 {

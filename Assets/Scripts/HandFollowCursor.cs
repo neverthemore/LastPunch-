@@ -41,7 +41,6 @@ public class HandFollowCursor : MonoBehaviour
 
     Movement movement;
 
-    // Исходные позиции рук относительно тела
     private Vector3 defaultLeftHandPosition;
     private Vector3 defaultRightHandPosition;
 
@@ -58,19 +57,17 @@ public class HandFollowCursor : MonoBehaviour
         currentHandRightDistance = handRightDistance;
         targetHandRightDistance = handRightDistance;
         handRightDistance = handRightDistanceValue;
-        // Сохраняем исходные позиции рук
+
         defaultLeftHandPosition = handLeft.localPosition;
         defaultRightHandPosition = handRight.localPosition;
     }
 
     void Update()
     {
-        // Получаем позицию мыши в мировых координатах
         mousePosition = Input.mousePosition;
         mousePosition.z = Vector3.Distance(cam.transform.position, transform.position);
         mousePositionInWorld = camBrain.ScreenToWorldPoint(mousePosition);
 
-        // Вычисляем угол поворота
         Vector3 dir = (mousePositionInWorld - transform.position).normalized;
         angle = Vector3.SignedAngle(transform.right, dir, transform.forward);
         if (movement.lastDir == Direction.Right)
@@ -85,31 +82,20 @@ public class HandFollowCursor : MonoBehaviour
                 realAngle = Mathf.Clamp(angle, -180, -180 - minAngle);
         }
 
-        // Если нажата левая кнопка мыши
         if (Input.GetMouseButtonDown(0))
         {
             targetHandLeftDistance = handLeftDistance * hitLeftDistanceFactor;
             leftHandCollider.enabled = true;
+            StartCoroutine(DisableColliderAfterTime(leftHandCollider, 1f)); // Disable after 1 second
         }
-        if (Input.GetMouseButtonUp(0))
-        {
-            targetHandLeftDistance = handLeftDistance;
-            leftHandCollider.enabled = false;
-        }
-
-        // Если нажата правая кнопка мыши
         if (Input.GetMouseButtonDown(1))
         {
             targetHandRightDistance = handRightDistance * hitRightDistanceFactor;
             rightHandCollider.enabled = true;
-        }
-        if (Input.GetMouseButtonUp(1))
-        {
-            targetHandRightDistance = handRightDistance;
-            rightHandCollider.enabled = false;
+            StartCoroutine(DisableColliderAfterTime(rightHandCollider, 1f)); // Disable after 1 second
         }
 
-        // Двигаем руки только если кнопки нажаты
+        // Movement of hands
         if (Input.GetMouseButton(0))
         {
             currentHandLeftDistance = Mathf.MoveTowards(currentHandLeftDistance, targetHandLeftDistance, hitSpeed * Time.deltaTime);
@@ -117,7 +103,7 @@ public class HandFollowCursor : MonoBehaviour
         }
         else
         {
-            handLeft.localPosition = defaultLeftHandPosition; // Возвращаем руку в исходное положение
+            handLeft.localPosition = defaultLeftHandPosition;
         }
 
         if (Input.GetMouseButton(1))
@@ -127,10 +113,9 @@ public class HandFollowCursor : MonoBehaviour
         }
         else
         {
-            handRight.localPosition = defaultRightHandPosition; // Возвращаем руку в исходное положение
+            handRight.localPosition = defaultRightHandPosition;
         }
 
-        // Поворот персонажа в зависимости от угла
         if (angle > 90)
             movement.TurnLeft();
         else if (angle < 90 && angle > 0)
@@ -140,5 +125,10 @@ public class HandFollowCursor : MonoBehaviour
         else if (angle > -90)
             movement.TurnRight();
     }
-}
 
+    private IEnumerator DisableColliderAfterTime(Collider collider, float time)
+    {
+        yield return new WaitForSeconds(time);
+        collider.enabled = false;
+    }
+}
