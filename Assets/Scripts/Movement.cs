@@ -19,9 +19,11 @@ public class Movement : MonoBehaviour
 
     private int _rotationCount = 0; // 0 - Back/ 1 - Left/ 2 - Front/ 3 - Right
     private bool _rotateLeft, _rotateRight, _rotateAllways = false;
-    [SerializeField] private GameObject _buttonQ;
-    [SerializeField] private GameObject _buttonE;
 
+    [SerializeField] private GameObject _buttonQ; // иконка Q
+    [SerializeField] private GameObject _buttonE; // иконка E
+
+    [SerializeField] private GameObject[] _arrTriggerZone = new GameObject [5]; // массив триггер зон
 
     void Start()
     {
@@ -75,7 +77,7 @@ public class Movement : MonoBehaviour
     {
         if (other.CompareTag("Rotation"))
         {
-            if (_rotationCount % 2 == 0)
+            if (other.gameObject == _arrTriggerZone[_rotationCount])
             {
                 _rotateLeft = true;
                 _buttonQ.SetActive(true);
