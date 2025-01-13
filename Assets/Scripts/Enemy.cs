@@ -8,11 +8,14 @@ public class Enemy : MonoBehaviour
     public float detectionRange = 10f;
     public int health = 30;
     public Camera mainCamera;
+    public float attackDamage = 5;
+    public float attackCooldown = 2f;
 
     private Transform target;
     private Rigidbody rb;
-    private Animator animator; // Reference to Animator
+    private Animator animator; 
     private bool isStunned = false;
+    private bool canAttack = true;
 
     public int headDamage = 15;
     public int bodyDamage = 10;
@@ -32,7 +35,7 @@ public class Enemy : MonoBehaviour
             rb.freezeRotation = true;
         }
 
-        animator = GetComponent<Animator>(); // Initialize animator
+        animator = GetComponentInChildren<Animator>();
 
         if (mainCamera == null)
         {
@@ -56,18 +59,37 @@ public class Enemy : MonoBehaviour
     }
     private void MoveTowardsPlayer()
     {
-        if (target != null) // Проверка на наличие цели
+        if (target != null)
         {
             float distanceToTarget = Vector3.Distance(transform.position, target.position);
-
             if (distanceToTarget <= detectionRange)
             {
-                Vector3 direction = (target.position - transform.position).normalized;
-                rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.z * moveSpeed);
+                PunchRadius punchRadius = target.GetComponent<PunchRadius>();
+                if (punchRadius != null)
+                {
+                    Vector3 direction = (target.position - transform.position).normalized;
+                    Vector3 destination = target.position - direction * (punchRadius.radius - 0.1f); // Оставляем небольшой зазор
+
+                    float distanceToDestination = Vector3.Distance(transform.position, destination);
+                    if (distanceToDestination > 0.1f)
+                    {
+                        rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.z * moveSpeed);
+                    }
+                    else
+                    {
+                        rb.velocity = Vector3.zero;
+                    }
+
+                    // Проверка, находится ли противник в радиусе удара
+                    if (punchRadius.IsEnemyInRange(transform.position) && canAttack)
+                    {
+                        StartCoroutine(AttackPlayer());
+                    }
+                }
             }
             else
             {
-                rb.velocity = Vector3.zero; // Остановка движения
+                rb.velocity = Vector3.zero;
             }
         }
     }
@@ -120,6 +142,31 @@ public class Enemy : MonoBehaviour
             Die();
         }
         
+    }
+    private IEnumerator AttackPlayer()
+    {
+        canAttack = false;
+
+        // Воспроизведение анимации атаки
+        animator.SetBool("Attack", true);
+
+        // Наносим урон игроку
+        PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.TakeDamage(attackDamage);
+            Debug.Log($"Противник атаковал игрока на {attackDamage} урона!");
+        }
+
+        // Ждем время анимации атаки (установите в зависимости от длины вашей анимации)
+        yield return new WaitForSeconds(attackCooldown);
+
+        // Остановка анимации атаки
+        animator.SetBool("Attack", false);
+
+        // Ждем время перезарядки перед следующей атакой
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
     }
 
     private void Die()
