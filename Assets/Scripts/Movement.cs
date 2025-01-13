@@ -23,13 +23,15 @@ public class Movement : MonoBehaviour
     [SerializeField] private GameObject _buttonQ; // иконка Q
     [SerializeField] private GameObject _buttonE; // иконка E
 
-    [SerializeField] private GameObject[] _arrTriggerZone = new GameObject [5]; // массив триггер зон
-
+    [SerializeField] private GameObject[] _arrTriggerZone = new GameObject[5]; // массив триггер зон
+    [SerializeField] private GameObject[] _arrWallsTypeOne = new GameObject[4];
+    [SerializeField] private GameObject[] _arrWallsTypeTwo = new GameObject[4];
     void Start()
     {
         cc = GetComponent<CharacterController>();
         _buttonE.SetActive(false);
         _buttonQ.SetActive(false);
+        SwitchMethod(_arrWallsTypeOne, false);
     }
 
     // Update is called once per frame
@@ -39,12 +41,14 @@ public class Movement : MonoBehaviour
         yInput = Input.GetAxis("Vertical");
 
         cc.Move(transform.forward * yInput * Time.deltaTime * speed + transform.right * xInput * Time.deltaTime * speed);
-        if (Input.GetKeyDown(KeyCode.Q) && (_rotateLeft|| _rotateAllways))
+        if (Input.GetKeyDown(KeyCode.Q) && (_rotateLeft || _rotateAllways))
         {
             rotateY += 90;
             _rotationCount++;
             _rotateLeft = false;
             _buttonQ.SetActive(false);
+            SwitchMethod (_arrWallsTypeTwo, false);
+            SwitchMethod (_arrWallsTypeOne, true);
         }
         if (Input.GetKeyDown(KeyCode.E) && (_rotateRight || _rotateAllways))
         {
@@ -52,6 +56,8 @@ public class Movement : MonoBehaviour
             _rotationCount--;
             _rotateRight = false;
             _buttonE.SetActive(false);
+            SwitchMethod(_arrWallsTypeTwo, true);
+            SwitchMethod(_arrWallsTypeOne, false);
         }
         currentRotateY = Mathf.Lerp(currentRotateY, rotateY, rotationSpeed * 0.001f);
         transform.rotation = Quaternion.Euler(0, currentRotateY, 0);
@@ -75,7 +81,7 @@ public class Movement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Rotation"))
+        if (other.CompareTag("Rotation") && !_rotateAllways)
         {
             if (other.gameObject == _arrTriggerZone[_rotationCount])
             {
@@ -83,10 +89,10 @@ public class Movement : MonoBehaviour
                 _buttonQ.SetActive(true);
             }
             else
-            { 
+            {
                 _rotateRight = true;
                 _buttonE.SetActive(true);
-            }                        
+            }
         }
         if (other.CompareTag("Free Rotation"))
             _rotateAllways = true;
@@ -97,6 +103,8 @@ public class Movement : MonoBehaviour
         {
             _buttonE.SetActive(false);
             _buttonQ.SetActive(false);
+            _rotateLeft = false;
+            _rotateRight = false;
         }
     }
 
@@ -110,7 +118,13 @@ public class Movement : MonoBehaviour
         lastDir = Direction.Right;
     }
 
-
+    private void SwitchMethod(GameObject[] arrWalls, bool turnOn)
+    {
+        for (int i = 0; i < arrWalls.Length; i++)
+        {
+            arrWalls[i].SetActive(turnOn);
+        }
+    }
 }
 
 public enum Direction
