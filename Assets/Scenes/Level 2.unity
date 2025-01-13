@@ -223,6 +223,12 @@ MonoBehaviour:
   lastDir: 1
   _buttonQ: {fileID: 339815168}
   _buttonE: {fileID: 913375877}
+  _arrTriggerZone:
+  - {fileID: 1935962532}
+  - {fileID: 251171985}
+  - {fileID: 760284107}
+  - {fileID: 319442437}
+  - {fileID: 235830767}
 --- !u!143 &67523640
 CharacterController:
   m_ObjectHideFlags: 0
