@@ -57,6 +57,7 @@ public class Enemy : MonoBehaviour
         if (!isStunned) // Движение только если не в состоянии "стан"
         {
             MoveTowardsPlayer();
+            animator.SetBool("walkEnemy", true);
         }
 
         FaceCamera();
@@ -128,6 +129,7 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator StunCoroutine(float duration)
     {
+        animator.SetBool("walkEnemy", false);
         isStunned = true; // Freeze the enemy
         rb.velocity = Vector3.zero; // Stop movement
         yield return new WaitForSeconds(duration); // Wait for the stun duration

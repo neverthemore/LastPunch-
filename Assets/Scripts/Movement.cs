@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.U2D.Sprites;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -28,13 +29,14 @@ public class Movement : MonoBehaviour
     [SerializeField] private GameObject[] _arrWallsTypeTwo = new GameObject[4];
 
     private PlayerHealth playerHealth;
+    private Animator animator;
     void Start()
     {
         cc = GetComponent<CharacterController>();
         _buttonE.SetActive(false);
         _buttonQ.SetActive(false);
         SwitchMethod(_arrWallsTypeOne, false);
-
+        animator = GetComponentInChildren<Animator>();
         playerHealth = GetComponent<PlayerHealth>();
     }
 
@@ -42,9 +44,19 @@ public class Movement : MonoBehaviour
     void Update()
     {
         if (playerHealth != null && !playerHealth.isStunned)
-        {
+        {     
+        
             xInput = Input.GetAxis("Horizontal");
             yInput = Input.GetAxis("Vertical");
+            
+        }
+        if (xInput != 0 || yInput != 0)
+        {
+            animator.SetBool("Walk", true);
+        }
+        else
+        {
+            animator.SetBool("Walk", false);
         }
 
         cc.Move(transform.forward * yInput * Time.deltaTime * speed + transform.right * xInput * Time.deltaTime * speed);
@@ -74,6 +86,18 @@ public class Movement : MonoBehaviour
 
         if (lastDir == Direction.Right) skin.forward = dir;
         else skin.forward = -dir;
+        
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            speed = speed * 2;
+            animator.SetBool("Run", true);
+        }
+        
+        if (Input.GetKeyUp(KeyCode.LeftShift)) 
+        {
+            speed = speed / 2;
+            animator.SetBool("Run", false);
+        }
 
 
     }
