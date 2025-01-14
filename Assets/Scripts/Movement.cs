@@ -26,19 +26,26 @@ public class Movement : MonoBehaviour
     [SerializeField] private GameObject[] _arrTriggerZone = new GameObject[5]; // массив триггер зон
     [SerializeField] private GameObject[] _arrWallsTypeOne = new GameObject[4];
     [SerializeField] private GameObject[] _arrWallsTypeTwo = new GameObject[4];
+
+    private PlayerHealth playerHealth;
     void Start()
     {
         cc = GetComponent<CharacterController>();
         _buttonE.SetActive(false);
         _buttonQ.SetActive(false);
         SwitchMethod(_arrWallsTypeOne, false);
+
+        playerHealth = GetComponent<PlayerHealth>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        xInput = Input.GetAxis("Horizontal");
-        yInput = Input.GetAxis("Vertical");
+        if (playerHealth != null && !playerHealth.isStunned)
+        {
+            xInput = Input.GetAxis("Horizontal");
+            yInput = Input.GetAxis("Vertical");
+        }
 
         cc.Move(transform.forward * yInput * Time.deltaTime * speed + transform.right * xInput * Time.deltaTime * speed);
         if (Input.GetKeyDown(KeyCode.Q) && (_rotateLeft || _rotateAllways))
@@ -68,14 +75,6 @@ public class Movement : MonoBehaviour
         if (lastDir == Direction.Right) skin.forward = dir;
         else skin.forward = -dir;
 
-        //if(xInput < 0 && lastDir == Direction.Right)
-        //{
-        //    lastDir = Direction.Left;
-        //}
-        //else if(xInput > 0 && lastDir == Direction.Left)
-        //{
-        //    lastDir = Direction.Right;
-        //}
 
     }
 

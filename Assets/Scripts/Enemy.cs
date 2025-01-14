@@ -11,6 +11,10 @@ public class Enemy : MonoBehaviour
     public float attackDamage = 5;
     public float attackCooldown = 2f;
 
+    public float pushForce = 5f;
+    public float pushDuration = 2f;
+     public float stunDuration = 2f;
+
     private Transform target;
     private Rigidbody rb;
     private Animator animator; 
@@ -57,6 +61,17 @@ public class Enemy : MonoBehaviour
 
         FaceCamera();
     }
+    public void PushBack(Vector3 direction)
+    {
+        rb.AddForce(direction.normalized * pushForce, ForceMode.Impulse);
+        StartCoroutine(StopAfterPush(pushDuration));
+    }
+    private IEnumerator StopAfterPush(float pushDuration)
+    {
+        yield return new WaitForSeconds(pushDuration); // Wait for the specified duration
+        rb.velocity = Vector3.zero; // Stop the enemy's movement
+    }
+
     private void MoveTowardsPlayer()
     {
         if (target != null)
@@ -147,25 +162,20 @@ public class Enemy : MonoBehaviour
     {
         canAttack = false;
 
-        // Воспроизведение анимации атаки
+        // Запуск анимации атаки
         animator.SetBool("Attack", true);
 
-        // Наносим урон игроку
         PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
             playerHealth.TakeDamage(attackDamage);
-            Debug.Log($"Противник атаковал игрока на {attackDamage} урона!");
+            playerHealth.Stun(stunDuration); // Оглушаем игрока
+            Debug.Log($"Атаковал игрока на {attackDamage} урона и оглушил его!");
         }
 
-        // Ждем время анимации атаки (установите в зависимости от длины вашей анимации)
         yield return new WaitForSeconds(attackCooldown);
 
-        // Остановка анимации атаки
         animator.SetBool("Attack", false);
-
-        // Ждем время перезарядки перед следующей атакой
-        yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
     }
 

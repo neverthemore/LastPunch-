@@ -16,6 +16,8 @@ public class Hands : MonoBehaviour
             {
                 int attackDamage = 0;
                 HitType hitType = HitType.Body; // Default to body hit
+                Vector3 pushDirection = (other.transform.position - transform.position).normalized; // Calculate the push direction
+
 
                 // Check if the left hand collider is enabled
                 if (leftHandCollider.enabled)
@@ -73,6 +75,7 @@ public class Hands : MonoBehaviour
                 if (attackDamage > 0)
                 {
                     enemy.TakeDamage(attackDamage, hitType);
+                    enemy.PushBack(pushDirection);
                     Debug.Log($"Dealt {attackDamage} damage to {hitType}!");                  
                 }
                 else
