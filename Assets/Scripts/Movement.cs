@@ -98,8 +98,6 @@ public class Movement : MonoBehaviour
             speed = speed / 2;
             animator.SetBool("Run", false);
         }
-
-
     }
 
     private void OnTriggerEnter(Collider other)
