@@ -20,6 +20,7 @@ public class Movement : MonoBehaviour
 
     private int _rotationCount = 0; // 0 - Back/ 1 - Left/ 2 - Front/ 3 - Right
     private bool _rotateLeft, _rotateRight, _rotateAllways = false;
+    private bool _cutscene = false;
 
     [SerializeField] private GameObject _buttonQ; // иконка Q
     [SerializeField] private GameObject _buttonE; // иконка E
@@ -27,6 +28,9 @@ public class Movement : MonoBehaviour
     [SerializeField] private GameObject[] _arrTriggerZone = new GameObject[5]; // массив триггер зон
     [SerializeField] private GameObject[] _arrWallsTypeOne = new GameObject[4];
     [SerializeField] private GameObject[] _arrWallsTypeTwo = new GameObject[4];
+
+    [SerializeField] private Transform[] _waypoints;
+    [SerializeField] private int _currentWaypoint = 0;
 
     private PlayerHealth playerHealth;
     private Animator animator;
@@ -38,25 +42,49 @@ public class Movement : MonoBehaviour
         SwitchMethod(_arrWallsTypeOne, false);
         animator = GetComponentInChildren<Animator>();
         playerHealth = GetComponent<PlayerHealth>();
+        if (_arrWallsTypeOne.Length == 0 && _arrWallsTypeTwo.Length == 0 && _arrTriggerZone.Length == 0)
+            _cutscene = true;
+        Debug.Log(_cutscene);
     }
 
     // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        if (playerHealth != null && !playerHealth.isStunned)
-        {
-
-            xInput = Input.GetAxis("Horizontal");
-            yInput = Input.GetAxis("Vertical");
-
-        }
-        if (xInput != 0 || yInput != 0)
+        if (_cutscene)
         {
             animator.SetBool("Walk", true);
+            if (_currentWaypoint != _waypoints.Length - 1)
+            {
+                if (transform.localPosition == _waypoints[_currentWaypoint].position)
+                    _currentWaypoint++;
+                transform.localPosition = Vector3.MoveTowards(transform.localPosition, _waypoints[_currentWaypoint].position, speed * Time.fixedDeltaTime);
+            }
+            else
+            {
+                _cutscene = false;
+                animator.SetBool("Walk", false);
+            }
         }
-        else
+    }
+    void Update()
+    {
+        if (!_cutscene)
         {
-            animator.SetBool("Walk", false);
+            if (playerHealth != null && !playerHealth.isStunned)
+            {
+
+                xInput = Input.GetAxis("Horizontal");
+                yInput = Input.GetAxis("Vertical");
+
+            }
+            if (xInput != 0 || yInput != 0)
+            {
+                animator.SetBool("Walk", true);
+            }
+            else
+            {
+                animator.SetBool("Walk", false);
+            }
         }
 
         cc.Move(transform.forward * yInput * Time.deltaTime * speed + transform.right * xInput * Time.deltaTime * speed);
@@ -66,7 +94,7 @@ public class Movement : MonoBehaviour
             _rotationCount++;
             _rotateLeft = false;
             _buttonQ.SetActive(false);
-            
+
         }
         if (Input.GetKeyDown(KeyCode.E) && (_rotateRight || _rotateAllways))
         {

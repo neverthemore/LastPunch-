@@ -159,6 +159,10 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int attackDamage, HitType hitType)
     {
         health -= attackDamage;
+        if(door)
+        {
+            StartCoroutine(DoorShake());
+        }
         Debug.Log($"Enemy took {attackDamage} damage from {hitType}! Remaining health: {health}");
 
         if (hitType == HitType.Head)
@@ -201,28 +205,39 @@ public class Enemy : MonoBehaviour
         attackTimer = attackCooldown;
 
         // ∆дем окончани€ анимации атаки 
-        yield return new WaitForSeconds(attackCooldown); 
+        yield return new WaitForSeconds(attackCooldown);
 
         // ќстанавливаем анимацию атаки
         animator.SetBool("Attack", false);
         isAttacking = false; // —брасываем состо€ние атаки
         canAttack = true;
     }
+    private IEnumerator DoorShake()
+    {
+        float shake = 2f;
+        float time = 0.0625f;
+
+        gameObject.transform.rotation = Quaternion.Euler(-shake, shake, -shake);
+        yield return new WaitForSeconds(time);
+        gameObject.transform.rotation = Quaternion.Euler(shake, -shake, shake);
+        yield return new WaitForSeconds(time);
+        gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+    }
 
     private void Die()
-        {
-            Debug.Log("Enemy died!");
-            // Optionally, play a death animation here
-            Destroy(gameObject);
-        }
+    {
+        Debug.Log("Enemy died!");
+        // Optionally, play a death animation here
+        Destroy(gameObject);
+    }
 
 
 
-        internal void Setsortinglayer(string v)
-        {
-            throw new System.NotImplementedException();
-        }
-    
+    internal void Setsortinglayer(string v)
+    {
+        throw new System.NotImplementedException();
+    }
+
 
     public enum HitType
     {
