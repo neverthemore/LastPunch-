@@ -26,6 +26,9 @@ public class Enemy : MonoBehaviour
     public int bodyDamage = 10;
     public int legDamage = 5;
 
+    private float attackTimer = 0;
+    private bool isAttacking = false;
+
     void Start()
     {
         if (gameObject.CompareTag("Door"))
@@ -68,6 +71,7 @@ public class Enemy : MonoBehaviour
             }
 
             FaceCamera();
+            attackTimer -= Time.deltaTime;
         }
     }
     public void PushBack(Vector3 direction)
@@ -92,28 +96,35 @@ public class Enemy : MonoBehaviour
                 if (punchRadius != null)
                 {
                     Vector3 direction = (target.position - transform.position).normalized;
-                    Vector3 destination = target.position - direction * (punchRadius.radius - 0.1f); // Оставляем небольшой зазор
+                    Vector3 destination = target.position - direction * (punchRadius.radius - 0.1f); // Устанавливаем позицию
 
                     float distanceToDestination = Vector3.Distance(transform.position, destination);
                     if (distanceToDestination > 0.1f)
                     {
                         rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.z * moveSpeed);
+                        animator.SetBool("walkEnemy", true); // Запускаем анимацию ходьбы
                     }
                     else
                     {
                         rb.velocity = Vector3.zero;
+                        animator.SetBool("walkEnemy", false); // Останавливаем анимацию ходьбы
                     }
 
-                    // Проверка, находится ли противник в радиусе удара
-                    if (punchRadius.IsEnemyInRange(transform.position) && canAttack)
+                    // Проверка на возможность атаки
+                    if (punchRadius.IsEnemyInRange(transform.position) && canAttack && !isAttacking)
                     {
-                        StartCoroutine(AttackPlayer());
+                        // Если таймер атаки истек, начинаем атаку
+                        if (attackTimer <= 0f)
+                        {
+                            StartCoroutine(AttackPlayer());
+                        }
                     }
                 }
             }
             else
             {
                 rb.velocity = Vector3.zero;
+                animator.SetBool("walkEnemy", false); // Останавливаем анимацию, если не в зоне атаки
             }
         }
     }
@@ -138,10 +149,12 @@ public class Enemy : MonoBehaviour
     private IEnumerator StunCoroutine(float duration)
     {
         animator.SetBool("walkEnemy", false);
+        animator.SetBool("IsStunningEnemy", true);
         isStunned = true; // Freeze the enemy
         rb.velocity = Vector3.zero; // Stop movement
         yield return new WaitForSeconds(duration); // Wait for the stun duration
         isStunned = false; // Unfreeze the enemy
+        animator.SetBool("IsStunningEnemy", false);
     }
     public void TakeDamage(int attackDamage, HitType hitType)
     {
@@ -171,6 +184,7 @@ public class Enemy : MonoBehaviour
     private IEnumerator AttackPlayer()
     {
         canAttack = false;
+        isAttacking = true; // Устанавливаем состояние атаки
 
         // Запуск анимации атаки
         animator.SetBool("Attack", true);
@@ -180,33 +194,40 @@ public class Enemy : MonoBehaviour
         {
             playerHealth.TakeDamage(attackDamage);
             playerHealth.Stun(stunDuration); // Оглушаем игрока
-            Debug.Log($"Атаковал игрока на {attackDamage} урона и оглушил его!");
+            Debug.Log($"Атакован игрок на {attackDamage} урона и оглушен!");
         }
 
-        yield return new WaitForSeconds(attackCooldown);
+        // Устанавливаем таймер атаки
+        attackTimer = attackCooldown;
 
+        // Ждем окончания анимации атаки 
+        yield return new WaitForSeconds(attackCooldown); 
+
+        // Останавливаем анимацию атаки
         animator.SetBool("Attack", false);
+        isAttacking = false; // Сбрасываем состояние атаки
         canAttack = true;
     }
 
     private void Die()
+        {
+            Debug.Log("Enemy died!");
+            // Optionally, play a death animation here
+            Destroy(gameObject);
+        }
+
+
+
+        internal void Setsortinglayer(string v)
+        {
+            throw new System.NotImplementedException();
+        }
+    
+
+    public enum HitType
     {
-        Debug.Log("Enemy died!");
-        // Optionally, play a death animation here
-        Destroy(gameObject);
+        Head,
+        Body,
+        Legs
     }
-
-
-
-    internal void Setsortinglayer(string v)
-    {
-        throw new System.NotImplementedException();
-    }
-}
-
-public enum HitType
-{
-    Head,
-    Body,
-    Legs
 }
