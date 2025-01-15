@@ -45,11 +45,11 @@ public class Movement : MonoBehaviour
     void Update()
     {
         if (playerHealth != null && !playerHealth.isStunned)
-        {     
-        
+        {
+
             xInput = Input.GetAxis("Horizontal");
             yInput = Input.GetAxis("Vertical");
-            
+
         }
         if (xInput != 0 || yInput != 0)
         {
@@ -67,8 +67,7 @@ public class Movement : MonoBehaviour
             _rotationCount++;
             _rotateLeft = false;
             _buttonQ.SetActive(false);
-            SwitchMethod (_arrWallsTypeTwo, false);
-            SwitchMethod (_arrWallsTypeOne, true);
+            
         }
         if (Input.GetKeyDown(KeyCode.E) && (_rotateRight || _rotateAllways))
         {
@@ -76,9 +75,19 @@ public class Movement : MonoBehaviour
             _rotationCount--;
             _rotateRight = false;
             _buttonE.SetActive(false);
+        }
+
+        if (_rotationCount % 2 == 0)
+        {
             SwitchMethod(_arrWallsTypeTwo, true);
             SwitchMethod(_arrWallsTypeOne, false);
         }
+        else
+        {
+            SwitchMethod(_arrWallsTypeTwo, false);
+            SwitchMethod(_arrWallsTypeOne, true);
+        }
+
         currentRotateY = Mathf.Lerp(currentRotateY, rotateY, rotationSpeed * 0.001f);
         transform.rotation = Quaternion.Euler(0, currentRotateY, 0);
         Vector3 dir = (transform.position - cam.transform.position).normalized;
@@ -87,14 +96,14 @@ public class Movement : MonoBehaviour
 
         if (lastDir == Direction.Right) skin.forward = dir;
         else skin.forward = -dir;
-        
+
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             speed = speed * 2;
             animator.SetBool("Run", true);
         }
-        
-        if (Input.GetKeyUp(KeyCode.LeftShift)) 
+
+        if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             speed = speed / 2;
             animator.SetBool("Run", false);
