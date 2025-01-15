@@ -12,6 +12,7 @@ public class Movement : MonoBehaviour
     float xInput;
     float yInput;
 
+    [SerializeField] CutSceneLogic CutSceneLogic;
     CharacterController cc;
     float rotateY = 0;
     float currentRotateY = 0;
@@ -102,6 +103,8 @@ public class Movement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Broken Door"))
+            CutSceneLogic.StatusBrokenTrigger(true);
         if (other.CompareTag("Rotation") && !_rotateAllways)
         {
             if (other.gameObject == _arrTriggerZone[_rotationCount])
@@ -120,6 +123,8 @@ public class Movement : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
+        if (other.CompareTag("Broken Door"))
+            CutSceneLogic.StatusBrokenTrigger(false);
         if (other.CompareTag("Rotation"))
         {
             _buttonE.SetActive(false);

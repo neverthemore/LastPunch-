@@ -13,13 +13,14 @@ public class Enemy : MonoBehaviour
 
     public float pushForce = 5f;
     public float pushDuration = 2f;
-     public float stunDuration = 2f;
+    public float stunDuration = 2f;
 
     private Transform target;
     private Rigidbody rb;
-    private Animator animator; 
+    private Animator animator;
     private bool isStunned = false;
     private bool canAttack = true;
+    private bool door = false;
 
     public int headDamage = 15;
     public int bodyDamage = 10;
@@ -27,6 +28,10 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        if (gameObject.CompareTag("Door"))
+            door = true;
+        else door = false;
+
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
         {
@@ -54,13 +59,16 @@ public class Enemy : MonoBehaviour
             Die();
         }
 
-        if (!isStunned) // Движение только если не в состоянии "стан"
+        if (!door)
         {
-            MoveTowardsPlayer();
-            animator.SetBool("walkEnemy", true);
-        }
+            if (!isStunned) // Движение только если не в состоянии "стан"
+            {
+                MoveTowardsPlayer();
+                animator.SetBool("walkEnemy", true);
+            }
 
-        FaceCamera();
+            FaceCamera();
+        }
     }
     public void PushBack(Vector3 direction)
     {
@@ -75,7 +83,7 @@ public class Enemy : MonoBehaviour
 
     private void MoveTowardsPlayer()
     {
-        if (target != null)
+        if (target != null && !door)
         {
             float distanceToTarget = Vector3.Distance(transform.position, target.position);
             if (distanceToTarget <= detectionRange)
@@ -124,7 +132,7 @@ public class Enemy : MonoBehaviour
     }
     public void Stun(float duration)
     {
-        StartCoroutine(StunCoroutine(duration));
+        if (!door) StartCoroutine(StunCoroutine(duration));
     }
 
     private IEnumerator StunCoroutine(float duration)
@@ -158,7 +166,7 @@ public class Enemy : MonoBehaviour
         {
             Die();
         }
-        
+
     }
     private IEnumerator AttackPlayer()
     {
@@ -188,7 +196,7 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-   
+
 
     internal void Setsortinglayer(string v)
     {

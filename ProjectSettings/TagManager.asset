@@ -11,6 +11,8 @@ TagManager:
   - Legs
   - Rotation
   - Free Rotation
+  - Door
+  - Broken Door
   layers:
   - Default
   - TransparentFX
