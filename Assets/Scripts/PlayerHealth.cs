@@ -9,7 +9,6 @@ public class PlayerHealth : MonoBehaviour
     public float stunDuration = 2f;
     private bool isBlocking = false;
     private Animator animator;
-    private CharacterController cc;
 
     public float stamina = 100f; // Максимальная выносливость
     public float staminaCostPerBlock = 20f; // Стоимость блока в выносливости
@@ -22,7 +21,6 @@ public class PlayerHealth : MonoBehaviour
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
-        cc = GetComponent<CharacterController>();
         UpdateStaminaUI();
         healthSlider.maxValue = health; 
         healthSlider.value = health;
@@ -71,11 +69,10 @@ public class PlayerHealth : MonoBehaviour
         if (!isStunned) // Не позволяем повторное оглушение
         {
             isStunned = true; // Устанавливаем состояние оглушения
-            animator.SetBool("IsStunned", true); // Запускаем анимацию оглушения
+            animator.SetBool("IsStunned", true);
+            animator.SetBool("Walk", false);
             Debug.Log("Игрок оглушен!");
-
-            // Отключение управления игроком
-            cc.enabled = false;
+        
             StartCoroutine(HandleStun(duration));
         }
     }
@@ -109,10 +106,19 @@ public class PlayerHealth : MonoBehaviour
     }
     private IEnumerator HandleStun(float duration)
     {
+        Movement movement = GetComponent<Movement>();
+        if (movement != null)
+        {
+            movement.enabled = false; // Отключаем скрипт движения
+        }
+
         yield return new WaitForSeconds(duration); // Ждем окончания оглушения
         animator.SetBool("IsStunned", false); // Останавливаем анимацию оглушения
         isStunned = false;
-        cc.enabled = true;
+        if (movement != null)
+        {
+            movement.enabled = true; // Включаем управление снова
+        }
         Debug.Log("Игрок больше не оглушен.");
     }
 

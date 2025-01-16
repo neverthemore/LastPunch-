@@ -39,6 +39,7 @@ public class HandFollowCursor : MonoBehaviour
     public Collider leftHandCollider;
     public Collider rightHandCollider;
 
+    private PlayerHealth playerHealth;
     Movement movement;
 
     private Vector3 defaultLeftHandPosition;
@@ -46,6 +47,7 @@ public class HandFollowCursor : MonoBehaviour
 
     void Start()
     {
+        playerHealth = GetComponent<PlayerHealth>();
         movement = GetComponent<Movement>();
 
         handLeftDistance = Vector3.Distance(transform.position, handLeft.position);
@@ -64,56 +66,59 @@ public class HandFollowCursor : MonoBehaviour
 
     void Update()
     {
-        mousePosition = Input.mousePosition;
-        mousePosition.z = Vector3.Distance(cam.transform.position, transform.position);
-        mousePositionInWorld = camBrain.ScreenToWorldPoint(mousePosition);
+        if (!playerHealth.isStunned)
+        {
+            mousePosition = Input.mousePosition;
+            mousePosition.z = Vector3.Distance(cam.transform.position, transform.position);
+            mousePositionInWorld = camBrain.ScreenToWorldPoint(mousePosition);
 
-        Vector3 dir = (mousePositionInWorld - transform.position).normalized;
-        angle = Vector3.SignedAngle(transform.right, dir, transform.forward);
-        if (movement.lastDir == Direction.Right)
-        {
-            realAngle = Mathf.Clamp(angle, minAngle, maxAngle);
-        }
-        else
-        {
-            if (angle > 0)
-                realAngle = Mathf.Clamp(angle, 180 - maxAngle, 180);
+            Vector3 dir = (mousePositionInWorld - transform.position).normalized;
+            angle = Vector3.SignedAngle(transform.right, dir, transform.forward);
+            if (movement.lastDir == Direction.Right)
+            {
+                realAngle = Mathf.Clamp(angle, minAngle, maxAngle);
+            }
             else
-                realAngle = Mathf.Clamp(angle, -180, -180 - minAngle);
-        }
+            {
+                if (angle > 0)
+                    realAngle = Mathf.Clamp(angle, 180 - maxAngle, 180);
+                else
+                    realAngle = Mathf.Clamp(angle, -180, -180 - minAngle);
+            }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            targetHandLeftDistance = handLeftDistance * hitLeftDistanceFactor;
-            leftHandCollider.enabled = true;
-            StartCoroutine(DisableColliderAfterTime(leftHandCollider, 1f)); // Disable after 1 second
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            targetHandRightDistance = handRightDistance * hitRightDistanceFactor;
-            rightHandCollider.enabled = true;
-            StartCoroutine(DisableColliderAfterTime(rightHandCollider, 1f)); // Disable after 1 second
-        }
+            if (Input.GetMouseButtonDown(0))
+            {
+                targetHandLeftDistance = handLeftDistance * hitLeftDistanceFactor;
+                leftHandCollider.enabled = true;
+                StartCoroutine(DisableColliderAfterTime(leftHandCollider, 1f)); // Disable after 1 second
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                targetHandRightDistance = handRightDistance * hitRightDistanceFactor;
+                rightHandCollider.enabled = true;
+                StartCoroutine(DisableColliderAfterTime(rightHandCollider, 1f)); // Disable after 1 second
+            }
 
-        // Movement of hands
-        if (Input.GetMouseButton(0))
-        {
-            currentHandLeftDistance = Mathf.MoveTowards(currentHandLeftDistance, targetHandLeftDistance, hitSpeed * Time.deltaTime);
-            handLeft.position = transform.position + Quaternion.AngleAxis(realAngle, transform.forward) * transform.right * currentHandLeftDistance;
-        }
-        else
-        {
-            handLeft.localPosition = defaultLeftHandPosition;
-        }
+            // Movement of hands
+            if (Input.GetMouseButton(0))
+            {
+                currentHandLeftDistance = Mathf.MoveTowards(currentHandLeftDistance, targetHandLeftDistance, hitSpeed * Time.deltaTime);
+                handLeft.position = transform.position + Quaternion.AngleAxis(realAngle, transform.forward) * transform.right * currentHandLeftDistance;
+            }
+            else
+            {
+                handLeft.localPosition = defaultLeftHandPosition;
+            }
 
-        if (Input.GetMouseButton(1))
-        {
-            currentHandRightDistance = Mathf.MoveTowards(currentHandRightDistance, targetHandRightDistance, hitSpeed * Time.deltaTime);
-            handRight.position = transform.position + Quaternion.AngleAxis(realAngle, transform.forward) * transform.right * currentHandRightDistance;
-        }
-        else
-        {
-            handRight.localPosition = defaultRightHandPosition;
+            if (Input.GetMouseButton(1))
+            {
+                currentHandRightDistance = Mathf.MoveTowards(currentHandRightDistance, targetHandRightDistance, hitSpeed * Time.deltaTime);
+                handRight.position = transform.position + Quaternion.AngleAxis(realAngle, transform.forward) * transform.right * currentHandRightDistance;
+            }
+            else
+            {
+                handRight.localPosition = defaultRightHandPosition;
+            }
         }
 
         if (angle > 90)

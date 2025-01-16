@@ -88,6 +88,7 @@ public class Movement : MonoBehaviour
         }
 
         cc.Move(transform.forward * yInput * Time.deltaTime * speed + transform.right * xInput * Time.deltaTime * speed);
+      
         if (Input.GetKeyDown(KeyCode.Q) && (_rotateLeft || _rotateAllways))
         {
             rotateY += 90;
