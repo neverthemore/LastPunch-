@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.SceneManagement;
+using System.Runtime.InteropServices;
 
 public class Spawner : MonoBehaviour
 {
@@ -27,8 +29,24 @@ public class Spawner : MonoBehaviour
     {
         // Удаляем из списка уничтоженных врагов
         activeEnemies.RemoveAll(enemy => enemy == null);
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (activeEnemies.Count < maxEnemies)
+            {
+                SpawnEnemy();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ChangeScene();
+        } 
+            
     }
 
+    public void ChangeScene()
+    {
+        SceneManager.LoadScene("Cutscenes");
+    }
     IEnumerator SpawnEnemyRoutine()
     {
         while (true)
@@ -40,6 +58,17 @@ public class Spawner : MonoBehaviour
             yield return new WaitForSeconds(spawnDelay);
         }
     }
+
+    void SpawnEnemyButton()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+            Debug.Log("жопа");
+        {
+            SpawnEnemy();
+        }
+        
+    }
+    
 
     void SpawnEnemy()
     {

@@ -77,6 +77,7 @@ public class Enemy : MonoBehaviour
     public void PushBack(Vector3 direction)
     {
         direction.y = 0; // Устанавливаем Y в 0, чтобы избежать подъема
+        direction.z = 0;
         direction.Normalize();
 
         Rigidbody rb = GetComponent<Rigidbody>();
