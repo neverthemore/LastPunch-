@@ -12,7 +12,7 @@ public class PlayerHealth : MonoBehaviour
     private Animator animator;
 
     public float stamina = 100f; // Максимальная выносливость
-    public float staminaCostPerBlock = 20f; // Стоимость блока в выносливости
+    public float staminaCostPerSecond = 20f; // Стоимость блока в выносливости
     public float staminaRecoveryRate = 5f; // Восстановление выносливости в секунду
     private bool isRecoveringStamina = false; // Отслеживание состояния восстановления выносливости
 
@@ -42,9 +42,13 @@ public class PlayerHealth : MonoBehaviour
          healthSlider.value = health;
 
         // Проверка нажатия пробела
-        if (Input.GetKeyDown(KeyCode.Space) && !isBlocking)
+        if (Input.GetKey(KeyCode.Space) && !isStunned && stamina > 0)
         {
             Block();
+        }
+        else
+        {
+            EndBlock();
         }
     }
     public void TakeDamage(float damage)
@@ -67,7 +71,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void Stun(float duration)
     {
-        if (!isStunned) // Не позволяем повторное оглушение
+        if (!isStunned && !isBlocking) // Не позволяем повторное оглушение
         {
             isStunned = true; // Устанавливаем состояние оглушения
             animator.SetBool("IsStunned", true);
@@ -79,31 +83,34 @@ public class PlayerHealth : MonoBehaviour
     }
     private void Block()
     {
-        if (stamina >= staminaCostPerBlock) // Проверка, достаточно ли выносливости для блока
+        if (!isBlocking)
         {
-            animator.SetBool("IsBlocking", true);
-            isBlocking = true; // Устанавливаем состояние блока  
-            stamina -= staminaCostPerBlock; // Снижаем выносливость
-            UpdateStaminaUI();
-            Debug.Log("Игрок заблокировал удар!");
+            isBlocking = true; // Устанавливаем состояние блока
+            animator.SetBool("IsBlocking", true); // Проигрываем анимацию блока
+        }
 
-            // Время блока, например, 1 секунда
-            StartCoroutine(EndBlock(blockDuration));
-        }
-        else
+        // Потребляем выносливость
+        stamina -= staminaCostPerSecond * Time.deltaTime;
+        if (stamina < 0)
         {
-            Debug.Log("Недостаточно выносливости для блока!");
+            stamina = 0;
         }
+        if (stamina == 0)
+        {
+            EndBlock();
+        }
+        UpdateStaminaUI();
     }
-    private IEnumerator EndBlock(float duration)
+    private void EndBlock()
     {
-        yield return new WaitForSeconds(duration); // Ждем окончания блока
-        isBlocking = false; // Сбрасываем состояние блока
-        animator.SetBool("IsBlocking", false); // Останавливаем анимацию блока
-        Debug.Log("Игрок больше не блокирует.");
+        if (isBlocking)
+        {
+            isBlocking = false; // Сбрасываем состояние блока
+            animator.SetBool("IsBlocking", false); // Останавливаем анимацию блока
 
-        // Начинаем восстановление выносливости
-        isRecoveringStamina = true;
+            // Начинаем восстановление выносливости
+            isRecoveringStamina = true;
+        }
     }
     private IEnumerator HandleStun(float duration)
     {
