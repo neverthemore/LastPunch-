@@ -508,7 +508,7 @@ MonoBehaviour:
   isStunned: 0
   stunDuration: 2
   blockDuration: 1.5
-  stamina: 100000
+  stamina: 100
   staminaCostPerSecond: 20
   staminaRecoveryRate: 5
   healthSlider: {fileID: 1322421339}

@@ -45,7 +45,7 @@ public class Spawner : MonoBehaviour
 
     public void ChangeScene()
     {
-        SceneManager.LoadScene("Cutscenes");
+        SceneManager.LoadScene("Level 2");
     }
     IEnumerator SpawnEnemyRoutine()
     {
