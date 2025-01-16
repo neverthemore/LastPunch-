@@ -7,6 +7,7 @@ public class PlayerHealth : MonoBehaviour
     public int health = 100;
     public bool isStunned = false; 
     public float stunDuration = 2f;
+    public float blockDuration = 1.5f;
     private bool isBlocking = false;
     private Animator animator;
 
@@ -80,14 +81,14 @@ public class PlayerHealth : MonoBehaviour
     {
         if (stamina >= staminaCostPerBlock) // Проверка, достаточно ли выносливости для блока
         {
-            isBlocking = true; // Устанавливаем состояние блока
-            animator.SetBool("IsBlocking", true); // Проигрываем анимацию блока
+            animator.SetBool("IsBlocking", true);
+            isBlocking = true; // Устанавливаем состояние блока  
             stamina -= staminaCostPerBlock; // Снижаем выносливость
             UpdateStaminaUI();
             Debug.Log("Игрок заблокировал удар!");
 
             // Время блока, например, 1 секунда
-            StartCoroutine(EndBlock(1f));
+            StartCoroutine(EndBlock(blockDuration));
         }
         else
         {

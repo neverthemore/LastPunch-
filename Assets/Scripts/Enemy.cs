@@ -76,13 +76,19 @@ public class Enemy : MonoBehaviour
     }
     public void PushBack(Vector3 direction)
     {
+        direction.y = 0; // Устанавливаем Y в 0, чтобы избежать подъема
+        direction.Normalize();
+
+        Rigidbody rb = GetComponent<Rigidbody>();
         rb.AddForce(direction.normalized * pushForce, ForceMode.Impulse);
         StartCoroutine(StopAfterPush(pushDuration));
     }
     private IEnumerator StopAfterPush(float pushDuration)
     {
         yield return new WaitForSeconds(pushDuration); // Wait for the specified duration
+    
         rb.velocity = Vector3.zero; // Stop the enemy's movement
+
     }
 
     private void MoveTowardsPlayer()
