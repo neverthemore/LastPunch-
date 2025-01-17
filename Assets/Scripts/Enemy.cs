@@ -248,13 +248,13 @@ public class Enemy : MonoBehaviour
         float time = 0.07f;
 
         gameObject.transform.rotation = Quaternion.Euler(-shake, shake, -shake);
-        _cutSceneLogic.SelectEffects(true);
+        if(health > 0)_cutSceneLogic.SelectEffects(true);
         yield return new WaitForSeconds(time);
         gameObject.transform.rotation = Quaternion.Euler(shake, -shake, shake);
         yield return new WaitForSeconds(time);
         gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
         yield return new WaitForSeconds(time);
-        _cutSceneLogic.SelectEffects(false);
+        if (health > 0) _cutSceneLogic.SelectEffects(false);
     }
     public void Shake() => StartCoroutine(DoorShake());
     #endregion

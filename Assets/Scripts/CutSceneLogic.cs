@@ -118,13 +118,12 @@ public class CutSceneLogic : MonoBehaviour
     {
         if (_typeScene == 1)
         {
-            _bam.SetActive(true);
             //_enemy.Shake();
-            _movement.StatusCutscene(false);
-            yield return new WaitForSeconds(1);
-            _bam.SetActive(false);
+            _bam.SetActive(true);
             yield return new WaitForSeconds(1);
             _buttonF.SetActive(true);
+            _bam.SetActive(false);
+            _movement.StatusCutscene(false);
         }
     }
 
