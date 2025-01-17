@@ -328,6 +328,7 @@ MonoBehaviour:
   cutSceneLogic: {fileID: 0}
   lastDir: 1
   _sceneOne: 0
+  _sceneTwo: 0
   _buttonQ: {fileID: 339815168}
   _buttonE: {fileID: 913375877}
   _arrTriggerZone:
@@ -9032,6 +9033,10 @@ PrefabInstance:
       propertyPath: health
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 8050115216900746993, guid: cf2aeaacd43d02342b18d41722cb3bf4, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 67523644}
     - target: {fileID: 8050115216900746993, guid: cf2aeaacd43d02342b18d41722cb3bf4, type: 3}
       propertyPath: pushForce
       value: 2

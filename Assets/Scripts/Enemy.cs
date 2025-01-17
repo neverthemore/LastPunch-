@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     public float pushDuration = 2f;
     public float stunDuration = 2f;
 
-    private Transform target;
+    [SerializeField] private Transform target;
     private Rigidbody rb;
     private Animator animator;
     private bool isStunned = false;
@@ -37,11 +37,11 @@ public class Enemy : MonoBehaviour
             door = true;
         else door = false;
 
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        if (playerObject != null)
-        {
-            target = playerObject.transform;
-        }
+        //GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        //if (playerObject != null)
+        //{
+        //    target = playerObject.transform;
+        //}
 
         rb = GetComponent<Rigidbody>();
         if (rb != null)
@@ -249,7 +249,7 @@ public class Enemy : MonoBehaviour
         float time = 0.07f;
 
         gameObject.transform.rotation = Quaternion.Euler(-shake, shake, -shake);
-        if(health > 0)_cutSceneLogic.SelectEffects(true);
+        if (health > 0) _cutSceneLogic.SelectEffects(true);
         yield return new WaitForSeconds(time);
         gameObject.transform.rotation = Quaternion.Euler(shake, -shake, shake);
         yield return new WaitForSeconds(time);
