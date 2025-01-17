@@ -29,6 +29,8 @@ public class Enemy : MonoBehaviour
     private float attackTimer = 0;
     private bool isAttacking = false;
 
+    [SerializeField] private CutSceneLogic _cutSceneLogic;
+
     void Start()
     {
         if (gameObject.CompareTag("Door"))
@@ -87,7 +89,7 @@ public class Enemy : MonoBehaviour
     private IEnumerator StopAfterPush(float pushDuration)
     {
         yield return new WaitForSeconds(pushDuration); // Wait for the specified duration
-    
+
         rb.velocity = Vector3.zero; // Stop the enemy's movement
 
     }
@@ -166,7 +168,7 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int attackDamage, HitType hitType)
     {
         health -= attackDamage;
-        if(door)
+        if (door)
         {
             StartCoroutine(DoorShake());
         }
@@ -219,17 +221,6 @@ public class Enemy : MonoBehaviour
         isAttacking = false; // —брасываем состо€ние атаки
         canAttack = true;
     }
-    private IEnumerator DoorShake()
-    {
-        float shake = 2f;
-        float time = 0.0625f;
-
-        gameObject.transform.rotation = Quaternion.Euler(-shake, shake, -shake);
-        yield return new WaitForSeconds(time);
-        gameObject.transform.rotation = Quaternion.Euler(shake, -shake, shake);
-        yield return new WaitForSeconds(time);
-        gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
-    }
 
     private void Die()
     {
@@ -238,13 +229,10 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-
-
     internal void Setsortinglayer(string v)
     {
         throw new System.NotImplementedException();
     }
-
 
     public enum HitType
     {
@@ -252,4 +240,22 @@ public class Enemy : MonoBehaviour
         Body,
         Legs
     }
+
+    #region Cutscene Logic
+    private IEnumerator DoorShake()
+    {
+        float shake = 1f;
+        float time = 0.07f;
+
+        gameObject.transform.rotation = Quaternion.Euler(-shake, shake, -shake);
+        _cutSceneLogic.SelectEffects(true);
+        yield return new WaitForSeconds(time);
+        gameObject.transform.rotation = Quaternion.Euler(shake, -shake, shake);
+        yield return new WaitForSeconds(time);
+        gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+        yield return new WaitForSeconds(time);
+        _cutSceneLogic.SelectEffects(false);
+    }
+    public void Shake() => StartCoroutine(DoorShake());
+    #endregion
 }

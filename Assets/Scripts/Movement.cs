@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour
     float xInput;
     float yInput;
 
-    [SerializeField] CutSceneLogic CutSceneLogic;
+    [SerializeField] CutSceneLogic cutSceneLogic;
     CharacterController cc;
     float rotateY = 0;
     float currentRotateY = 0;
@@ -21,6 +21,8 @@ public class Movement : MonoBehaviour
     private int _rotationCount = 0; // 0 - Back/ 1 - Left/ 2 - Front/ 3 - Right
     private bool _rotateLeft, _rotateRight, _rotateAllways = false;
     private bool _cutscene = false;
+    private bool _endScene = false;
+    [SerializeField] private bool _sceneOne; // switch inspector only
 
     [SerializeField] private GameObject _buttonQ; // иконка Q
     [SerializeField] private GameObject _buttonE; // иконка E
@@ -31,6 +33,7 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private int _currentWaypoint = 0;
+    [SerializeField] private int _needWaypoint = 0;
 
     private PlayerHealth playerHealth;
     private Animator animator;
@@ -44,16 +47,25 @@ public class Movement : MonoBehaviour
         playerHealth = GetComponent<PlayerHealth>();
         if (_arrWallsTypeOne.Length == 0 && _arrWallsTypeTwo.Length == 0 && _arrTriggerZone.Length == 0)
             _cutscene = true;
-        Debug.Log(_cutscene);
+        if (_cutscene)
+        {
+            if (_sceneOne)
+                _needWaypoint = 4;
+        }
     }
 
     // Update is called once per frame
-    private void FixedUpdate()
+    private void FixedUpdate() //only cutscene logic
     {
         if (_cutscene)
         {
+            if (_endScene)
+            {
+                _sceneOne = false;
+                _needWaypoint = 5;
+            }
             animator.SetBool("Walk", true);
-            if (_currentWaypoint != _waypoints.Length - 1)
+            if (_currentWaypoint != _needWaypoint)
             {
                 if (transform.localPosition == _waypoints[_currentWaypoint].position)
                     _currentWaypoint++;
@@ -61,9 +73,14 @@ public class Movement : MonoBehaviour
             }
             else
             {
-                _cutscene = false;
                 animator.SetBool("Walk", false);
+                if (_sceneOne)
+                {
+                    cutSceneLogic.ReturnControl(1);
+                }
             }
+
+
         }
     }
     void Update()
@@ -88,7 +105,7 @@ public class Movement : MonoBehaviour
         }
 
         cc.Move(transform.forward * yInput * Time.deltaTime * speed + transform.right * xInput * Time.deltaTime * speed);
-      
+
         if (Input.GetKeyDown(KeyCode.Q) && (_rotateLeft || _rotateAllways))
         {
             rotateY += 90;
@@ -141,7 +158,7 @@ public class Movement : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Broken Door"))
-            CutSceneLogic.StatusBrokenTrigger(true);
+            cutSceneLogic.StatusBrokenTrigger(true);
         if (other.CompareTag("Rotation") && !_rotateAllways)
         {
             if (other.gameObject == _arrTriggerZone[_rotationCount])
@@ -161,7 +178,7 @@ public class Movement : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Broken Door"))
-            CutSceneLogic.StatusBrokenTrigger(false);
+            cutSceneLogic.StatusBrokenTrigger(false);
         if (other.CompareTag("Rotation"))
         {
             _buttonE.SetActive(false);
@@ -188,6 +205,16 @@ public class Movement : MonoBehaviour
             arrWalls[i].SetActive(turnOn);
         }
     }
+
+    #region Cutscene Logic
+
+    public void StatusCutscene(bool status)
+    {
+        _cutscene = status;
+        if (_sceneOne && status)
+            _endScene = true;
+    }
+    #endregion
 }
 
 public enum Direction
