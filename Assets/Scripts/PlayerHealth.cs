@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public Sprite[] stunFrames; // Массив спрайтов для анимации оглушения
+    private SpriteRenderer effectSpriteRenderer; // SpriteRenderer для эффекта
+    private GameObject effectObject;
+
     public int health = 100;
     public bool isStunned = false; 
     public float stunDuration = 2f;
@@ -21,6 +25,11 @@ public class PlayerHealth : MonoBehaviour
     public Slider staminaSlider;
     void Start()
     {
+        effectObject = new GameObject("StunEffect");
+        effectSpriteRenderer = effectObject.AddComponent<SpriteRenderer>();
+        effectSpriteRenderer.sortingOrder = 10000; // Устанавливаем порядок отрисовки выше, чем у других спрайтов
+        effectObject.SetActive(false);
+
         animator = GetComponentInChildren<Animator>();
         UpdateStaminaUI();
         healthSlider.maxValue = health; 
@@ -28,6 +37,10 @@ public class PlayerHealth : MonoBehaviour
     }
     void Update()
     {
+        if (isStunned)
+        {
+            effectObject.transform.position = transform.position + Vector3.up; // Позиция над головой
+        }
         // Восстановление выносливости
         if (isRecoveringStamina && stamina < 100f)
         {
@@ -77,9 +90,31 @@ public class PlayerHealth : MonoBehaviour
             animator.SetBool("IsStunned", true);
             animator.SetBool("Walk", false);
             Debug.Log("Игрок оглушен!");
-        
+            ShowEffect(); // Отобразить эффект
+            StartCoroutine(PlayAnimation(stunFrames, duration));
+
             StartCoroutine(HandleStun(duration));
         }
+    }
+    private void ShowEffect()
+    {
+        effectObject.SetActive(true); // Показываем эффект
+    }
+    private IEnumerator PlayAnimation(Sprite[] frames, float duration)
+    {
+        float frameDuration = duration / frames.Length; // Время для каждого кадра
+        Vector3 originalScale = effectObject.transform.localScale; // Сохраняем оригинальный масштаб
+
+        for (int i = 0; i < frames.Length; i++)
+        {
+            effectSpriteRenderer.sprite = frames[i];
+            yield return new WaitForSeconds(frameDuration);
+        }
+
+
+        effectObject.SetActive(false);
+
+
     }
     private void Block()
     {

@@ -150,13 +150,13 @@ public class Movement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            speed = speed * 2;
+            speed = 6;
             animator.SetBool("Run", true);
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            speed = speed / 2;
+            speed = 3;
             animator.SetBool("Run", false);
         }
     }

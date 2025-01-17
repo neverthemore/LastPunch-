@@ -4,6 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Enemy : MonoBehaviour
 {
+    public Sprite[] stunFrames; // Массив спрайтов для анимации оглушения
+    private SpriteRenderer effectSpriteRenderer; // SpriteRenderer для эффекта
+    private GameObject effectObject;
+
     public float moveSpeed = 3f;
     public float detectionRange = 10f;
     public int health = 30;
@@ -33,6 +37,11 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        effectObject = new GameObject("StunEffect");
+        effectSpriteRenderer = effectObject.AddComponent<SpriteRenderer>();
+        effectSpriteRenderer.sortingOrder = 10000; // Устанавливаем порядок отрисовки выше, чем у других спрайтов
+        effectObject.SetActive(false);
+
         if (gameObject.CompareTag("Door"))
             door = true;
         else door = false;
@@ -56,6 +65,16 @@ public class Enemy : MonoBehaviour
             mainCamera = Camera.main;
         }
         Debug.Log(door);
+    }
+    void Update()
+    {
+
+
+        // Обновляем позицию эффекта, чтобы он следовал за головой
+        if (isStunned)
+        {
+            effectObject.transform.position = transform.position; // Позиция над головой
+        }
     }
 
     void FixedUpdate()
@@ -154,6 +173,29 @@ public class Enemy : MonoBehaviour
     public void Stun(float duration)
     {
         if (!door) StartCoroutine(StunCoroutine(duration));
+        ShowEffect(); // Отобразить эффект
+        StartCoroutine(PlayAnimation(stunFrames, duration));
+    }
+
+    private void ShowEffect()
+    {
+        effectObject.SetActive(true); // Показываем эффект
+    }
+    private IEnumerator PlayAnimation(Sprite[] frames, float duration)
+    {
+        float frameDuration = duration / frames.Length; // Время для каждого кадра
+        Vector3 originalScale = effectObject.transform.localScale; // Сохраняем оригинальный масштаб
+
+        for (int i = 0; i < frames.Length; i++)
+        {
+            effectSpriteRenderer.sprite = frames[i];
+            yield return new WaitForSeconds(frameDuration);
+        }
+
+
+        effectObject.SetActive(false);
+
+
     }
 
     private IEnumerator StunCoroutine(float duration)
@@ -192,6 +234,7 @@ public class Enemy : MonoBehaviour
         if (health <= 0)
         {
             Die();
+            Destroy(effectObject);
         }
 
     }
@@ -249,7 +292,7 @@ public class Enemy : MonoBehaviour
         float time = 0.07f;
 
         gameObject.transform.rotation = Quaternion.Euler(-shake, shake, -shake);
-        if(health > 0)_cutSceneLogic.SelectEffects(true);
+        if (health > 0) _cutSceneLogic.SelectEffects(true);
         yield return new WaitForSeconds(time);
         gameObject.transform.rotation = Quaternion.Euler(shake, -shake, shake);
         yield return new WaitForSeconds(time);

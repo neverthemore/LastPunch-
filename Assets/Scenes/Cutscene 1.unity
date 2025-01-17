@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -278,6 +278,10 @@ MonoBehaviour:
   _enemy: {fileID: 159117487}
   _movement: {fileID: 1899288773}
   _typeScene: 0
+  _enemyOne: {fileID: 0}
+  _enemyTwo: {fileID: 0}
+  _enemyOneAnimator: {fileID: 0}
+  _enemyTwoAnimator: {fileID: 0}
 --- !u!114 &101240698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,6 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4ff4208bde5194e91fabb53fe68aa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stunFrames: []
   moveSpeed: 0
   detectionRange: 0
   health: 100
@@ -1817,6 +1822,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694fc67701a8dd54aaf9cbdfa0c402b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instructionPrefab: {fileID: 788521901}
+  instructionOffset: 0.5
+  instructionFrames:
+  - {fileID: 21300000, guid: 39e32fd2c7d33f746be1861c386a7726, type: 3}
+  - {fileID: 21300000, guid: 0d18e843120a48740a27270c93059109, type: 3}
+  - {fileID: 21300000, guid: 8d9a9af03aad2004a9e0543b7f606a8f, type: 3}
+  - {fileID: 21300000, guid: 80eb95f3e5e0fb54a83cab78922a7861, type: 3}
+  - {fileID: 21300000, guid: e093fbe58ac6a47479e58dd400a07cfc, type: 3}
   leftHandCollider: {fileID: 788521904}
   rightHandCollider: {fileID: 1041103377}
   freezeDuration: 1
@@ -2314,6 +2327,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694fc67701a8dd54aaf9cbdfa0c402b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instructionPrefab: {fileID: 1041103376}
+  instructionOffset: 0.5
+  instructionFrames:
+  - {fileID: 21300000, guid: 39e32fd2c7d33f746be1861c386a7726, type: 3}
+  - {fileID: 21300000, guid: 0d18e843120a48740a27270c93059109, type: 3}
+  - {fileID: 21300000, guid: 8d9a9af03aad2004a9e0543b7f606a8f, type: 3}
+  - {fileID: 21300000, guid: 80eb95f3e5e0fb54a83cab78922a7861, type: 3}
+  - {fileID: 21300000, guid: e093fbe58ac6a47479e58dd400a07cfc, type: 3}
   leftHandCollider: {fileID: 788521904}
   rightHandCollider: {fileID: 1041103377}
   freezeDuration: 1
@@ -3392,6 +3413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95c9dda96a5330849a24c26d4149a6ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stunFrames: []
   health: 100
   isStunned: 0
   stunDuration: 2
@@ -3466,6 +3488,7 @@ MonoBehaviour:
   cutSceneLogic: {fileID: 101240697}
   lastDir: 1
   _sceneOne: 1
+  _sceneTwo: 0
   _buttonQ: {fileID: 1932195973}
   _buttonE: {fileID: 604177410}
   _arrTriggerZone: []

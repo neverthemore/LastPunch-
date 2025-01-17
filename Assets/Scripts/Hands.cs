@@ -3,9 +3,20 @@ using static Enemy;
 
 public class Hands : MonoBehaviour
 {
+    public GameObject instructionPrefab; // Префаб анимации для рук
+    public float instructionOffset = 0.5f; // Смещение для размещения анимации
+    public Sprite[] instructionFrames;
     public Collider leftHandCollider; // Collider for the left hand
     public Collider rightHandCollider; // Collider for the right hand
     public float freezeDuration;
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) // ЛКМ
+        {
+            
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -29,6 +40,7 @@ public class Hands : MonoBehaviour
                         hitType = HitType.Head;
                         Debug.Log("Hit Head!");
                         enemy.Stun(freezeDuration);
+                        ShowInstructions(other.transform.position);
                     }
                     else if (other.gameObject.name.Contains("Body"))
                     {
@@ -36,6 +48,7 @@ public class Hands : MonoBehaviour
                         hitType = HitType.Body;
                         Debug.Log("Hit Body!");
                         enemy.Stun(freezeDuration);
+                        ShowInstructions(other.transform.position);
                     }
                     else if (other.gameObject.name.Contains("Legs"))
                     {
@@ -55,6 +68,7 @@ public class Hands : MonoBehaviour
                         hitType = HitType.Head;
                         Debug.Log("Hit Head with Right Hand!");
                         enemy.Stun(freezeDuration);
+                        ShowInstructions(other.transform.position);
                     }
                     else if (other.gameObject.name.Contains("Body"))
                     {
@@ -62,6 +76,7 @@ public class Hands : MonoBehaviour
                         hitType = HitType.Body;
                         Debug.Log("Hit Body with Right Hand!");
                         enemy.Stun(freezeDuration);
+                        ShowInstructions(other.transform.position);
                     }
                     else if (other.gameObject.name.Contains("Legs"))
                     {
@@ -89,5 +104,23 @@ public class Hands : MonoBehaviour
                 Debug.Log("No Enemy component found on the collided object.");
             }
         }
+    }
+
+    private void ShowInstructions(Vector3 position)
+    {
+        // Случайно выбираем один из кадров анимации
+        int randomIndex = Random.Range(0, instructionFrames.Length);
+        Sprite selectedFrame = instructionFrames[randomIndex];
+
+        // Создаем анимацию инструкции
+        GameObject instruction = new GameObject("InstructionEffect");
+        SpriteRenderer instructionRenderer = instruction.AddComponent<SpriteRenderer>();
+        instructionRenderer.sprite = selectedFrame;
+        instruction.transform.position = position + Vector3.up * instructionOffset;
+
+        instruction.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+        // Удаляем анимацию через 0.5 секунды
+        Destroy(instruction, 0.5f);
     }
 }
