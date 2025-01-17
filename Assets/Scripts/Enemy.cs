@@ -55,6 +55,7 @@ public class Enemy : MonoBehaviour
         {
             mainCamera = Camera.main;
         }
+        Debug.Log(door);
     }
 
     void FixedUpdate()

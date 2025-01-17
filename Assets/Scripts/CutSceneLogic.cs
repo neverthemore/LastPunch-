@@ -1,13 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CutSceneLogic : MonoBehaviour
 {
-    // Start is called before the first frame update
     [SerializeField] private bool _statusTriggerDoor = false;
     [SerializeField] private bool _doorCheck = true;
     [SerializeField] private GameObject _buttonF;
@@ -24,24 +21,29 @@ public class CutSceneLogic : MonoBehaviour
     [SerializeField] private Movement _movement;
     [SerializeField] private int _typeScene;
     [SerializeField] private System.Random _rand = new();
+    [SerializeField] private GameObject _enemyOne;
+    [SerializeField] private GameObject _enemyTwo;
+    [SerializeField] private Animator _enemyOneAnimator;
+    [SerializeField] private Animator _enemyTwoAnimator;
 
 
     void Start()
     {
-        Debug.Log("CutScene scene. Press M to return to the main scene");
-
-        _doorHitbox.SetActive(false);
-        _buttonF.SetActive(false);
-        _buttonLCM.SetActive(false);
         StartCoroutine(FadeOut(_fadeImage, true));
+        if (GameObject.FindGameObjectWithTag("Enemy"))
+        {
+            _enemyOneAnimator.enabled = false;
+            _enemyTwoAnimator.enabled = false;
+
+            if(_enemyOne != null)
+                _enemy = _enemyOne.GetComponent<Enemy>();
+            else if(_enemyTwo != null)
+                _enemy = _enemyTwo.GetComponent<Enemy>();
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.M))
-            SceneManager.LoadScene(sceneBuildIndex: 1);
-
         if (_typeScene == 1)
         {
             if (_statusTriggerDoor && _doorCheck && Input.GetKey(KeyCode.F))
@@ -73,6 +75,10 @@ public class CutSceneLogic : MonoBehaviour
                 _buttonF.SetActive(false);
                 _buttonLCM.SetActive(false);
             }
+        }
+        else if(_typeScene == 2)
+        {
+
         }
     }
     public void StatusBrokenTrigger(bool status)
@@ -111,7 +117,7 @@ public class CutSceneLogic : MonoBehaviour
         }
         yield return new WaitForSeconds(1);
         _player.SetActive(Out);
-        if (!GameObject.FindGameObjectWithTag("Door"))
+        if (!GameObject.FindGameObjectWithTag("Door") && _typeScene == 1)
             SceneManager.LoadScene(sceneBuildIndex: 1);
     }
     private IEnumerator LerpSceneMovement()
@@ -124,6 +130,11 @@ public class CutSceneLogic : MonoBehaviour
             _buttonF.SetActive(true);
             _bam.SetActive(false);
             _movement.StatusCutscene(false);
+        }
+        else if (_typeScene == 2)
+        {
+            _movement.StatusCutscene(false);
+            yield return null;
         }
     }
 

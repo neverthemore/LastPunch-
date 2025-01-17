@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Movement : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class Movement : MonoBehaviour
     private bool _cutscene = false;
     private bool _endScene = false;
     [SerializeField] private bool _sceneOne; // switch inspector only
+    [SerializeField] private bool _sceneTwo; // switch inspector only
 
     [SerializeField] private GameObject _buttonQ; // иконка Q
     [SerializeField] private GameObject _buttonE; // иконка E
@@ -51,6 +53,8 @@ public class Movement : MonoBehaviour
         {
             if (_sceneOne)
                 _needWaypoint = 4;
+            else if (_sceneTwo)
+                _needWaypoint = 2;
         }
     }
 
@@ -59,10 +63,13 @@ public class Movement : MonoBehaviour
     {
         if (_cutscene)
         {
-            if (_endScene)
+            if (_sceneOne)
             {
-                _sceneOne = false;
-                _needWaypoint = 5;
+                if (_endScene)
+                {
+                    _sceneOne = false;
+                    _needWaypoint = 5;
+                }
             }
             animator.SetBool("Walk", true);
             if (_currentWaypoint != _needWaypoint)
@@ -75,11 +82,10 @@ public class Movement : MonoBehaviour
             {
                 animator.SetBool("Walk", false);
                 if (_sceneOne)
-                {
                     cutSceneLogic.ReturnControl(1);
-                }
+                else if (_sceneTwo)
+                    cutSceneLogic.ReturnControl(2);
             }
-
 
         }
     }
@@ -211,7 +217,7 @@ public class Movement : MonoBehaviour
     public void StatusCutscene(bool status)
     {
         _cutscene = status;
-        if (_sceneOne && status)
+        if ((_sceneOne || _sceneTwo) && status)
             _endScene = true;
     }
     #endregion
