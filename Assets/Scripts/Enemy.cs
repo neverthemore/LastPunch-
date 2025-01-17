@@ -8,6 +8,10 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer effectSpriteRenderer; // SpriteRenderer для эффекта
     private GameObject effectObject;
 
+    public GameObject instructionPrefab; // Префаб анимации для рук
+    public float instructionOffset = 0.5f; // Смещение для размещения анимации
+    public Sprite[] instructionFrames;
+
     public float moveSpeed = 3f;
     public float detectionRange = 10f;
     public int health = 30;
@@ -19,7 +23,7 @@ public class Enemy : MonoBehaviour
     public float pushDuration = 2f;
     public float stunDuration = 2f;
 
-    [SerializeField] private Transform target;
+    private Transform target;
     private Rigidbody rb;
     private Animator animator;
     private bool isStunned = false;
@@ -46,11 +50,11 @@ public class Enemy : MonoBehaviour
             door = true;
         else door = false;
 
-        //GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        //if (playerObject != null)
-        //{
-        //    target = playerObject.transform;
-        //}
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null)
+        {
+            target = playerObject.transform;
+        }
 
         rb = GetComponent<Rigidbody>();
         if (rb != null)
