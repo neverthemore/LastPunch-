@@ -82,11 +82,8 @@ public class Movement : MonoBehaviour
             {
                 animator.SetBool("Walk", false);
                 if (_sceneOne)
-                    cutSceneLogic.ReturnControl(1);
-                else if (_sceneTwo)
-                    cutSceneLogic.ReturnControl(2);
+                    cutSceneLogic.ReturnControl();
             }
-
         }
     }
     void Update()

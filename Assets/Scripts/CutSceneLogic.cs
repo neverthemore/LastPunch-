@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -19,10 +20,30 @@ public class CutSceneLogic : MonoBehaviour
     [SerializeField] private float _durationFadeTime = 3f;
     [SerializeField] private Enemy _enemy;
     [SerializeField] private Movement _movement;
+
     [SerializeField] private int _typeScene;
+
+    [SerializeField] private int _idText = 0;
     [SerializeField] private System.Random _rand = new();
+    [SerializeField] private bool _textShow = false;
+
     [SerializeField] private GameObject _enemyOne;
     [SerializeField] private GameObject _enemyTwo;
+
+    [SerializeField] private GameObject _textObjectLeft;
+    [SerializeField] private GameObject _textObjectRight;
+
+    [SerializeField] private SpriteRenderer _faceObjectLeft;
+    [SerializeField] private SpriteRenderer _faceObjectRight;
+
+    [SerializeField] private TMP_Text _textLeft;
+    [SerializeField] private TMP_Text _textRight;
+
+    [SerializeField] private Sprite _faceHero;
+    [SerializeField] private Sprite _faceOne;
+    [SerializeField] private Sprite _faceTwo;
+    [SerializeField] private Sprite _faceMather;
+
     [SerializeField] private Animator _enemyOneAnimator;
     [SerializeField] private Animator _enemyTwoAnimator;
 
@@ -30,20 +51,29 @@ public class CutSceneLogic : MonoBehaviour
     void Start()
     {
         StartCoroutine(FadeOut(_fadeImage, true));
+        if (GameObject.FindGameObjectWithTag("Door"))
+        {
+            _typeScene = 1;
+        }
         if (GameObject.FindGameObjectWithTag("Enemy"))
         {
+            _typeScene = 2;
+
             _enemyOneAnimator.enabled = false;
             _enemyTwoAnimator.enabled = false;
 
-            if(_enemyOne != null)
+            if (_enemyOne != null)
                 _enemy = _enemyOne.GetComponent<Enemy>();
-            else if(_enemyTwo != null)
+            else if (_enemyTwo != null)
                 _enemy = _enemyTwo.GetComponent<Enemy>();
         }
     }
 
     void Update()
     {
+        if (Input.GetKey(KeyCode.M))
+            SceneManager.LoadScene(sceneBuildIndex: 2);
+
         if (_typeScene == 1)
         {
             if (_statusTriggerDoor && _doorCheck && Input.GetKey(KeyCode.F))
@@ -76,9 +106,20 @@ public class CutSceneLogic : MonoBehaviour
                 _buttonLCM.SetActive(false);
             }
         }
-        else if(_typeScene == 2)
+        else if (_typeScene == 2)
         {
+            if (_idText < 6)
+            {
+                if (_textShow && Input.GetMouseButtonUp(0))
+                {
+                    _idText++;
+                    _textShow = false;
+                    TextData();
+                }
+            }
 
+            //dialog method ebat, (iddialoga)
+            //id++ esli press F
         }
     }
     public void StatusBrokenTrigger(bool status)
@@ -119,6 +160,12 @@ public class CutSceneLogic : MonoBehaviour
         _player.SetActive(Out);
         if (!GameObject.FindGameObjectWithTag("Door") && _typeScene == 1)
             SceneManager.LoadScene(sceneBuildIndex: 1);
+        if (_typeScene == 2)
+        {
+            _player.SetActive(false);
+            TextData();
+        }
+        //_text.SetActive(true);
     }
     private IEnumerator LerpSceneMovement()
     {
@@ -133,8 +180,84 @@ public class CutSceneLogic : MonoBehaviour
         }
         else if (_typeScene == 2)
         {
-            _movement.StatusCutscene(false);
             yield return null;
+            _movement.StatusCutscene(false);
+        }
+    }
+
+    private void TextData()
+    {
+        _textObjectLeft.SetActive(false);
+        _textObjectRight.SetActive(false);
+
+        switch (_idText)
+        {
+            case 0:
+                {
+                    _textShow = true;
+                    _textObjectRight.SetActive(true);
+                    _textRight.text = "Где ключи?! Говори!";
+                    _faceObjectRight.sprite = _faceTwo;
+                    break;
+                }
+            case 1:
+                {
+                    _textShow = true;
+                    _textObjectRight.SetActive(true);
+                    _textRight.text = "Ты че? Их уже забрали.";
+                    _faceObjectRight.sprite = _faceOne;
+                    break;
+                }
+            case 2:
+                {
+                    _textShow = true;
+                    _textObjectLeft.SetActive(true);
+                    _textLeft.text = "Прошу вас, смилуйтесь...";
+                    _faceObjectLeft.sprite = _faceMather;
+                    _player.SetActive(true);
+                    break;
+                }
+            case 3:
+                {
+                    _textShow = true;
+                    _textObjectRight.SetActive(true);
+                    _textRight.text = "Опа. Квартирку не перепутал, месье?";
+                    _faceObjectRight.sprite = _faceTwo;
+                    break;
+                }
+            case 4:
+                {
+                    _textShow = true;
+                    _textObjectLeft.SetActive(true);
+                    _textLeft.text = "Сынок!";
+                    _faceObjectLeft.sprite = _faceMather;
+                    break;
+                }
+            case 5:
+                {
+                    _textShow = true;
+                    _textObjectLeft.SetActive(true);
+                    _textLeft.text = "Я че-то не понял. Ща каждому накатаю.";
+                    _faceObjectLeft.sprite = _faceMather;
+                    break;
+                }
+            case 6:
+                {
+                    _textShow = true;
+                    _textObjectRight.SetActive(true);
+                    _textRight.text = "Где ключи?! Говори!";
+                    _faceObjectRight.sprite = _faceTwo;
+                    break;
+                }
+            case 7:
+                {
+                    _textShow = true;
+                    _textObjectRight.SetActive(true);
+                    _textRight.text = "Где ключи?! Говори!";
+                    _faceObjectRight.sprite = _faceTwo;
+                    break;
+                }
+
         }
     }
 
@@ -156,11 +279,9 @@ public class CutSceneLogic : MonoBehaviour
             _babah.SetActive(false);
         }
     }
-    public void ReturnControl(int typeCutscene)
+    public void ReturnControl()
     {
-        _typeScene = typeCutscene;
         StartCoroutine(LerpSceneMovement());
-
     }
     #endregion
 }
