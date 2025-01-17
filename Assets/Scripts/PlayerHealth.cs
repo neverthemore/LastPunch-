@@ -29,6 +29,7 @@ public class PlayerHealth : MonoBehaviour
         effectSpriteRenderer = effectObject.AddComponent<SpriteRenderer>();
         effectSpriteRenderer.sortingOrder = 10000; // Устанавливаем порядок отрисовки выше, чем у других спрайтов
         effectObject.SetActive(false);
+        effectObject.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
 
         animator = GetComponentInChildren<Animator>();
         UpdateStaminaUI();
@@ -39,7 +40,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (isStunned)
         {
-            effectObject.transform.position = transform.position + Vector3.up; // Позиция над головой
+            effectObject.transform.position = transform.position + Vector3.up + Vector3.left * 0.5f; // Позиция над головой
         }
         // Восстановление выносливости
         if (isRecoveringStamina && stamina < 100f)
@@ -103,7 +104,7 @@ public class PlayerHealth : MonoBehaviour
     private IEnumerator PlayAnimation(Sprite[] frames, float duration)
     {
         float frameDuration = duration / frames.Length; // Время для каждого кадра
-        Vector3 originalScale = effectObject.transform.localScale; // Сохраняем оригинальный масштаб
+        
 
         for (int i = 0; i < frames.Length; i++)
         {

@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer effectSpriteRenderer; // SpriteRenderer для эффекта
     private GameObject effectObject;
 
+
     public GameObject instructionPrefab; // Префаб анимации для рук
     public float instructionOffset = 0.5f; // Смещение для размещения анимации
     public Sprite[] instructionFrames;
@@ -45,6 +46,8 @@ public class Enemy : MonoBehaviour
         effectSpriteRenderer = effectObject.AddComponent<SpriteRenderer>();
         effectSpriteRenderer.sortingOrder = 10000; // Устанавливаем порядок отрисовки выше, чем у других спрайтов
         effectObject.SetActive(false);
+
+        effectObject.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
 
         if (gameObject.CompareTag("Door"))
             door = true;
@@ -179,6 +182,7 @@ public class Enemy : MonoBehaviour
         if (!door) StartCoroutine(StunCoroutine(duration));
         ShowEffect(); // Отобразить эффект
         StartCoroutine(PlayAnimation(stunFrames, duration));
+
     }
 
     private void ShowEffect()
@@ -188,7 +192,9 @@ public class Enemy : MonoBehaviour
     private IEnumerator PlayAnimation(Sprite[] frames, float duration)
     {
         float frameDuration = duration / frames.Length; // Время для каждого кадра
-        Vector3 originalScale = effectObject.transform.localScale; // Сохраняем оригинальный масштаб
+
+        
+        
 
         for (int i = 0; i < frames.Length; i++)
         {
@@ -196,10 +202,9 @@ public class Enemy : MonoBehaviour
             yield return new WaitForSeconds(frameDuration);
         }
 
+       
 
         effectObject.SetActive(false);
-
-
     }
 
     private IEnumerator StunCoroutine(float duration)

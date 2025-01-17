@@ -118,7 +118,7 @@ public class Hands : MonoBehaviour
         instructionRenderer.sprite = selectedFrame;
         instruction.transform.position = position + Vector3.up * instructionOffset;
 
-        instruction.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        instruction.transform.localScale = new Vector3(0.3f, 0.3f, 1f);
 
         // Удаляем анимацию через 0.5 секунды
         Destroy(instruction, 0.5f);
