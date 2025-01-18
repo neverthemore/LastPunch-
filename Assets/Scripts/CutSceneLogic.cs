@@ -104,6 +104,7 @@ public class CutSceneLogic : MonoBehaviour
                 _buttonF.SetActive(true);
                 if (Input.GetKey(KeyCode.F))
                 {
+                    _movement.TurnOffAnimatoin();
                     _movement.StatusCutscene(true);
                     StartCoroutine(FadeOut(_fadeImage, false, true));
                 }
@@ -129,6 +130,7 @@ public class CutSceneLogic : MonoBehaviour
                 if (Input.GetKey(KeyCode.F))
                 {
                     _player.GetComponent<HandFollowCursor>().enabled = false;
+                    _movement.TurnOffAnimatoin();
                     _matherTrigger.SetActive(false);
                     _aftherFight = false;
                     _textAccepted = true;
@@ -167,7 +169,7 @@ public class CutSceneLogic : MonoBehaviour
                 StartCoroutine(BeforeFight());
             }
             else if (_idText == 9 && _textAccepted)
-            {
+            {                
                 StartCoroutine(EndScene());
             }
         }

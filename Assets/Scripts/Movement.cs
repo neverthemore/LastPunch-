@@ -165,16 +165,19 @@ public class Movement : MonoBehaviour
         if (lastDir == Direction.Right) skin.forward = dir;
         else skin.forward = -dir;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (!(_cutscene || _sceneOne || _sceneTwo))
         {
-            speed = 6;
-            animator.SetBool("Run", true);
-        }
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                speed = 6;
+                animator.SetBool("Run", true);
+            }
 
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            speed = 3;
-            animator.SetBool("Run", false);
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                speed = 3;
+                animator.SetBool("Run", false);
+            }
         }
     }
 
@@ -240,6 +243,15 @@ public class Movement : MonoBehaviour
         _cutscene = status;
         if ((_sceneOne || _sceneTwo) && status)
             _endScene = true;
+    }
+    public void TurnOffAnimatoin()
+    {
+        xInput = 0;
+        yInput = 0;
+        animator.SetBool("Run", false);
+        animator.SetBool("IsBlocking", false);
+        animator.SetBool("IsStunned", false);
+        animator.SetBool("Walk", false);
     }
     #endregion
 }
