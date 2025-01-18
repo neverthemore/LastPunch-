@@ -1,22 +1,34 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static Enemy;
 
 public class Hands : MonoBehaviour
 {
-    public GameObject instructionPrefab; // Префаб анимации для рук
-    public float instructionOffset = 0.5f; // Смещение для размещения анимации
-    public Sprite[] instructionFrames;
+    public Sprite[] stunFrames; // Массив спрайтов для анимации оглушения
+    private SpriteRenderer effectSpriteRenderer; // SpriteRenderer для эффекта
+    private GameObject effectObject;
+    public float effectDuration = 0.4f;
     public Collider leftHandCollider; // Collider for the left hand
     public Collider rightHandCollider; // Collider for the right hand
     public float freezeDuration;
 
-    private void Update()
+
+
+
+    void Start()
     {
-        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) // ЛКМ
-        {
-            
-        }
+        effectObject = new GameObject("StunEffect");
+        effectSpriteRenderer = effectObject.AddComponent<SpriteRenderer>();
+        effectSpriteRenderer.sortingOrder = 10000; // Устанавливаем порядок отрисовки выше, чем у других спрайтов
+        effectObject.SetActive(false);
+        effectObject.transform.localScale = new Vector3(0.3f, 0.3f, 1f);
+
     }
+        private void Update()
+    {
+            effectObject.transform.position = transform.position;
+        }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -40,7 +52,9 @@ public class Hands : MonoBehaviour
                         hitType = HitType.Head;
                         Debug.Log("Hit Head!");
                         enemy.Stun(freezeDuration);
-                        ShowInstructions(other.transform.position);
+                        ShowEffect(); // Отобразить эффект
+                        StartCoroutine(PlayAnimation(stunFrames, effectDuration));
+
                     }
                     else if (other.gameObject.name.Contains("Body"))
                     {
@@ -48,7 +62,9 @@ public class Hands : MonoBehaviour
                         hitType = HitType.Body;
                         Debug.Log("Hit Body!");
                         enemy.Stun(freezeDuration);
-                        ShowInstructions(other.transform.position);
+                        ShowEffect(); // Отобразить эффект
+                        StartCoroutine(PlayAnimation(stunFrames, effectDuration));
+
                     }
                     else if (other.gameObject.name.Contains("Legs"))
                     {
@@ -68,7 +84,9 @@ public class Hands : MonoBehaviour
                         hitType = HitType.Head;
                         Debug.Log("Hit Head with Right Hand!");
                         enemy.Stun(freezeDuration);
-                        ShowInstructions(other.transform.position);
+                        ShowEffect(); // Отобразить эффект
+                        StartCoroutine(PlayAnimation(stunFrames, effectDuration));
+
                     }
                     else if (other.gameObject.name.Contains("Body"))
                     {
@@ -76,7 +94,9 @@ public class Hands : MonoBehaviour
                         hitType = HitType.Body;
                         Debug.Log("Hit Body with Right Hand!");
                         enemy.Stun(freezeDuration);
-                        ShowInstructions(other.transform.position);
+                        ShowEffect(); // Отобразить эффект
+                        StartCoroutine(PlayAnimation(stunFrames, effectDuration));
+
                     }
                     else if (other.gameObject.name.Contains("Legs"))
                     {
@@ -106,21 +126,25 @@ public class Hands : MonoBehaviour
         }
     }
 
-    private void ShowInstructions(Vector3 position)
+    private void ShowEffect()
     {
-        // Случайно выбираем один из кадров анимации
-        int randomIndex = Random.Range(0, instructionFrames.Length);
-        Sprite selectedFrame = instructionFrames[randomIndex];
+        effectObject.SetActive(true); // Показываем эффект
+    }
+    private IEnumerator PlayAnimation(Sprite[] frames, float duration)
+    {
+        float frameDuration = duration / frames.Length; // Время для каждого кадра
 
-        // Создаем анимацию инструкции
-        GameObject instruction = new GameObject("InstructionEffect");
-        SpriteRenderer instructionRenderer = instruction.AddComponent<SpriteRenderer>();
-        instructionRenderer.sprite = selectedFrame;
-        instruction.transform.position = position + Vector3.up * instructionOffset;
 
-        instruction.transform.localScale = new Vector3(0.3f, 0.3f, 1f);
 
-        // Удаляем анимацию через 0.5 секунды
-        Destroy(instruction, 0.5f);
+
+        for (int i = 0; i < frames.Length; i++)
+        {
+            effectSpriteRenderer.sprite = frames[i];
+            yield return new WaitForSeconds(frameDuration);
+        }
+
+
+
+        effectObject.SetActive(false);
     }
 }
