@@ -4458,6 +4458,26 @@ ScriptedImporter:
     flatten: 0
     isImported: 1
     isVisible: 1
+  - name: Forearm_R
+    spriteName: 
+    isGroup: 1
+    parentIndex: 30
+    spriteID: 328e543ca92df4e4a922b0bba310fab2
+    layerID: 984
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: Forearm_L
+    spriteName: Forearm_L
+    isGroup: 0
+    parentIndex: 32
+    spriteID: 73bef875f19bc6e43bf677142595e1b8
+    layerID: 983
+    mosaicPosition: {x: 186, y: 160}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Head
     spriteName: 
     isGroup: 1
@@ -4471,30 +4491,10 @@ ScriptedImporter:
   - name: Head
     spriteName: Head
     isGroup: 0
-    parentIndex: 32
+    parentIndex: 34
     spriteID: 67634cf258cfdaf429b2f6f2b1d86e28
     layerID: 899
     mosaicPosition: {x: 300, y: 160}
-    flatten: 0
-    isImported: 1
-    isVisible: 1
-  - name: Forearm_R
-    spriteName: 
-    isGroup: 1
-    parentIndex: 27
-    spriteID: 328e543ca92df4e4a922b0bba310fab2
-    layerID: 984
-    mosaicPosition: {x: 0, y: 0}
-    flatten: 0
-    isImported: 0
-    isVisible: 1
-  - name: Forearm_L
-    spriteName: Forearm_L
-    isGroup: 0
-    parentIndex: 34
-    spriteID: 73bef875f19bc6e43bf677142595e1b8
-    layerID: 983
-    mosaicPosition: {x: 186, y: 160}
     flatten: 0
     isImported: 1
     isVisible: 1
