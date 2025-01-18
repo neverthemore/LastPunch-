@@ -117,7 +117,9 @@ public class CutSceneLogic : MonoBehaviour
         }
         else if (_typeScene == 2)
         {
-            if(_endScene && !_endConf)
+            if(!GameObject.FindGameObjectWithTag("Player") && _idText == 6)
+                SceneManager.LoadScene(sceneBuildIndex: 1);
+            if (_endScene && !_endConf)
             {
                 _endConf = true;
                 StartCoroutine(FadeOut(_fadeImage, false, true));
@@ -234,6 +236,7 @@ public class CutSceneLogic : MonoBehaviour
         {
             yield return new WaitForSeconds(2);
             _player.GetComponent<HandFollowCursor>().enabled = true;
+            _player.GetComponent<Movement>().enabled = true;
             _enemyOneAnimator.enabled = true;
             _enemyTwoAnimator.enabled = true;
             _enemyOne.GetComponent<Enemy>().enabled = true;
@@ -246,8 +249,9 @@ public class CutSceneLogic : MonoBehaviour
     }
     private IEnumerator EndScene()
     {
-        _endScene = true;        
+        _endScene = true;
         yield return new WaitForSeconds(0.25f);
+        _player.GetComponent<Movement>().enabled = true;
         _movement.StatusCutscene(true);
         yield return new WaitForSeconds(1);
         _textLCM.SetActive(false);
@@ -274,6 +278,7 @@ public class CutSceneLogic : MonoBehaviour
                 _idText++;
             _textAccepted = true;
             _textLCM.SetActive(true);
+            _player.GetComponent<Movement>().enabled = false;
         }
     }
 
@@ -337,7 +342,7 @@ public class CutSceneLogic : MonoBehaviour
                         _textObjectLeft.SetActive(true);
                         _textLCM.SetActive(false);
                         _textLeft.text = "Я че-то не понял. Ща каждому накатаю.";
-                        _faceObjectLeft.sprite = _faceHero;
+                        _faceObjectLeft.sprite = _faceHero;                        
                         break;
                     }
                 case 7:
@@ -347,6 +352,7 @@ public class CutSceneLogic : MonoBehaviour
                         _textLCM.SetActive(true);
                         _textLeft.text = "Мам! Что они с тобой сделали?";
                         _faceObjectLeft.sprite = _faceHero;
+                        _player.GetComponent<Movement>().enabled = false;
                         break;
                     }
                 case 8:
