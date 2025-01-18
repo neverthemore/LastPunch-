@@ -348,7 +348,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 11.9
+  m_fontSize: 6
   m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -552,6 +552,7 @@ MonoBehaviour:
   _bam: {fileID: 0}
   _crack: {fileID: 0}
   _babah: {fileID: 0}
+  _wallLeft: {fileID: 0}
   _fadeImage: {fileID: 1770421932}
   _durationFadeTime: 1
   _enemy: {fileID: 0}
@@ -847,8 +848,8 @@ Transform:
   m_GameObject: {fileID: 184602213}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.637127, y: -3.8333492, z: 5.104579}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 8.37, y: -4.03, z: 5.104579}
+  m_LocalScale: {x: 0.37900257, y: 0.37900257, z: 0.37900257}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 306439297}
@@ -894,7 +895,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ce0b0c11d9b7f4648bbcceda70fb3cf8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4e93179d8638c344bb33a2aea8787100, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5890,7 +5891,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 11.85
+  m_fontSize: 6
   m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 1

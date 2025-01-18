@@ -16,6 +16,7 @@ public class CutSceneLogic : MonoBehaviour
     [SerializeField] private GameObject _bam;
     [SerializeField] private GameObject _crack;
     [SerializeField] private GameObject _babah;
+    [SerializeField] private GameObject _wallLeft;
     [SerializeField] private Image _fadeImage;
     [SerializeField] private float _durationFadeTime = 3f;
     [SerializeField] private Enemy _enemy;
@@ -64,7 +65,7 @@ public class CutSceneLogic : MonoBehaviour
         {
             _typeScene = 1;
         }
-        if (GameObject.FindGameObjectWithTag("Enemy"))
+        else if (GameObject.FindGameObjectWithTag("Enemy"))
         {
             _typeScene = 2;
 
@@ -96,6 +97,7 @@ public class CutSceneLogic : MonoBehaviour
             }
             if (!GameObject.FindGameObjectWithTag("Door") && _statusTriggerDoor)
             {
+                _wallLeft.SetActive(true);
                 _brokenDoor.SetActive(true);
                 _crack.SetActive(false);
                 _babah.SetActive(false);
