@@ -174,16 +174,18 @@ public class Movement : MonoBehaviour
 
         if (!(_cutscene || _sceneOne || _sceneTwo))
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))
             {
                 speed = 6;
                 animator.SetBool("Run", true);
+                animator.SetBool("Walk", false);
             }
 
             if (Input.GetKeyUp(KeyCode.LeftShift))
             {
                 speed = 3;
                 animator.SetBool("Run", false);
+                animator.SetBool("Walk", false);
             }
         }
     }

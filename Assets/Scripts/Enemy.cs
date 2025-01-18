@@ -20,9 +20,12 @@ public class Enemy : MonoBehaviour
     public float attackDamage = 5;
     public float attackCooldown = 2f;
 
+    
     public float pushForce = 5f;
     public float pushDuration = 2f;
     public float stunDuration = 2f;
+
+    
 
     private Transform target;
     private Rigidbody rb;
@@ -30,7 +33,7 @@ public class Enemy : MonoBehaviour
     private bool isStunned = false;
     private bool canAttack = true;
     private bool door = false;
-
+    private Vector3 originalScale; // Оригинальный масштаб спрайта
     public int headDamage = 15;
     public int bodyDamage = 10;
     public int legDamage = 5;
@@ -42,6 +45,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        originalScale = transform.localScale;
         effectObject = new GameObject("StunEffect");
         effectSpriteRenderer = effectObject.AddComponent<SpriteRenderer>();
         effectSpriteRenderer.sortingOrder = 10000; // Устанавливаем порядок отрисовки выше, чем у других спрайтов
@@ -75,7 +79,7 @@ public class Enemy : MonoBehaviour
     }
     void Update()
     {
-
+       
 
         // Обновляем позицию эффекта, чтобы он следовал за головой
         if (isStunned)
@@ -96,10 +100,11 @@ public class Enemy : MonoBehaviour
             if (!isStunned) // Движение только если не в состоянии "стан"
             {
                 MoveTowardsPlayer();
-                animator.SetBool("walkEnemy", true);
+                
             }
-
+           
             FaceCamera();
+            
             attackTimer -= Time.deltaTime;
         }
     }
@@ -164,6 +169,8 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+    
+    
     private void FaceCamera()
     {
         if (mainCamera != null)
@@ -175,6 +182,11 @@ public class Enemy : MonoBehaviour
             {
                 transform.rotation = Quaternion.LookRotation(-cameraDirection);
             }
+            float enemyPosX = transform.position.x;
+            float playerPosX = target.position.x;
+
+            // Проверяем, находится ли игрок слева от врага
+           
         }
     }
     public void Stun(float duration)
