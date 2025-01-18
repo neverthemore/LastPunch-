@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public class PlayerHealth : MonoBehaviour
     private GameObject effectObject;
 
     public int health = 100;
+    private int maxhealth;
     public bool isStunned = false; 
     public float stunDuration = 2f;
     public float blockDuration = 1.5f;
@@ -25,6 +27,7 @@ public class PlayerHealth : MonoBehaviour
     public Slider staminaSlider;
     void Start()
     {
+        maxhealth = health;
         effectObject = new GameObject("StunEffect");
         effectSpriteRenderer = effectObject.AddComponent<SpriteRenderer>();
         effectSpriteRenderer.sortingOrder = 10000; // ”станавливаем пор€док отрисовки выше, чем у других спрайтов
@@ -177,5 +180,13 @@ public class PlayerHealth : MonoBehaviour
         {
             staminaSlider.value = stamina; // ќбновл€ем значение слайдера
         }
+    }
+    public void GetHealth(int value)
+    {
+        if (value + health >= maxhealth)
+            health = maxhealth;
+        else
+            health += value;
+        Debug.Log("Health regen: " + health);
     }
 }

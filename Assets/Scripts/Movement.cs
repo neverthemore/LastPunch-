@@ -37,10 +37,17 @@ public class Movement : MonoBehaviour
     [SerializeField] private int _currentWaypoint = 0;
     [SerializeField] private int _needWaypoint = 0;
 
+    [SerializeField] private Interaction _interaction;
+
     private PlayerHealth playerHealth;
     private Animator animator;
     void Start()
     {
+        if(GameObject.FindGameObjectWithTag("Shawarma") != null)
+            _interaction = GameObject.FindGameObjectWithTag("Shawarma").GetComponent<Interaction>();
+
+
+
         cc = GetComponent<CharacterController>();
         _buttonE.SetActive(false);
         _buttonQ.SetActive(false);
@@ -187,6 +194,8 @@ public class Movement : MonoBehaviour
             cutSceneLogic.StatusBrokenTrigger(true);
         if (other.CompareTag("MatherZone"))
             cutSceneLogic.StatusMatherTrigger(true);
+        if (other.CompareTag("Shawarma"))
+            _interaction.InteractionLogic("Shawarma", true);
         if (other.CompareTag("Rotation") && !_rotateAllways)
         {
             if (other.gameObject == _arrTriggerZone[_rotationCount])
@@ -209,6 +218,8 @@ public class Movement : MonoBehaviour
             cutSceneLogic.StatusBrokenTrigger(false);
         if (other.CompareTag("MatherZone"))
             cutSceneLogic.StatusMatherTrigger(false);
+        if (other.CompareTag("Shawarma"))
+            _interaction.InteractionLogic("Shawarma", false);
         if (other.CompareTag("Rotation"))
         {
             _buttonE.SetActive(false);
