@@ -16,6 +16,7 @@ TagManager:
   - MatherZone
   - Shawarma
   - Key
+  - TrashCan
   layers:
   - Default
   - TransparentFX

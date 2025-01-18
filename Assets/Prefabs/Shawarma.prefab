@@ -25,15 +25,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4465263649241579327}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.479, y: -0.349, z: -16.653}
+  m_LocalRotation: {x: 0, y: 0, z: -0.58920336, w: 0.80798477}
+  m_LocalPosition: {x: -3.15, y: -0.981, z: -17.68}
   m_LocalScale: {x: 0.04, y: 0.04, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3818519316316209955}
   - {fileID: 7631319336076287940}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -72.201}
 --- !u!212 &5510338446848885480
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -204,12 +204,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889fed90149d37749868b144ca7a1425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shawarmaHealthRegeneration: 20
+  _triggerStatus: 0
+  _tag: 
+  _firstTag: 
   _player: {fileID: 0}
   _playerHealth: {fileID: 0}
-  _tag: 
-  _triggerStatus: 0
   _buttonF: {fileID: 9014702999581431648}
+  _shawarmaHealthRegeneration: 20
+  _keyIcon: {fileID: 0}
+  _trashCanOpen: {fileID: 0}
+  _shawarma: {fileID: 0}
+  _spawn: {fileID: 0}
 --- !u!1 &9014702999581431648
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,13 +240,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9014702999581431648}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.07, y: 28.9, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.58920336, w: 0.80798477}
+  m_LocalPosition: {x: -25.44, y: 5.02, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8569215868664410391}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 72.201}
 --- !u!212 &1191442762242049927
 SpriteRenderer:
   m_ObjectHideFlags: 0
