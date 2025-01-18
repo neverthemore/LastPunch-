@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
         effectSpriteRenderer.sortingOrder = 10000; // Устанавливаем порядок отрисовки выше, чем у других спрайтов
         effectObject.SetActive(false);
 
-        effectObject.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
+        effectObject.transform.localScale = new Vector3(0.3f, 0.3f, 1f);
 
         if (gameObject.CompareTag("Door"))
             door = true;

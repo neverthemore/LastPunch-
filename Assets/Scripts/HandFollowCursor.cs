@@ -66,7 +66,7 @@ public class HandFollowCursor : MonoBehaviour
 
     void Update()
     {
-        if (!playerHealth.isStunned)
+        if (!playerHealth.isStunned && !playerHealth.isBlocking)
         {
             mousePosition = Input.mousePosition;
             mousePosition.z = Vector3.Distance(cam.transform.position, transform.position);

@@ -14,7 +14,7 @@ public class PlayerHealth : MonoBehaviour
     public bool isStunned = false; 
     public float stunDuration = 2f;
     public float blockDuration = 1.5f;
-    private bool isBlocking = false;
+    public bool isBlocking = false;
     private Animator animator;
 
     public float stamina = 100f; // Максимальная выносливость
@@ -32,7 +32,7 @@ public class PlayerHealth : MonoBehaviour
         effectSpriteRenderer = effectObject.AddComponent<SpriteRenderer>();
         effectSpriteRenderer.sortingOrder = 10000; // Устанавливаем порядок отрисовки выше, чем у других спрайтов
         effectObject.SetActive(false);
-        effectObject.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
+        effectObject.transform.localScale = new Vector3(0.3f, 0.3f, 1f);
 
         animator = GetComponentInChildren<Animator>();
         UpdateStaminaUI();
@@ -43,7 +43,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (isStunned)
         {
-            effectObject.transform.position = transform.position + Vector3.up + Vector3.left * 0.5f; // Позиция над головой
+            effectObject.transform.position = transform.position + Vector3.up * 1.1f + Vector3.left * 0.5f; // Позиция над головой
         }
         // Восстановление выносливости
         if (isRecoveringStamina && stamina < 100f)
