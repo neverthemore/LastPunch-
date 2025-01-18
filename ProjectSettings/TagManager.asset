@@ -13,6 +13,7 @@ TagManager:
   - Free Rotation
   - Door
   - Broken Door
+  - MatherZone
   layers:
   - Default
   - TransparentFX

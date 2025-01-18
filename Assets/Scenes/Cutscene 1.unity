@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -278,8 +278,27 @@ MonoBehaviour:
   _enemy: {fileID: 159117487}
   _movement: {fileID: 1899288773}
   _typeScene: 0
+  _idText: 0
+  _textShow: 0
+  _textAccepted: 0
+  _aftherFight: 0
+  _statusTriggerMather: 0
+  _endScene: 0
+  _endConf: 0
   _enemyOne: {fileID: 0}
   _enemyTwo: {fileID: 0}
+  _matherTrigger: {fileID: 0}
+  _textLCM: {fileID: 0}
+  _textObjectLeft: {fileID: 0}
+  _textObjectRight: {fileID: 0}
+  _faceObjectLeft: {fileID: 0}
+  _faceObjectRight: {fileID: 0}
+  _textLeft: {fileID: 0}
+  _textRight: {fileID: 0}
+  _faceHero: {fileID: 0}
+  _faceOne: {fileID: 0}
+  _faceTwo: {fileID: 0}
+  _faceMather: {fileID: 0}
   _enemyOneAnimator: {fileID: 0}
   _enemyTwoAnimator: {fileID: 0}
 --- !u!114 &101240698
@@ -348,6 +367,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stunFrames: []
+  instructionPrefab: {fileID: 0}
+  instructionOffset: 0.5
+  instructionFrames: []
   moveSpeed: 0
   detectionRange: 0
   health: 100
@@ -3240,10 +3262,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1361556916}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -1316, y: -696}
+  m_SizeDelta: {x: 176, y: 144}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1770421932
 MonoBehaviour:

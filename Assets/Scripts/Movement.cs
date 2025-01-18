@@ -67,22 +67,42 @@ public class Movement : MonoBehaviour
             {
                 if (_endScene)
                 {
-                    _sceneOne = false;
                     _needWaypoint = 5;
                 }
+                animator.SetBool("Walk", true);
+                if (_currentWaypoint != _needWaypoint)
+                {
+                    if (transform.localPosition == _waypoints[_currentWaypoint].position)
+                        _currentWaypoint++;
+                    transform.localPosition = Vector3.MoveTowards(transform.localPosition, _waypoints[_currentWaypoint].position, speed * Time.fixedDeltaTime);
+                }
+                else
+                {
+                    animator.SetBool("Walk", false);
+                    if (!_endScene)
+                        cutSceneLogic.ReturnControl();
+                }
             }
-            animator.SetBool("Walk", true);
-            if (_currentWaypoint != _needWaypoint)
+            if(_sceneTwo)
             {
-                if (transform.localPosition == _waypoints[_currentWaypoint].position)
-                    _currentWaypoint++;
-                transform.localPosition = Vector3.MoveTowards(transform.localPosition, _waypoints[_currentWaypoint].position, speed * Time.fixedDeltaTime);
-            }
-            else
-            {
-                animator.SetBool("Walk", false);
-                if (_sceneOne)
-                    cutSceneLogic.ReturnControl();
+                if (_endScene)
+                {
+                    _needWaypoint = 4;
+                    TurnLeft();
+                }
+                animator.SetBool("Walk", true);
+                if (_currentWaypoint != _needWaypoint)
+                {
+                    if (transform.localPosition == _waypoints[_currentWaypoint].position)
+                        _currentWaypoint++;
+                    transform.localPosition = Vector3.MoveTowards(transform.localPosition, _waypoints[_currentWaypoint].position, speed * Time.fixedDeltaTime);
+                }
+                else
+                {
+                    animator.SetBool("Walk", false);
+                    if (!_endScene)
+                        cutSceneLogic.ReturnControl();
+                }
             }
         }
     }
@@ -162,6 +182,8 @@ public class Movement : MonoBehaviour
     {
         if (other.CompareTag("Broken Door"))
             cutSceneLogic.StatusBrokenTrigger(true);
+        if (other.CompareTag("MatherZone"))
+            cutSceneLogic.StatusMatherTrigger(true);
         if (other.CompareTag("Rotation") && !_rotateAllways)
         {
             if (other.gameObject == _arrTriggerZone[_rotationCount])
@@ -182,6 +204,8 @@ public class Movement : MonoBehaviour
     {
         if (other.CompareTag("Broken Door"))
             cutSceneLogic.StatusBrokenTrigger(false);
+        if(other.CompareTag("MatherZone"))
+            cutSceneLogic.StatusMatherTrigger(false);
         if (other.CompareTag("Rotation"))
         {
             _buttonE.SetActive(false);
