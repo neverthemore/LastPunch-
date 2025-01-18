@@ -9,6 +9,12 @@ public class PlayerHealth : MonoBehaviour
     private SpriteRenderer effectSpriteRenderer; // SpriteRenderer для эффекта
     private GameObject effectObject;
 
+    public Sprite[] stunFrames2; // Массив спрайтов для анимации оглушения
+    private SpriteRenderer effectSpriteRenderer2; // SpriteRenderer для эффекта
+    private GameObject effectObject2;
+
+
+    private float blockeffectduration = 0.5f;
     public int health = 100;
     private int maxhealth;
     public bool isStunned = false; 
@@ -34,6 +40,13 @@ public class PlayerHealth : MonoBehaviour
         effectObject.SetActive(false);
         effectObject.transform.localScale = new Vector3(0.3f, 0.3f, 1f);
 
+        effectObject2 = new GameObject("StunEffect2");
+        effectSpriteRenderer2 = effectObject2.AddComponent<SpriteRenderer>();
+        effectSpriteRenderer2.sortingOrder = 100000; // Устанавливаем порядок отрисовки выше, чем у других спрайтов
+        effectObject2.SetActive(false);
+        effectObject2.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+        
+
         animator = GetComponentInChildren<Animator>();
         UpdateStaminaUI();
         healthSlider.maxValue = health; 
@@ -41,6 +54,10 @@ public class PlayerHealth : MonoBehaviour
     }
     void Update()
     {
+        if (isBlocking)
+        {
+            effectObject2.transform.position = transform.position + Vector3.up * 0.9f + Vector3.left * 1.2f;
+        }
         if (isStunned)
         {
             effectObject.transform.position = transform.position + Vector3.up * 1.1f + Vector3.left * 0.5f; // Позиция над головой
@@ -70,6 +87,15 @@ public class PlayerHealth : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
+        if (isBlocking)
+        {
+            
+            ShowEffect2(); // Отобразить эффект
+            StartCoroutine(PlayAnimation(stunFrames2, blockeffectduration));
+        }
+        
+
+        
         if (!isBlocking) // Получение урона только если не оглушен и не блокирует
         {
             health -= (int)damage;
@@ -104,19 +130,36 @@ public class PlayerHealth : MonoBehaviour
     {
         effectObject.SetActive(true); // Показываем эффект
     }
+    private void ShowEffect2()
+    {
+        effectObject2.SetActive(true); // Показываем эффект
+    }
     private IEnumerator PlayAnimation(Sprite[] frames, float duration)
     {
         float frameDuration = duration / frames.Length; // Время для каждого кадра
         
+        if(isBlocking == true)
+        {
+            yield return new WaitForSeconds(0.3f);
+        }
 
         for (int i = 0; i < frames.Length; i++)
         {
-            effectSpriteRenderer.sprite = frames[i];
+            if(isBlocking == true)
+            {            
+                effectSpriteRenderer2.sprite = frames[i];
+            }
+            else
+            {
+                effectSpriteRenderer.sprite = frames[i];
+            }
+            
             yield return new WaitForSeconds(frameDuration);
         }
 
 
         effectObject.SetActive(false);
+        effectObject2.SetActive(false);
 
 
     }
