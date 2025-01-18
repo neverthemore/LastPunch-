@@ -83,7 +83,7 @@ public class Movement : MonoBehaviour
                         cutSceneLogic.ReturnControl();
                 }
             }
-            if(_sceneTwo)
+            if (_sceneTwo)
             {
                 if (_endScene)
                 {
@@ -204,7 +204,7 @@ public class Movement : MonoBehaviour
     {
         if (other.CompareTag("Broken Door"))
             cutSceneLogic.StatusBrokenTrigger(false);
-        if(other.CompareTag("MatherZone"))
+        if (other.CompareTag("MatherZone"))
             cutSceneLogic.StatusMatherTrigger(false);
         if (other.CompareTag("Rotation"))
         {

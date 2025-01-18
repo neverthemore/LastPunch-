@@ -79,10 +79,7 @@ public class CutSceneLogic : MonoBehaviour
     }
 
     void Update()
-    {
-        if (Input.GetKey(KeyCode.M))
-            SceneManager.LoadScene(sceneBuildIndex: 2);
-
+    {       
         if (_typeScene == 1)
         {
             if (_statusTriggerDoor && _doorCheck && Input.GetKey(KeyCode.F))
