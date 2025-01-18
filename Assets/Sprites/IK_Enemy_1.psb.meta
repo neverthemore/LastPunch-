@@ -6756,46 +6756,6 @@ ScriptedImporter:
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: Forearm_R
-    spriteName: 
-    isGroup: 1
-    parentIndex: 75
-    spriteID: a40a6343a3201ac4187bd2d242c4fdb2
-    layerID: 138
-    mosaicPosition: {x: 0, y: 0}
-    flatten: 0
-    isImported: 0
-    isVisible: 1
-  - name: "\u0421\u043B\u043E\u0439 15"
-    spriteName: "\u0421\u043B\u043E\u0439 15"
-    isGroup: 0
-    parentIndex: 90
-    spriteID: d82b6b394fe4d2a46a640715a3d41204
-    layerID: 171
-    mosaicPosition: {x: 4, y: 347}
-    flatten: 0
-    isImported: 1
-    isVisible: 1
-  - name: Shoulder_R
-    spriteName: 
-    isGroup: 1
-    parentIndex: 75
-    spriteID: 8a7ceb6861bdc0645ad6d821c2b2c5f7
-    layerID: 135
-    mosaicPosition: {x: 0, y: 0}
-    flatten: 0
-    isImported: 0
-    isVisible: 1
-  - name: "\u0421\u043B\u043E\u0439 14"
-    spriteName: "\u0421\u043B\u043E\u0439 14"
-    isGroup: 0
-    parentIndex: 92
-    spriteID: 80b03cfdeefc99749a25b27c50823486
-    layerID: 170
-    mosaicPosition: {x: 188, y: 289}
-    flatten: 0
-    isImported: 1
-    isVisible: 1
   - name: Shin_L
     spriteName: 
     isGroup: 1
@@ -6809,7 +6769,7 @@ ScriptedImporter:
   - name: Shin_L
     spriteName: Shin_L
     isGroup: 0
-    parentIndex: 94
+    parentIndex: 90
     spriteID: fff26e909a707984b8f52e1774eb344a
     layerID: 131
     mosaicPosition: {x: 304, y: 144}
@@ -6829,7 +6789,7 @@ ScriptedImporter:
   - name: Thigh_L
     spriteName: Thigh_L
     isGroup: 0
-    parentIndex: 96
+    parentIndex: 92
     spriteID: 137b45c0ea4dfcd4d9bac377970bd5c4
     layerID: 128
     mosaicPosition: {x: 304, y: 287}
@@ -6849,7 +6809,7 @@ ScriptedImporter:
   - name: Hip
     spriteName: Hip
     isGroup: 0
-    parentIndex: 98
+    parentIndex: 94
     spriteID: 95cdbea66aa078f489a90ae6b91ebafc
     layerID: 125
     mosaicPosition: {x: 304, y: 428}
@@ -6869,7 +6829,7 @@ ScriptedImporter:
   - name: Shin_R
     spriteName: Shin_R
     isGroup: 0
-    parentIndex: 100
+    parentIndex: 96
     spriteID: b9fc696253131bb46ba2a0541983b3f0
     layerID: 122
     mosaicPosition: {x: 411, y: 4}
@@ -6889,10 +6849,50 @@ ScriptedImporter:
   - name: Thigh_R
     spriteName: Thigh_R
     isGroup: 0
-    parentIndex: 102
+    parentIndex: 98
     spriteID: b8c133934f5470d47a65a461b0aa252d
     layerID: 119
     mosaicPosition: {x: 411, y: 127}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Forearm_R
+    spriteName: 
+    isGroup: 1
+    parentIndex: 98
+    spriteID: a40a6343a3201ac4187bd2d242c4fdb2
+    layerID: 138
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: "\u0421\u043B\u043E\u0439 15"
+    spriteName: "\u0421\u043B\u043E\u0439 15"
+    isGroup: 0
+    parentIndex: 100
+    spriteID: d82b6b394fe4d2a46a640715a3d41204
+    layerID: 171
+    mosaicPosition: {x: 4, y: 347}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Shoulder_R
+    spriteName: 
+    isGroup: 1
+    parentIndex: 98
+    spriteID: 8a7ceb6861bdc0645ad6d821c2b2c5f7
+    layerID: 135
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: "\u0421\u043B\u043E\u0439 14"
+    spriteName: "\u0421\u043B\u043E\u0439 14"
+    isGroup: 0
+    parentIndex: 102
+    spriteID: 80b03cfdeefc99749a25b27c50823486
+    layerID: 170
+    mosaicPosition: {x: 188, y: 289}
     flatten: 0
     isImported: 1
     isVisible: 1
