@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -21,13 +22,15 @@ public class Enemy : MonoBehaviour
     public float attackDamage = 5;
     public float attackCooldown = 2f;
 
-    
+    public Sprite newSprite; // Новый спрайт для замены
+    private SpriteRenderer spriteRenderer;
+
     public float pushForce = 5f;
     public float pushDuration = 2f;
     public float stunDuration = 2f;
 
-    
 
+ 
     private Transform target;
     private Rigidbody rb;
     private Animator animator;
@@ -46,6 +49,9 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        Transform IK_Enemy = transform.Find("IK_Enemy");
+        Transform Head = IK_Enemy.Find("Head");
+        spriteRenderer = Head.GetComponent<SpriteRenderer>();
         originalScale = transform.localScale;
         effectObject = new GameObject("StunEffect");
         effectSpriteRenderer = effectObject.AddComponent<SpriteRenderer>();
@@ -211,9 +217,18 @@ public class Enemy : MonoBehaviour
     public void Stun(float duration)
     {
         if (!door) StartCoroutine(StunCoroutine(duration));
+        ChangeSprite();
         ShowEffect(); // Отобразить эффект
         StartCoroutine(PlayAnimation(stunFrames, duration));
 
+    }
+    void ChangeSprite()
+    {
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.sprite = newSprite;
+            Debug.Log("Sprite has been changed due to damage.");
+        }
     }
 
     private void ShowEffect()
@@ -250,7 +265,9 @@ public class Enemy : MonoBehaviour
     }
     public void TakeDamage(int attackDamage, HitType hitType)
     {
+
         health -= attackDamage;
+
         if (door)
         {
             StartCoroutine(DoorShake());
