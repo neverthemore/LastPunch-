@@ -1,32 +1,40 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [SerializeField] private Button _buttonOne;
-    [SerializeField] private Image _fadeImage;
+    [SerializeField] private Button _buttonOne; // Кнопка для старта
+    [SerializeField] private Image _fadeImage; // Изображение для затухания
+
+    private void Start()
+    {
+        // Подписываемся на событие нажатия кнопки
+        if (_buttonOne != null)
+        {
+            _buttonOne.onClick.AddListener(StartButton);
+        }
+    }
 
     public void StartButton()
-    {        
-        StartCoroutine(FadeOut(_fadeImage));
-    }
-    private IEnumerator FadeOut(UnityEngine.UI.Image image)
     {
-        image.gameObject.SetActive(true);
+        StartCoroutine(FadeOut(_fadeImage));
+       
+    }
+
+    private IEnumerator FadeOut(Image image)
+    {
+        image.gameObject.SetActive(true); // Активируем изображение
         Color targetImage = image.color;
 
-        float halfDuration = 5f;
+        float halfDuration = 5f; 
         float time = 0f;
-        float startAlpha;
-        float endAlpha;
 
-        startAlpha = 1f;
-        endAlpha = 0f;
+        float startAlpha = 0f;
+        float endAlpha = 1f;
+
+        
         while (time < halfDuration)
         {
             time += Time.deltaTime;
@@ -34,7 +42,9 @@ public class MainMenu : MonoBehaviour
             image.color = new Color(targetImage.r, targetImage.g, targetImage.b, newAlpha);
             yield return null;
         }
-        yield return new WaitForSeconds(1);
-        SceneManager.LoadScene(sceneBuildIndex: 1);
+
+         
+
+        SceneManager.LoadScene(1); // Загрузка сцены по индексу
     }
 }
