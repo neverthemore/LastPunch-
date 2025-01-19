@@ -78,19 +78,20 @@ public class Interaction : MonoBehaviour
     #region auxiliary scripts
     private IEnumerator TrashCanShake()
     {
-        float shake = 1f;
+        //float shake = 1f;
         float time = 0.07f;
-        transform.parent.gameObject.transform.rotation = Quaternion.Euler(-shake, shake, -shake);
-        yield return new WaitForSeconds(time);
-        transform.parent.gameObject.transform.rotation = Quaternion.Euler(shake, -shake, shake);
-        yield return new WaitForSeconds(time);
-        transform.parent.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+        //var _def = transform.parent.gameObject.transform.rotation;
+        //transform.parent.gameObject.transform.rotation = Quaternion.Euler(-shake, 0, -shake);
+        //yield return new WaitForSeconds(time);
+        //transform.parent.gameObject.transform.rotation = Quaternion.Euler(shake, 0, shake);
+        //yield return new WaitForSeconds(time);
+        //transform.parent.gameObject.transform.rotation = _def;
         yield return new WaitForSeconds(time * 2);
-        transform.parent.gameObject.GetComponent<SpriteRenderer>().sprite = _trashCanOpen;
 
         int choice = _rand.Next(0, 2);
         if (choice == 0)
             Instantiate(_shawarma, _spawn.transform.position, _spawn.transform.rotation);
+        transform.parent.gameObject.GetComponent<SpriteRenderer>().sprite = _trashCanOpen;
         gameObject.SetActive(false);
         _buttonF.SetActive(false);
     }
