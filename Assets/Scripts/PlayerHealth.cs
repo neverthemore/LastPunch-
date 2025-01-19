@@ -23,6 +23,8 @@ public class PlayerHealth : MonoBehaviour
     public bool isBlocking = false;
     private Animator animator;
 
+    private HandFollowCursor handFollowCursor;
+
     public float maxStamina = 100f;
     public float currentStamina; // Максимальная выносливость
     public float staminaCostPerSecond = 20f; // Стоимость блока в выносливости
@@ -34,7 +36,7 @@ public class PlayerHealth : MonoBehaviour
     public Image staminaBar;
     void Start()
     {
-
+        handFollowCursor = GetComponent<HandFollowCursor>();
         currentHealth = maxHealth;
         currentStamina = maxStamina;
         effectObject = new GameObject("StunEffect");
@@ -80,7 +82,7 @@ public class PlayerHealth : MonoBehaviour
          
 
         // Проверка нажатия пробела
-        if (Input.GetKey(KeyCode.Space) && !isStunned && movement.isRunning && currentStamina > 0)
+        if (Input.GetKey(KeyCode.Space) && !isStunned && movement.isRunning && !handFollowCursor.handon && currentStamina > 0)
         {
             Block();
         }

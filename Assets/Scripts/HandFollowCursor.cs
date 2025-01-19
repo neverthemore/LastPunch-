@@ -13,6 +13,8 @@ public class HandFollowCursor : MonoBehaviour
     public Transform handLeft;
     public Transform handRight;
 
+    public bool handon = true;
+
     [SerializeField]
     float handLeftDistanceValue;
     float handLeftDistance;
@@ -91,19 +93,30 @@ public class HandFollowCursor : MonoBehaviour
                 targetHandLeftDistance = handLeftDistance * hitLeftDistanceFactor;
                 leftHandCollider.enabled = true;
                 StartCoroutine(DisableColliderAfterTime(leftHandCollider, 1f)); // Disable after 1 second
-            }
+                handon = false;
+}
             if (Input.GetMouseButtonDown(1))
             {
                 targetHandRightDistance = handRightDistance * hitRightDistanceFactor;
                 rightHandCollider.enabled = true;
                 StartCoroutine(DisableColliderAfterTime(rightHandCollider, 1f)); // Disable after 1 second
+                handon = false;
             }
 
+            if (Input.GetMouseButtonUp(0))
+            {
+                handon = true;
+            }
+            if (Input.GetMouseButtonUp(1))
+            {
+                handon = true;
+            }
             // Movement of hands
             if (Input.GetMouseButton(0))
             {
                 currentHandLeftDistance = Mathf.MoveTowards(currentHandLeftDistance, targetHandLeftDistance, hitSpeed * Time.deltaTime);
                 handLeft.position = transform.position + Quaternion.AngleAxis(realAngle, transform.forward) * transform.right * currentHandLeftDistance;
+                
             }
             else
             {
@@ -114,6 +127,7 @@ public class HandFollowCursor : MonoBehaviour
             {
                 currentHandRightDistance = Mathf.MoveTowards(currentHandRightDistance, targetHandRightDistance, hitSpeed * Time.deltaTime);
                 handRight.position = transform.position + Quaternion.AngleAxis(realAngle, transform.forward) * transform.right * currentHandRightDistance;
+               
             }
             else
             {

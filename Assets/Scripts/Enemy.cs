@@ -101,6 +101,7 @@ public class Enemy : MonoBehaviour
             {
                 MoveTowardsPlayer();
                 
+                
             }
            
             FaceCamera();
@@ -130,18 +131,22 @@ public class Enemy : MonoBehaviour
     {
         if (target != null && !door)
         {
+            
             float distanceToTarget = Vector3.Distance(transform.position, target.position);
             if (distanceToTarget <= detectionRange)
             {
+                
                 PunchRadius punchRadius = target.GetComponent<PunchRadius>();
                 if (punchRadius != null)
                 {
+                    
                     Vector3 direction = (target.position - transform.position).normalized;
                     Vector3 destination = target.position - direction * (punchRadius.radius - 0.1f); // Устанавливаем позицию
 
                     float distanceToDestination = Vector3.Distance(transform.position, destination);
                     if (distanceToDestination > 0.1f)
                     {
+                       
                         rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.z * moveSpeed);
                         animator.SetBool("walkEnemy", true); // Запускаем анимацию ходьбы
                     }
