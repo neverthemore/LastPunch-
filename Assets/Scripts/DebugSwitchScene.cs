@@ -7,6 +7,8 @@ public class DebugSwitchScene : MonoBehaviour
 {
     void Update()
     {
+        if (Input.GetKey(KeyCode.U))
+            SceneManager.LoadScene(sceneBuildIndex: 0);
         if (Input.GetKey(KeyCode.I))
             SceneManager.LoadScene(sceneBuildIndex: 1);
         if (Input.GetKey(KeyCode.O))
