@@ -290,6 +290,7 @@ public class Enemy : MonoBehaviour
 
         // Запуск анимации атаки
         animator.SetBool("Attack", true);
+        yield return new WaitForSeconds(0.3f);
 
         PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
         if (playerHealth != null)
