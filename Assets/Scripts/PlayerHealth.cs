@@ -82,7 +82,7 @@ public class PlayerHealth : MonoBehaviour
          
 
         // Проверка нажатия пробела
-        if (Input.GetKey(KeyCode.Space) && !isStunned && movement.isRunning && !handFollowCursor.handon && currentStamina > 0)
+        if (Input.GetKey(KeyCode.Space) && !isStunned && movement.isRunning  && currentStamina > 0)
         {
             Block();
         }
