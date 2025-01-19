@@ -28,7 +28,7 @@ public class DynamicLayerManager : MonoBehaviour
     {
         foreach (var spriteInfo in spriteInfos)
         {
-            if (transform.position.z < playerTransform.position.z)
+            if (transform.position.z < playerTransform.position.z) 
             {
                 spriteInfo.spriteRenderer.sortingOrder = spriteInfo.originalOrder + orderOffset; // Увеличиваем порядок для объектов позади игрока
             }

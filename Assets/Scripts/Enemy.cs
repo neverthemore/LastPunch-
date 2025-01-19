@@ -296,7 +296,7 @@ public class Enemy : MonoBehaviour
         if (playerHealth != null)
         {
             playerHealth.TakeDamage(attackDamage);
-            playerHealth.Stun(stunDuration); // Оглушаем игрока
+            playerHealth.StartCoroutine(playerHealth.Stun1(stunDuration)); // Оглушаем игрока
             Debug.Log($"Атакован игрок на {attackDamage} урона и оглушен!");
         }
 

@@ -118,10 +118,18 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    public void Stun(float duration)
+
+    public IEnumerator Stun1(float stunDuration)
+    {
+        yield return new WaitForSeconds(0.4f);
+        Stun2(stunDuration);
+    }
+    
+
+    public void Stun2(float duration)
     {
         if (!isStunned && !isBlocking) // Не позволяем повторное оглушение
-        {
+        {         
             isStunned = true; // Устанавливаем состояние оглушения
             animator.SetBool("IsStunned", true);
             animator.SetBool("Walk", false);
