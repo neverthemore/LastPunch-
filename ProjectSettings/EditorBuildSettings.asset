@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Cutscene 2.unity
     guid: 3b01f45e3b55c654d8011600b201ab38
   - enabled: 1
-    path: Assets/Scenes/Level 2.unity
+    path: Assets/Scenes/Dvor.unity
     guid: 408740186892eee4b96b28a8efdc5e39
   m_configObjects: {}
