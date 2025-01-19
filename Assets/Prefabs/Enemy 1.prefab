@@ -122,10 +122,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4ff4208bde5194e91fabb53fe68aa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stunFrames: []
+  enemyDirectionLocal: {x: 0, y: 0, z: 0}
+  instructionPrefab: {fileID: 0}
+  instructionOffset: 0.5
+  instructionFrames: []
   moveSpeed: 3
   detectionRange: 30
   health: 30
   mainCamera: {fileID: 0}
+  attackDamage: 5
+  attackCooldown: 2
+  pushForce: 5
+  pushDuration: 2
+  stunDuration: 2
+  headDamage: 15
+  bodyDamage: 10
+  legDamage: 5
+  _cutSceneLogic: {fileID: 0}
 --- !u!54 &821747752777324239
 Rigidbody:
   m_ObjectHideFlags: 0
