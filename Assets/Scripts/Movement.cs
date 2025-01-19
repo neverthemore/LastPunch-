@@ -207,7 +207,7 @@ public class Movement : MonoBehaviour
         {
             if (other.gameObject == _arrTriggerZone[_rotationCount])
             {
-                _rotateLeft = false;
+                _rotateLeft = true;
                 _buttonQ.SetActive(true);
             }
             else

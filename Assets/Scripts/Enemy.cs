@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer effectSpriteRenderer; // SpriteRenderer для эффекта
     private GameObject effectObject;
 
+    public Vector3 enemyDirectionLocal;
 
     public GameObject instructionPrefab; // Префаб анимации для рук
     public float instructionOffset = 0.5f; // Смещение для размещения анимации
@@ -26,7 +27,7 @@ public class Enemy : MonoBehaviour
     public float stunDuration = 2f;
 
     
-
+   
     private Transform target;
     private Rigidbody rb;
     private Animator animator;
@@ -79,7 +80,6 @@ public class Enemy : MonoBehaviour
     }
     void Update()
     {
-       
 
         // Обновляем позицию эффекта, чтобы он следовал за головой
         if (isStunned)
@@ -173,21 +173,40 @@ public class Enemy : MonoBehaviour
     
     private void FaceCamera()
     {
-        if (mainCamera != null)
-        {
-            Vector3 cameraDirection = mainCamera.transform.position - transform.position;
-            cameraDirection.y = 0;
+        
 
-            if (cameraDirection != Vector3.zero)
+
+            if (mainCamera != null)
             {
-                transform.rotation = Quaternion.LookRotation(-cameraDirection);
-            }
-            float enemyPosX = transform.position.x;
-            float playerPosX = target.position.x;
+                Vector3 cameraDirection = mainCamera.transform.position - transform.position;
+                cameraDirection.y = 0;
 
-            // Проверяем, находится ли игрок слева от врага
-           
+                if (cameraDirection != Vector3.zero)
+                {
+                    transform.rotation = Quaternion.LookRotation(-cameraDirection);
+                }
+            }
+            Vector3 directionToPlayer = target.position - transform.position;
+
+            // Нормализуем его
+            directionToPlayer.Normalize();
+
+            // Получаем направление противника в его локальной системе координат
+            enemyDirectionLocal = transform.right; // Например, "вправо" может быть положительным X в локальной системе координат противника
+
+            // Вычисляем скалярное произведение для определения направления игрока относительно противника
+            float dotProduct = Vector3.Dot(enemyDirectionLocal, directionToPlayer);
+
+            if (dotProduct > 0)
+            {
+                transform.localScale = new Vector3(originalScale.x, originalScale.y, originalScale.z);
+              }
+            else
+            {
+            transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
         }
+
+        
     }
     public void Stun(float duration)
     {
