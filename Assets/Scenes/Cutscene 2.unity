@@ -323,7 +323,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 12345678901234567
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7744a63e41fe63d41bbd8405a56174de, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -390,7 +390,7 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_renderer: {fileID: 89246866}
   m_maskType: 0
 --- !u!23 &89246866
@@ -2698,14 +2698,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694fc67701a8dd54aaf9cbdfa0c402b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  instructionPrefab: {fileID: 788521901}
-  instructionOffset: 0.5
-  instructionFrames:
-  - {fileID: 21300000, guid: 39e32fd2c7d33f746be1861c386a7726, type: 3}
-  - {fileID: 21300000, guid: 0d18e843120a48740a27270c93059109, type: 3}
-  - {fileID: 21300000, guid: 8d9a9af03aad2004a9e0543b7f606a8f, type: 3}
-  - {fileID: 21300000, guid: 80eb95f3e5e0fb54a83cab78922a7861, type: 3}
-  - {fileID: 21300000, guid: e093fbe58ac6a47479e58dd400a07cfc, type: 3}
+  stunFrames: []
+  effectDuration: 0.4
   leftHandCollider: {fileID: 788521904}
   rightHandCollider: {fileID: 1041103377}
   freezeDuration: 1
@@ -4079,14 +4073,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694fc67701a8dd54aaf9cbdfa0c402b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  instructionPrefab: {fileID: 1041103376}
-  instructionOffset: 0.5
-  instructionFrames:
-  - {fileID: 21300000, guid: 39e32fd2c7d33f746be1861c386a7726, type: 3}
-  - {fileID: 21300000, guid: 0d18e843120a48740a27270c93059109, type: 3}
-  - {fileID: 21300000, guid: 8d9a9af03aad2004a9e0543b7f606a8f, type: 3}
-  - {fileID: 21300000, guid: 80eb95f3e5e0fb54a83cab78922a7861, type: 3}
-  - {fileID: 21300000, guid: e093fbe58ac6a47479e58dd400a07cfc, type: 3}
+  stunFrames: []
+  effectDuration: 0.4
   leftHandCollider: {fileID: 788521904}
   rightHandCollider: {fileID: 1041103377}
   freezeDuration: 1
@@ -5941,7 +5929,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 12345678901234567
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7744a63e41fe63d41bbd8405a56174de, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -6008,7 +5996,7 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_renderer: {fileID: 1474319356}
   m_maskType: 0
 --- !u!23 &1474319356
@@ -7156,10 +7144,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stunFrames: []
+  stunFrames2: []
   health: 100
   isStunned: 0
   stunDuration: 2
   blockDuration: 1.5
+  isBlocking: 0
   stamina: 100
   staminaCostPerSecond: 20
   staminaRecoveryRate: 5
@@ -7227,6 +7217,7 @@ MonoBehaviour:
   rotationSpeed: 200
   skin: {fileID: 2062753656}
   cam: {fileID: 999739324}
+  isRunning: 1
   cutSceneLogic: {fileID: 101240697}
   lastDir: 0
   _sceneOne: 0
@@ -7243,6 +7234,7 @@ MonoBehaviour:
   - {fileID: 560155447}
   _currentWaypoint: 0
   _needWaypoint: 0
+  _interaction: {fileID: 0}
 --- !u!143 &1899288774
 CharacterController:
   m_ObjectHideFlags: 0

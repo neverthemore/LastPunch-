@@ -8,10 +8,10 @@ public class DebugSwitchScene : MonoBehaviour
     void Update()
     {
         if (Input.GetKey(KeyCode.I))
-            SceneManager.LoadScene(sceneBuildIndex: 0);
-        if (Input.GetKey(KeyCode.O))
             SceneManager.LoadScene(sceneBuildIndex: 1);
-        if (Input.GetKey(KeyCode.P))
+        if (Input.GetKey(KeyCode.O))
             SceneManager.LoadScene(sceneBuildIndex: 2);
+        if (Input.GetKey(KeyCode.P))
+            SceneManager.LoadScene(sceneBuildIndex: 3);
     }
 }
