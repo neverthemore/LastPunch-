@@ -1,7 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using TreeEditor;
-using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 
 public class Interaction : MonoBehaviour

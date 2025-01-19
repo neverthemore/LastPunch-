@@ -28,7 +28,7 @@ public class MainMenu : MonoBehaviour
         image.gameObject.SetActive(true); // Активируем изображение
         Color targetImage = image.color;
 
-        float halfDuration = 5f; 
+        float halfDuration = 3f; 
         float time = 0f;
 
         float startAlpha = 0f;
