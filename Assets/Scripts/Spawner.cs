@@ -1,107 +1,33 @@
 using UnityEngine;
-using System.Collections.Generic;
-using System.Collections;
-using UnityEngine.SceneManagement;
-using System.Runtime.InteropServices;
 
-public class Spawner : MonoBehaviour
+public class EnemySpawner : MonoBehaviour
 {
-    [System.Serializable]
-    public class SpawnPoint
+    public GameObject enemyPrefab; // Префаб врага для спавна
+    public Transform[] spawnPoints; // Точки спавна
+
+    public int numberOfEnemiesToSpawn = 5; // Количество врагов для спавна
+    public int[] spawnIndices;
+
+    public void SpawnEnemies()
     {
-        public Transform point; // Точка спавна
-        public float spawnRadius = 5f; // Радиус спавна
-    }
-
-    public GameObject enemyPrefab; // Префаб врага
-    public SpawnPoint[] spawnPoints; // Массив точек спавна
-    public float spawnDelay = 5f; // Задержка перед спавном следующего врага
-    public int maxEnemies = 5; // Максимальное количество врагов
-
-    private List<GameObject> activeEnemies = new List<GameObject>(); // Список активных врагов
-
-    void Start()
-    {
-        StartCoroutine(SpawnEnemyRoutine());
-    }
-
-    void Update()
-    {
-        // Удаляем из списка уничтоженных врагов
-        activeEnemies.RemoveAll(enemy => enemy == null);
-        if (Input.GetKeyDown(KeyCode.R))
+        for (int i = 0; i < numberOfEnemiesToSpawn; i++)
         {
-            if (activeEnemies.Count < maxEnemies)
-            {
-                SpawnEnemy();
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ChangeScene();
-        } 
-            
-    }
-
-    public void ChangeScene()
-    {
-        SceneManager.LoadScene("Level 2");
-    }
-    IEnumerator SpawnEnemyRoutine()
-    {
-        while (true)
-        {
-            if (activeEnemies.Count < maxEnemies)
-            {
-                SpawnEnemy();
-            }
-            yield return new WaitForSeconds(spawnDelay);
+            int spawnIndex = spawnIndices[i];
+            Instantiate(enemyPrefab, spawnPoints[spawnIndex].position, Quaternion.identity);
         }
     }
 
-    void SpawnEnemyButton()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-            Debug.Log("жопа");
-        {
-            SpawnEnemy();
-        }
-        
-    }
-    
-
-    void SpawnEnemy()
-    {
-        if (enemyPrefab != null && spawnPoints.Length > 0)
-        {
-            // Выбираем случайную точку спавна
-            SpawnPoint spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-
-            // Рассчитываем случайную позицию в пределах радиуса
-            Vector3 randomOffset = Random.insideUnitSphere * spawnPoint.spawnRadius;
-            randomOffset.y = 0; // Не изменяем высоту
-
-            Vector3 spawnPosition = spawnPoint.point.position + randomOffset;
-
-            // Создаем врага и добавляем его в список
-            GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-            activeEnemies.Add(enemy);
-        }
-    }
-
-    // Отображение радиусов спавна в редакторе
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if (spawnPoints != null)
+        Gizmos.color = Color.red;
+        foreach (Transform spawnPoint in spawnPoints)
         {
-            Gizmos.color = Color.magenta;
-            foreach (var spawnPoint in spawnPoints)
+            if (spawnPoint != null)
             {
-                if (spawnPoint.point != null)
-                {
-                    Gizmos.DrawWireSphere(spawnPoint.point.position, spawnPoint.spawnRadius);
-                }
+                Gizmos.DrawSphere(spawnPoint.position, 0.5f);
             }
         }
     }
+#endif
 }

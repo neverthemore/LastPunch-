@@ -13,27 +13,30 @@ public class PlayerHealth : MonoBehaviour
     private SpriteRenderer effectSpriteRenderer2; // SpriteRenderer для эффекта
     private GameObject effectObject2;
 
-
+    private Movement movement;
     private float blockeffectduration = 0.5f;
-    public int health = 100;
-    private int maxhealth;
+    public float currentHealth;
+    private float maxHealth = 100f;
     public bool isStunned = false; 
     public float stunDuration = 2f;
     public float blockDuration = 1.5f;
     public bool isBlocking = false;
     private Animator animator;
 
-    public float stamina = 100f; // Максимальная выносливость
+    public float maxStamina = 100f;
+    public float currentStamina; // Максимальная выносливость
     public float staminaCostPerSecond = 20f; // Стоимость блока в выносливости
     public float staminaRecoveryRate = 5f; // Восстановление выносливости в секунду
     private bool isRecoveringStamina = false; // Отслеживание состояния восстановления выносливости
 
-    public Slider healthSlider;
+    public Image healthBar;
 
-    public Slider staminaSlider;
+    public Image staminaBar;
     void Start()
     {
-        maxhealth = health;
+
+        currentHealth = maxHealth;
+        currentStamina = maxStamina;
         effectObject = new GameObject("StunEffect");
         effectSpriteRenderer = effectObject.AddComponent<SpriteRenderer>();
         effectSpriteRenderer.sortingOrder = 10000; // Устанавливаем порядок отрисовки выше, чем у других спрайтов
@@ -46,14 +49,15 @@ public class PlayerHealth : MonoBehaviour
         effectObject2.SetActive(false);
         effectObject2.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
         
-
+        movement = GetComponent<Movement>();
         animator = GetComponentInChildren<Animator>();
-        UpdateStaminaUI();
-        healthSlider.maxValue = health; 
-        healthSlider.value = health;
+
+        
     }
     void Update()
     {
+        healthBar.fillAmount = currentHealth / maxHealth;
+        staminaBar.fillAmount = currentStamina / maxStamina;
         if (isBlocking)
         {
             effectObject2.transform.position = transform.position + Vector3.up * 0.9f + Vector3.left * 1.2f;
@@ -63,20 +67,20 @@ public class PlayerHealth : MonoBehaviour
             effectObject.transform.position = transform.position + Vector3.up * 1.1f + Vector3.left * 0.5f; // Позиция над головой
         }
         // Восстановление выносливости
-        if (isRecoveringStamina && stamina < 100f)
+        if (isRecoveringStamina && currentStamina < 100f)
         {
-            stamina += staminaRecoveryRate * Time.deltaTime;
-            if (stamina >= 100f)
+            currentStamina += staminaRecoveryRate * Time.deltaTime;
+            if (currentStamina >= 100f)
             {
-                stamina = 100f;
+                currentStamina = 100f;
                 isRecoveringStamina = false; // Останавливаем восстановление, когда выносливость полна
             }
-            UpdateStaminaUI();
+            
         }
-         healthSlider.value = health;
+         
 
         // Проверка нажатия пробела
-        if (Input.GetKey(KeyCode.Space) && !isStunned && stamina > 0)
+        if (Input.GetKey(KeyCode.Space) && !isStunned && movement.isRunning && currentStamina > 0)
         {
             Block();
         }
@@ -98,10 +102,10 @@ public class PlayerHealth : MonoBehaviour
         
         if (!isBlocking) // Получение урона только если не оглушен и не блокирует
         {
-            health -= (int)damage;
-            Debug.Log($"Игрок получил {damage} урона! Осталось здоровья: {health}");
+            currentHealth -= (int)damage;
+            Debug.Log($"Игрок получил {damage} урона! Осталось здоровья: {currentHealth}");
 
-            if (health <= 0)
+            if (currentHealth <= 0)
             {
                 Die();
             }
@@ -172,16 +176,16 @@ public class PlayerHealth : MonoBehaviour
         }
 
         // Потребляем выносливость
-        stamina -= staminaCostPerSecond * Time.deltaTime;
-        if (stamina < 0)
+        currentStamina -= staminaCostPerSecond * Time.deltaTime;
+        if (currentStamina < 0)
         {
-            stamina = 0;
-        }
-        if (stamina == 0)
+            currentStamina = 0;
+        }   
+        if (currentStamina == 0)
         {
             EndBlock();
         }
-        UpdateStaminaUI();
+        
     }
     private void EndBlock()
     {
@@ -217,19 +221,13 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("Player died!");  
         Destroy(gameObject);
     }
-    private void UpdateStaminaUI()
-    {
-        if (staminaSlider != null)
-        {
-            staminaSlider.value = stamina; // Обновляем значение слайдера
-        }
-    }
+  
     public void GetHealth(int value)
     {
-        if (value + health >= maxhealth)
-            health = maxhealth;
+        if (value + currentHealth >= maxHealth)
+            currentHealth = maxHealth;
         else
-            health += value;
-        Debug.Log("Health regen: " + health);
+            currentHealth += value;
+        Debug.Log("Health regen: " + currentHealth);
     }
 }
