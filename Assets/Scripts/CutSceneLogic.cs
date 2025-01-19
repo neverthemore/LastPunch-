@@ -118,7 +118,7 @@ public class CutSceneLogic : MonoBehaviour
         else if (_typeScene == 2)
         {
             if(!GameObject.FindGameObjectWithTag("Player") && _idText == 6)
-                SceneManager.LoadScene(sceneBuildIndex: 1);
+                SceneManager.LoadScene(sceneBuildIndex: 2);
             if (_endScene && !_endConf)
             {
                 _endConf = true;
@@ -217,7 +217,7 @@ public class CutSceneLogic : MonoBehaviour
         if (_typeScene != 2)
             _player.SetActive(Out);
         if (!GameObject.FindGameObjectWithTag("Door") && _typeScene == 1)
-            SceneManager.LoadScene(sceneBuildIndex: 1);
+            SceneManager.LoadScene(sceneBuildIndex: 2);
         if (_typeScene == 2)
         {
             if (_idText != 9)
@@ -227,7 +227,7 @@ public class CutSceneLogic : MonoBehaviour
             }
             else
             {
-                SceneManager.LoadScene(sceneBuildIndex: 2);
+                SceneManager.LoadScene(sceneBuildIndex: 3);
             }
         }
     }
