@@ -659,6 +659,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: be6925845b773c94bb0d03c1306df8d2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6908279730140263179}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: be6925845b773c94bb0d03c1306df8d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5631329354847692055}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: be6925845b773c94bb0d03c1306df8d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4268262647428922503}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: be6925845b773c94bb0d03c1306df8d2, type: 3}
 --- !u!4 &292339817293626309 stripped
 Transform:
@@ -714,6 +720,41 @@ MonoBehaviour:
     showGizmo: 1
   - color: {r: 0, g: 1, b: 0, a: 1}
     showGizmo: 1
+--- !u!95 &5631329354847692055
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3877767082373364740}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 51b28cdd933e9a941a60c42bc1aedf31, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-4268262647428922503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3877767082373364740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a6d23203400b4469703f21199a3b33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 0}
+  orderOffset: 500
 --- !u!4 &5805231530355635548 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2114717017327982363, guid: be6925845b773c94bb0d03c1306df8d2, type: 3}
