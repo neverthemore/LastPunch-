@@ -28,12 +28,12 @@ public class Movement : MonoBehaviour
     [SerializeField] private bool _sceneOne; // switch inspector only
     [SerializeField] private bool _sceneTwo; // switch inspector only
 
-    [SerializeField] private GameObject _buttonQ; // иконка Q
-    [SerializeField] private GameObject _buttonE; // иконка E
+   // [SerializeField] private GameObject _buttonQ; // иконка Q
+    // [SerializeField] private GameObject _buttonE; // иконка E
 
-    [SerializeField] private GameObject[] _arrTriggerZone = new GameObject[5]; // массив триггер зон
-    [SerializeField] private GameObject[] _arrWallsTypeOne = new GameObject[4];
-    [SerializeField] private GameObject[] _arrWallsTypeTwo = new GameObject[4];
+    // [SerializeField] private GameObject[] _arrTriggerZone = new GameObject[5]; // массив триггер зон
+    //[SerializeField] private GameObject[] _arrWallsTypeOne = new GameObject[4];
+    //[SerializeField] private GameObject[] _arrWallsTypeTwo = new GameObject[4];
 
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private int _currentWaypoint = 0;
@@ -42,7 +42,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private Interaction _interaction;
 
     private PlayerHealth playerHealth;
-    private Animator animator;
+    [SerializeField] private Animator animator;
     void Start()
     {
         if (GameObject.FindGameObjectWithTag("Shawarma") != null)
@@ -51,20 +51,21 @@ public class Movement : MonoBehaviour
 
 
         cc = GetComponent<CharacterController>();
-        _buttonE.SetActive(false);
-        _buttonQ.SetActive(false);
-        SwitchMethod(_arrWallsTypeOne, false);
+       // _buttonE.SetActive(false);
+        //_buttonQ.SetActive(false);
+       // SwitchMethod(_arrWallsTypeOne, false);
         animator = GetComponentInChildren<Animator>();
         playerHealth = GetComponent<PlayerHealth>();
-        if (_arrWallsTypeOne.Length == 0 && _arrWallsTypeTwo.Length == 0 && _arrTriggerZone.Length == 0)
-            _cutscene = true;
-        if (_cutscene)
-        {
-            if (_sceneOne)
-                _needWaypoint = 4;
-            else if (_sceneTwo)
-                _needWaypoint = 2;
-        }
+
+       // if (_arrWallsTypeOne.Length == 0 && _arrWallsTypeTwo.Length == 0 && _arrTriggerZone.Length == 0)
+           // _cutscene = true;
+        //if (_cutscene)
+        //{
+          //  if (_sceneOne)
+            //    _needWaypoint = 4;
+            //else if (_sceneTwo)
+              //  _needWaypoint = 2;
+      //  }
     }
 
     // Update is called once per frame
@@ -117,15 +118,16 @@ public class Movement : MonoBehaviour
     }
     void Update()
     {
-        if (!_cutscene)
+        // Проверяем playerHealth на null и отсутствие оглушения
+        if (playerHealth != null && !playerHealth.isStunned)
         {
-            if (playerHealth != null && !playerHealth.isStunned)
-            {
+            xInput = Input.GetAxis("Horizontal");
+            yInput = Input.GetAxis("Vertical");
+        }
 
-                xInput = Input.GetAxis("Horizontal");
-                yInput = Input.GetAxis("Vertical");
-
-            }
+        // Проверяем animator на null перед использованием
+        if (animator != null)
+        {
             if (xInput != 0 || yInput != 0)
             {
                 animator.SetBool("Walk", true);
@@ -135,35 +137,41 @@ public class Movement : MonoBehaviour
                 animator.SetBool("Walk", false);
             }
         }
+        else
+        {
+            Debug.LogError("Animator не назначен!");
+        }
+    
 
-        cc.Move(transform.forward * yInput * Time.deltaTime * speed + transform.right * xInput * Time.deltaTime * speed);
 
-        if (Input.GetKeyDown(KeyCode.Q) && (_rotateLeft || _rotateAllways))
+    cc.Move(transform.forward * yInput * Time.deltaTime * speed + transform.right * xInput * Time.deltaTime * speed);
+
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             rotateY += 90;
             _rotationCount++;
             _rotateLeft = false;
-            _buttonQ.SetActive(false);
+           //  _buttonQ.SetActive(false);
 
         }
-        if (Input.GetKeyDown(KeyCode.E) && (_rotateRight || _rotateAllways))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             rotateY -= 90;
             _rotationCount--;
             _rotateRight = false;
-            _buttonE.SetActive(false);
+           // _buttonE.SetActive(false);
         }
 
-        if (_rotationCount % 2 == 0)
-        {
-            SwitchMethod(_arrWallsTypeTwo, true);
-            SwitchMethod(_arrWallsTypeOne, false);
-        }
-        else
-        {
-            SwitchMethod(_arrWallsTypeTwo, false);
-            SwitchMethod(_arrWallsTypeOne, true);
-        }
+       // if (_rotationCount % 2 == 0)
+     //   {
+       //     SwitchMethod(_arrWallsTypeTwo, true);
+      //      SwitchMethod(_arrWallsTypeOne, false);
+        //}
+        //else
+        //{
+          //  SwitchMethod(_arrWallsTypeTwo, false);
+            //SwitchMethod(_arrWallsTypeOne, true);
+        //}
 
         currentRotateY = Mathf.Lerp(currentRotateY, rotateY, rotationSpeed * 0.001f);
         transform.rotation = Quaternion.Euler(0, currentRotateY, 0);
@@ -203,19 +211,19 @@ public class Movement : MonoBehaviour
             cutSceneLogic.StatusMatherTrigger(true);
         if (other.CompareTag("Shawarma"))
             _interaction.InteractionLogic("Shawarma", true);
-        if (other.CompareTag("Rotation") && !_rotateAllways)
-        {
-            if (other.gameObject == _arrTriggerZone[_rotationCount])
-            {
-                _rotateLeft = true;
-                _buttonQ.SetActive(true);
-            }
-            else
-            {
-                _rotateRight = true;
-                _buttonE.SetActive(true);
-            }
-        }
+        //if (other.CompareTag("Rotation") && !_rotateAllways)
+        //{
+            //if (other.gameObject == _arrTriggerZone[_rotationCount])
+            //{
+              //  _rotateLeft = true;
+                //_buttonQ.SetActive(true);
+            //}
+            //else
+            //{
+              //  _rotateRight = true;
+                //_buttonE.SetActive(true);
+            //}
+        //}
         if (other.CompareTag("Free Rotation"))
             _rotateAllways = true;
     }
@@ -229,8 +237,8 @@ public class Movement : MonoBehaviour
             _interaction.InteractionLogic("Shawarma", false);
         if (other.CompareTag("Rotation"))
         {
-            _buttonE.SetActive(false);
-            _buttonQ.SetActive(false);
+           // _buttonE.SetActive(false);
+            // _buttonQ.SetActive(false);
             _rotateLeft = false;
             _rotateRight = false;
         }
