@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e6fedc2472449cead18ef23b5cb30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Library:
+  - m_Name: Hand
+    m_Hash: 122744241
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Fist
+      m_Hash: 189249346
+      m_Sprite: {fileID: -2599861183575118117, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -2599861183575118117, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+    - m_Name: Pistol
+      m_Hash: 628959629
+      m_Sprite: {fileID: -2640579270574916257, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -2640579270574916257, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+    - m_Name: AKGun
+      m_Hash: 573768561
+      m_Sprite: {fileID: -8114207750496115516, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -8114207750496115516, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 3
+  - m_Name: Head
+    m_Hash: 130111906
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Head1
+      m_Hash: 990112810
+      m_Sprite: {fileID: 1956672391274909160, guid: 70391787f53dcb040862c49d9e6391fd, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1956672391274909160, guid: 70391787f53dcb040862c49d9e6391fd, type: 3}
+    - m_Name: Head2
+      m_Hash: 571129232
+      m_Sprite: {fileID: 7771640635361742647, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 7771640635361742647, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 2
+  m_PrimaryLibraryGUID: 
+  m_ModificationHash: 638777434288311368
+  m_Version: 1
