@@ -12,6 +12,9 @@ public class HandFollowCursor : MonoBehaviour
     public LayerMask enemyLayer;
     public Transform handLeft;
     public Transform handRight;
+    public Transform head;
+    public Transform handLeftPoint;
+    public Transform handRightPoint;
 
     public bool handon = true;
 
@@ -68,14 +71,16 @@ public class HandFollowCursor : MonoBehaviour
 
     void Update()
     {
+        mousePosition = Input.mousePosition;
+        mousePosition.z = Vector3.Distance(cam.transform.position, transform.position);
+        mousePositionInWorld = camBrain.ScreenToWorldPoint(mousePosition);
+
+        Vector3 dir = (mousePositionInWorld - transform.position).normalized;
+        angle = Vector3.SignedAngle(transform.right, dir, transform.forward);
+
         if (!playerHealth.isStunned && !playerHealth.isBlocking && movement.isRunning)
         {
-            mousePosition = Input.mousePosition;
-            mousePosition.z = Vector3.Distance(cam.transform.position, transform.position);
-            mousePositionInWorld = camBrain.ScreenToWorldPoint(mousePosition);
-
-            Vector3 dir = (mousePositionInWorld - transform.position).normalized;
-            angle = Vector3.SignedAngle(transform.right, dir, transform.forward);
+           
             if (movement.lastDir == Direction.Right)
             {
                 realAngle = Mathf.Clamp(angle, minAngle, maxAngle);
@@ -127,7 +132,7 @@ public class HandFollowCursor : MonoBehaviour
             {
                 currentHandRightDistance = Mathf.MoveTowards(currentHandRightDistance, targetHandRightDistance, hitSpeed * Time.deltaTime);
                 handRight.position = transform.position + Quaternion.AngleAxis(realAngle, transform.forward) * transform.right * currentHandRightDistance;
-               
+                
             }
             else
             {
@@ -143,6 +148,15 @@ public class HandFollowCursor : MonoBehaviour
             movement.TurnLeft();
         else if (angle > -90)
             movement.TurnRight();
+    }
+
+    private void LateUpdate()
+    {
+        float headangle = realAngle < 90 && realAngle > -90 ? Mathf.Clamp(realAngle, -30, 30) :(realAngle > 0 ? Mathf.Clamp(-realAngle +180, -30, 30) : Mathf.Clamp(-realAngle -180, -30, 30));
+        //head.right = Quaternion.AngleAxis(headangle, transform.forward) * transform.up;
+        //head.right = Vector3.Reflect(head.right, transform.up);
+        head.localRotation = Quaternion.AngleAxis(headangle, transform.forward);
+        Debug.Log(realAngle);
     }
 
     private IEnumerator DisableColliderAfterTime(Collider collider, float time)
