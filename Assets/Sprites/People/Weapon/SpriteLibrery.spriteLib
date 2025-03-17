@@ -19,19 +19,19 @@ MonoBehaviour:
     m_OverrideEntries:
     - m_Name: Fist
       m_Hash: 189249346
-      m_Sprite: {fileID: -2599861183575118117, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+      m_Sprite: {fileID: -2625961419867453925, guid: f0dda7a42ee894948999bcae18651df3, type: 3}
       m_FromMain: 0
-      m_SpriteOverride: {fileID: -2599861183575118117, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+      m_SpriteOverride: {fileID: -2625961419867453925, guid: f0dda7a42ee894948999bcae18651df3, type: 3}
     - m_Name: Pistol
       m_Hash: 628959629
-      m_Sprite: {fileID: -2640579270574916257, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+      m_Sprite: {fileID: -4476349418480132572, guid: 0041134bde5230449bbe2cc6e8fc7c70, type: 3}
       m_FromMain: 0
-      m_SpriteOverride: {fileID: -2640579270574916257, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+      m_SpriteOverride: {fileID: -4476349418480132572, guid: 0041134bde5230449bbe2cc6e8fc7c70, type: 3}
     - m_Name: AKGun
       m_Hash: 573768561
-      m_Sprite: {fileID: -8114207750496115516, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+      m_Sprite: {fileID: -6321852017904513945, guid: 593d7b8cfceb8274b9933acf264f6599, type: 3}
       m_FromMain: 0
-      m_SpriteOverride: {fileID: -8114207750496115516, guid: f4ed4ed144061a04ebb28040164c4a04, type: 3}
+      m_SpriteOverride: {fileID: -6321852017904513945, guid: 593d7b8cfceb8274b9933acf264f6599, type: 3}
     m_FromMain: 0
     m_EntryOverrideCount: 3
   - m_Name: Head
@@ -51,5 +51,5 @@ MonoBehaviour:
     m_FromMain: 0
     m_EntryOverrideCount: 2
   m_PrimaryLibraryGUID: 
-  m_ModificationHash: 638777434288311368
+  m_ModificationHash: 638778118748586190
   m_Version: 1
