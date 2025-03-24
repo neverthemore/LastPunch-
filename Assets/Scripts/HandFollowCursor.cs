@@ -152,10 +152,15 @@ public class HandFollowCursor : MonoBehaviour
 
     private void LateUpdate()
     {
-        float headangle = realAngle < 90 && realAngle > -90 ? Mathf.Clamp(realAngle, -30, 30) :(realAngle > 0 ? Mathf.Clamp(-realAngle +180, -30, 30) : Mathf.Clamp(-realAngle -180, -30, 30));
-        //head.right = Quaternion.AngleAxis(headangle, transform.forward) * transform.up;
-        //head.right = Vector3.Reflect(head.right, transform.up);
-        head.localRotation = Quaternion.AngleAxis(headangle, transform.forward);
+        float headangle = realAngle < 90 && realAngle > -90
+            ? Mathf.Clamp(realAngle, -30, 30)
+            : (realAngle > 0
+                ? Mathf.Clamp(-realAngle + 180, -30, 30)
+                : Mathf.Clamp(-realAngle - 180, -30, 30));
+
+        // Заменяем transform.forward на Vector3.forward для локальной оси
+        head.localRotation = Quaternion.AngleAxis(headangle, Vector3.forward);
+
         Debug.Log(realAngle);
     }
 
