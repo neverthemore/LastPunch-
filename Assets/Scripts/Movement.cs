@@ -14,7 +14,7 @@ public class Movement : MonoBehaviour
 
     public bool isRunning = true;
 
-    [SerializeField] CutSceneLogic cutSceneLogic;
+   
     CharacterController cc;
     float rotateY = 0;
     float currentRotateY = 0;
@@ -69,57 +69,11 @@ public class Movement : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void FixedUpdate() //only cutscene logic
-    {
-        if (_cutscene)
-        {
-            if (_sceneOne)
-            {
-                if (_endScene)
-                {
-                    _needWaypoint = 5;
-                }
-                animator.SetBool("Walk", true);
-                if (_currentWaypoint != _needWaypoint)
-                {
-                    if (transform.localPosition == _waypoints[_currentWaypoint].position)
-                        _currentWaypoint++;
-                    transform.localPosition = Vector3.MoveTowards(transform.localPosition, _waypoints[_currentWaypoint].position, speed * Time.fixedDeltaTime);
-                }
-                else
-                {
-                    animator.SetBool("Walk", false);
-                    if (!_endScene)
-                        cutSceneLogic.ReturnControl();
-                }
-            }
-            if (_sceneTwo)
-            {
-                if (_endScene)
-                {
-                    _needWaypoint = 4;
-                    TurnLeft();
-                }
-                animator.SetBool("Walk", true);
-                if (_currentWaypoint != _needWaypoint)
-                {
-                    if (transform.localPosition == _waypoints[_currentWaypoint].position)
-                        _currentWaypoint++;
-                    transform.localPosition = Vector3.MoveTowards(transform.localPosition, _waypoints[_currentWaypoint].position, speed * Time.fixedDeltaTime);
-                }
-                else
-                {
-                    animator.SetBool("Walk", false);
-                    if (!_endScene)
-                        cutSceneLogic.ReturnControl();
-                }
-            }
-        }
-    }
+  
     void Update()
     {
         // Проверяем playerHealth на null и отсутствие оглушения
-        if (playerHealth != null && !playerHealth.isStunned)
+      
         {
             xInput = Input.GetAxis("Horizontal");
             yInput = Input.GetAxis("Vertical");
@@ -162,16 +116,7 @@ public class Movement : MonoBehaviour
            // _buttonE.SetActive(false);
         }
 
-       // if (_rotationCount % 2 == 0)
-     //   {
-       //     SwitchMethod(_arrWallsTypeTwo, true);
-      //      SwitchMethod(_arrWallsTypeOne, false);
-        //}
-        //else
-        //{
-          //  SwitchMethod(_arrWallsTypeTwo, false);
-            //SwitchMethod(_arrWallsTypeOne, true);
-        //}
+       
 
         currentRotateY = Mathf.Lerp(currentRotateY, rotateY, rotationSpeed * 0.001f);
         transform.rotation = Quaternion.Euler(0, currentRotateY, 0);
@@ -182,7 +127,7 @@ public class Movement : MonoBehaviour
         if (lastDir == Direction.Right) skin.forward = dir;
         else skin.forward = -dir;
 
-        if (!(_cutscene || _sceneOne || _sceneTwo))
+        
         {
             if (Input.GetKey(KeyCode.LeftShift) && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))
             {
@@ -203,46 +148,8 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Broken Door"))
-            cutSceneLogic.StatusBrokenTrigger(true);
-        if (other.CompareTag("MatherZone"))
-            cutSceneLogic.StatusMatherTrigger(true);
-        if (other.CompareTag("Shawarma"))
-            _interaction.InteractionLogic("Shawarma", true);
-        //if (other.CompareTag("Rotation") && !_rotateAllways)
-        //{
-            //if (other.gameObject == _arrTriggerZone[_rotationCount])
-            //{
-              //  _rotateLeft = true;
-                //_buttonQ.SetActive(true);
-            //}
-            //else
-            //{
-              //  _rotateRight = true;
-                //_buttonE.SetActive(true);
-            //}
-        //}
-        if (other.CompareTag("Free Rotation"))
-            _rotateAllways = true;
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Broken Door"))
-            cutSceneLogic.StatusBrokenTrigger(false);
-        if (other.CompareTag("MatherZone"))
-            cutSceneLogic.StatusMatherTrigger(false);
-        if (other.CompareTag("Shawarma"))
-            _interaction.InteractionLogic("Shawarma", false);
-        if (other.CompareTag("Rotation"))
-        {
-           // _buttonE.SetActive(false);
-            // _buttonQ.SetActive(false);
-            _rotateLeft = false;
-            _rotateRight = false;
-        }
-    }
+   
+  
 
     public void TurnLeft()
     {

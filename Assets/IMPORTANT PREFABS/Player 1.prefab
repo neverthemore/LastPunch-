@@ -46,7 +46,6 @@ GameObject:
   - component: {fileID: 88186683585960990}
   - component: {fileID: 9084142288831687417}
   - component: {fileID: 7886401819992964727}
-  - component: {fileID: 2887781192833023784}
   - component: {fileID: 2870670379245954571}
   m_Layer: 3
   m_Name: Player 1
@@ -191,27 +190,11 @@ MonoBehaviour:
   lastDir: 1
   _sceneOne: 0
   _sceneTwo: 0
-  _buttonQ: {fileID: 0}
-  _buttonE: {fileID: 0}
-  _arrTriggerZone:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _arrWallsTypeOne:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _arrWallsTypeTwo:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   _waypoints: []
   _currentWaypoint: 0
   _needWaypoint: 0
   _interaction: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!114 &7886401819992964727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +214,9 @@ MonoBehaviour:
     m_Bits: 0
   handLeft: {fileID: 4959610583507523949}
   handRight: {fileID: 2880809067381760959}
+  head: {fileID: 0}
+  handLeftPoint: {fileID: 0}
+  handRightPoint: {fileID: 0}
   handon: 1
   handLeftDistanceValue: 2
   handRightDistanceValue: 2
@@ -243,22 +229,6 @@ MonoBehaviour:
   hitSpeed: 100
   leftHandCollider: {fileID: 7952230882990690280}
   rightHandCollider: {fileID: 5957426507866885692}
---- !u!114 &2887781192833023784
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1322738945030537398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd418a9cadea9cf468ff185468417bbf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radius: 2.2
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!114 &2870670379245954571
 MonoBehaviour:
   m_ObjectHideFlags: 0

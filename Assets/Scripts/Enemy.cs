@@ -21,13 +21,13 @@ public class Enemy : MonoBehaviour
     public float attackDamage = 5;
     public float attackCooldown = 2f;
 
-    
+
     public float pushForce = 5f;
     public float pushDuration = 2f;
     public float stunDuration = 2f;
 
-    
-   
+
+
     private Transform target;
     private Rigidbody rb;
     private Animator animator;
@@ -42,7 +42,6 @@ public class Enemy : MonoBehaviour
     private float attackTimer = 0;
     private bool isAttacking = false;
 
-    [SerializeField] private CutSceneLogic _cutSceneLogic;
 
     void Start()
     {
@@ -100,12 +99,12 @@ public class Enemy : MonoBehaviour
             if (!isStunned) // ƒвижение только если не в состо€нии "стан"
             {
                 MoveTowardsPlayer();
-                
-                
+
+
             }
-           
+
             FaceCamera();
-            
+
             attackTimer -= Time.deltaTime;
         }
     }
@@ -131,22 +130,22 @@ public class Enemy : MonoBehaviour
     {
         if (target != null && !door)
         {
-            
+
             float distanceToTarget = Vector3.Distance(transform.position, target.position);
             if (distanceToTarget <= detectionRange)
             {
-                
+
                 PunchRadius punchRadius = target.GetComponent<PunchRadius>();
                 if (punchRadius != null)
                 {
-                    
+
                     Vector3 direction = (target.position - transform.position).normalized;
                     Vector3 destination = target.position - direction * (punchRadius.radius - 0.1f); // ”станавливаем позицию
 
                     float distanceToDestination = Vector3.Distance(transform.position, destination);
                     if (distanceToDestination > 0.1f)
                     {
-                       
+
                         rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.z * moveSpeed);
                         animator.SetBool("walkEnemy", true); // «апускаем анимацию ходьбы
                     }
@@ -174,44 +173,44 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-    
-    
+
+
     private void FaceCamera()
     {
-        
 
 
-            if (mainCamera != null)
+
+        if (mainCamera != null)
+        {
+            Vector3 cameraDirection = mainCamera.transform.position - transform.position;
+            cameraDirection.y = 0;
+
+            if (cameraDirection != Vector3.zero)
             {
-                Vector3 cameraDirection = mainCamera.transform.position - transform.position;
-                cameraDirection.y = 0;
-
-                if (cameraDirection != Vector3.zero)
-                {
-                    transform.rotation = Quaternion.LookRotation(-cameraDirection);
-                }
+                transform.rotation = Quaternion.LookRotation(-cameraDirection);
             }
-            Vector3 directionToPlayer = target.position - transform.position;
+        }
+        Vector3 directionToPlayer = target.position - transform.position;
 
-            // Ќормализуем его
-            directionToPlayer.Normalize();
+        // Ќормализуем его
+        directionToPlayer.Normalize();
 
-            // ѕолучаем направление противника в его локальной системе координат
-            enemyDirectionLocal = transform.right; // Ќапример, "вправо" может быть положительным X в локальной системе координат противника
+        // ѕолучаем направление противника в его локальной системе координат
+        enemyDirectionLocal = transform.right; // Ќапример, "вправо" может быть положительным X в локальной системе координат противника
 
-            // ¬ычисл€ем скал€рное произведение дл€ определени€ направлени€ игрока относительно противника
-            float dotProduct = Vector3.Dot(enemyDirectionLocal, directionToPlayer);
+        // ¬ычисл€ем скал€рное произведение дл€ определени€ направлени€ игрока относительно противника
+        float dotProduct = Vector3.Dot(enemyDirectionLocal, directionToPlayer);
 
-            if (dotProduct > 0)
-            {
-                transform.localScale = new Vector3(originalScale.x, originalScale.y, originalScale.z);
-              }
-            else
-            {
+        if (dotProduct > 0)
+        {
+            transform.localScale = new Vector3(originalScale.x, originalScale.y, originalScale.z);
+        }
+        else
+        {
             transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
         }
 
-        
+
     }
     public void Stun(float duration)
     {
@@ -229,8 +228,8 @@ public class Enemy : MonoBehaviour
     {
         float frameDuration = duration / frames.Length; // ¬рем€ дл€ каждого кадра
 
-        
-        
+
+
 
         for (int i = 0; i < frames.Length; i++)
         {
@@ -238,7 +237,7 @@ public class Enemy : MonoBehaviour
             yield return new WaitForSeconds(frameDuration);
         }
 
-       
+
 
         effectObject.SetActive(false);
     }
@@ -256,24 +255,9 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int attackDamage, HitType hitType)
     {
         health -= attackDamage;
-        if (door)
-        {
-            StartCoroutine(DoorShake());
-        }
-        Debug.Log($"Enemy took {attackDamage} damage from {hitType}! Remaining health: {health}");
+      
 
-        if (hitType == HitType.Head)
-        {
-            animator.SetInteger("HitType", 1); // 1 for head hit
-        }
-        else if (hitType == HitType.Body)
-        {
-            animator.SetInteger("HitType", 2); // 2 for body hit
-        }
-        else if (hitType == HitType.Legs)
-        {
-            animator.SetInteger("HitType", 3); // 3 for leg hit
-        }
+       
 
         // Check if health is less than or equal to 0
         if (health <= 0)
@@ -331,21 +315,6 @@ public class Enemy : MonoBehaviour
         Legs
     }
 
-    #region Cutscene Logic
-    private IEnumerator DoorShake()
-    {
-        float shake = 1f;
-        float time = 0.07f;
-
-        gameObject.transform.rotation = Quaternion.Euler(-shake, shake, -shake);
-        if (health > 0) _cutSceneLogic.SelectEffects(true);
-        yield return new WaitForSeconds(time);
-        gameObject.transform.rotation = Quaternion.Euler(shake, -shake, shake);
-        yield return new WaitForSeconds(time);
-        gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
-        yield return new WaitForSeconds(time);
-        if (health > 0) _cutSceneLogic.SelectEffects(false);
-    }
-    public void Shake() => StartCoroutine(DoorShake());
-    #endregion
 }
+
+    
