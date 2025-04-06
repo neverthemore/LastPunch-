@@ -12,10 +12,16 @@ public class HandFollowCursor : MonoBehaviour
     Vector3 mousePositionInWorld;
     
     public Transform head;
+    
+    public Transform leftHandPointPistol;
+
+    public Transform leftHandPointAK;
 
     [SerializeField] private Transform leftTarget;
 
     [SerializeField] private Transform rightTarget;
+
+  
 
     public float rotationSpeed = 180f;
     [SerializeField]
@@ -27,17 +33,21 @@ public class HandFollowCursor : MonoBehaviour
     public float minAngle = -50;
 
 
+    private Vector3 startLeftH;
+     private Vector3 startRightH;
+
     public float speed = 5f;
     Movement movement;
 
-   
+   WeaponSwitcher _weaponSwitcher;
 
     void Start()
     {
-       
+        startLeftH = leftTarget.transform.position;
+        startRightH = rightTarget.transform.position;
         movement = GetComponent<Movement>();
 
-        
+        _weaponSwitcher = GetComponent<WeaponSwitcher>();
 
     }
 
@@ -51,10 +61,20 @@ public class HandFollowCursor : MonoBehaviour
       Vector3 dir = (mousePositionInWorld - transform.position).normalized;
         angle = Vector3.SignedAngle(transform.right, dir, transform.forward);
 
-        leftTarget.transform.position = mousePositionInWorld;
+        if (!_weaponSwitcher.hands)
+        {
+            if (_weaponSwitcher.pistol)
+            {
+                leftTarget.transform.position = leftHandPointPistol.position;
+            }        
+            else
+            {
+                leftTarget.transform.position = leftHandPointAK.position;
+            }
 
-        rightTarget.transform.position = mousePositionInWorld;
-
+            rightTarget.transform.position = mousePositionInWorld;
+        }
+      
 
 
 

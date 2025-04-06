@@ -6,6 +6,20 @@ using UnityEngine.U2D.Animation; // Подключаем пространство имен для Sprite Libr
 
 public class WeaponSwitcher : MonoBehaviour
 {
+
+
+
+
+    [SerializeField] public bool hands = true;
+
+    [SerializeField] public bool pistol = false;
+
+    [SerializeField] public bool ak = false;
+
+
+
+
+
     [SerializeField]
     private SpriteLibrary spriteLibrary = default; // Ссылка на SpriteLibrary
 
@@ -23,14 +37,23 @@ public class WeaponSwitcher : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1)) // Клавиша 1
         {
             SwitchWeaponByIndex(0); // Переключение на первое оружие
+            hands = true;
+            pistol = false;
+            ak = false;
         }
         if (Input.GetKeyDown(KeyCode.Alpha2)) // Клавиша 2
         {
             SwitchWeaponByIndex(1); // Переключение на второе оружие
+            hands = false;
+            pistol = true;
+            ak = false;
         }
         if (Input.GetKeyDown(KeyCode.Alpha3)) // Клавиша 3
         {
             SwitchWeaponByIndex(2); // Переключение на третье оружие
+            hands = false;
+            pistol = false;
+            ak = true;
         }
     }
 
