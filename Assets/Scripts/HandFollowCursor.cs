@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HandFollowCursor : MonoBehaviour
@@ -10,12 +11,15 @@ public class HandFollowCursor : MonoBehaviour
     public Camera camBrain;
     Vector3 mousePosition;
     Vector3 mousePositionInWorld;
-    
+
+    public Transform origin; //точка персонажа - его центр
+
     public Transform head;
     
     public Transform leftHandPointPistol;
 
     public Transform leftHandPointAK;
+
 
     [SerializeField] private Transform leftTarget;
 
@@ -39,6 +43,8 @@ public class HandFollowCursor : MonoBehaviour
     public float speed = 5f;
     Movement movement;
 
+    float handRadius = 10f;
+
    WeaponSwitcher _weaponSwitcher;
 
     void Start()
@@ -58,25 +64,36 @@ public class HandFollowCursor : MonoBehaviour
         mousePosition.z = Vector3.Distance(cam.transform.position, transform.position);
         mousePositionInWorld = camBrain.ScreenToWorldPoint(mousePosition);
 
-      Vector3 dir = (mousePositionInWorld - transform.position).normalized;
-        angle = Vector3.SignedAngle(transform.right, dir, transform.forward);
+        bool toNear = Vector2.Distance(origin.position, mousePositionInWorld) < 1.3f;
 
-        if (!_weaponSwitcher.hands)
+      Vector3 dir = (mousePositionInWorld - origin.position).normalized;
+        
+
+        if(!toNear)
         {
-            if (_weaponSwitcher.pistol)
+            if (!_weaponSwitcher.hands)
             {
-                leftTarget.transform.position = leftHandPointPistol.position;
-            }        
-            else
-            {
-                leftTarget.transform.position = leftHandPointAK.position;
+                          
+                
+                rightTarget.transform.position = origin.position + dir * handRadius;
+                Debug.DrawRay(origin.position, dir);
+                if (_weaponSwitcher.pistol)
+                {
+                    leftTarget.transform.position = leftHandPointPistol.position;
+                    handRadius = 5f;
+                }
+                else
+                {
+                    leftTarget.transform.position = leftHandPointAK.position;
+                    //leftTarget.position = transform.position + dir *handRadius * 1.5f;
+                    handRadius = 0.7f;
+                }
             }
-
-            rightTarget.transform.position = mousePositionInWorld;
         }
-      
 
 
+        angle = Vector3.SignedAngle(transform.right, leftTarget.position + dir * 1.5f - head.position, transform.forward);
+        Debug.DrawRay(head.position, leftTarget.position + dir * 1.5f - head.position);
 
 
 
